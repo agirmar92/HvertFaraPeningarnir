@@ -1,0 +1,23 @@
+{
+  "name": "hvert_fara_peningarnir_api",
+  "version": "1.0.0",
+  "description": "Where does all the money go?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:agirmar92/HvertFaraPeningarnir.git"
+  },
+  "author": "AtliDarriÆgir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agirmar92/HvertFaraPeningarnir/issues"
+  },
+  "homepage": "https://github.com/agirmar92/HvertFaraPeningarnir",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4"
+  }
+}
