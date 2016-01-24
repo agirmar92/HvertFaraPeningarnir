@@ -50,12 +50,12 @@ api.get('/', (req, res) => {
 			'index'  : 'hvertfarapeningarnir',
 			'type'   : 'test',
 		}).then((doc) => {
-			res.status(200).send(doc);
+			res.status(200).send(doc.hits.hits[0]._source);
 		}, (err) => {
 			res.status(500).send('Server error\n');
 		});
 	}, 1000);
-	
+
 });
 
 module.exports = api;

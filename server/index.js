@@ -1,10 +1,10 @@
 'use strict';
 
-// Modules
+// Modules:
 const express = require('express');
 const api = require('./api');
 
-// Globals
+// Globals:
 const app = express();
 const port = 4000;
 

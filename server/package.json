@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "elasticsearch": "^10.1.2",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "nodemon": "^1.8.1"
   }
 }
