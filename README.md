@@ -4,7 +4,7 @@ Lokaverkefni
 
 ### To run:
 
-1. Install dependencies `./initScript`.
+1. Install dependencies `./initScript.sh`.
 
 2. Run `./startElastic.sh` to start ElasticSearch database and run it.
 
