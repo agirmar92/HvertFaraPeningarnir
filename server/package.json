@@ -18,6 +18,7 @@
   "homepage": "https://github.com/agirmar92/HvertFaraPeningarnir",
   "dependencies": {
     "body-parser": "^1.14.2",
+    "elasticsearch": "^10.1.2",
     "express": "^4.13.4"
   }
 }
