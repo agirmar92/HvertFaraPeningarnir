@@ -2,4 +2,3 @@
 **/**/.DS_Store
 /database/elasticsearch-2.1.1/data
 /database/elasticsearch-2.1.1/logs
-/kibana-4.3.1-darwin-x64
