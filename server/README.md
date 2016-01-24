@@ -4,6 +4,8 @@
 
 1. Install dependencies `npm install`.
 
-2. Run `./restart` to clear the ElasticSearch database and run it.
+2. Run `./startElastic.sh` to start ElasticSearch database and run it.
 
-3. Run `~/<path-to-project-folder>/server/node_modules/nodemon/bin/nodemon.js index.js`
+3. Run `./restartElastic.sh` to clear the ElasticSearch database.
+
+4. Run `./startServer.sh` to start up the server.
