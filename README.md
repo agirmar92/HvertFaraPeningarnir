@@ -4,6 +4,14 @@ Lokaverkefni
 
 ### To run:
 
+You must have the following installed on your machine:
+
+- git
+- python
+- npm
+- node
+- nodemon
+
 1. Run  `./initScript.sh` to install dependencies.
 
 2. Run `./startElastic.sh` to start ElasticSearch database and run it.
