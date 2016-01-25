@@ -6,10 +6,10 @@ Lokaverkefni
 
 You must have the following installed on your machine:
 
-- git
+- git 
 - python
 - npm
-- node
+- node 4
 - nodemon
 
 1. Run  `./initScript.sh` to install dependencies.
