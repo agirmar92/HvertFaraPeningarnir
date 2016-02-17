@@ -10,10 +10,11 @@ from pprint import pprint
 es = Elasticsearch()
 rows = []
 
-with open('results-2.txt') as infile:
+with open('results-3.csv', encoding='utf-16') as infile:
 	readr = csv.reader(infile, delimiter=';')
 	for x in readr:
 		rows.append([ y.strip() for y in x ])
+	print('hér!!!')
 
 docs = []
 doc = {}
@@ -22,12 +23,11 @@ for row in rows:
 	for i,column in enumerate(row):
 		doc[toprow[i]] = column
 	docs.append(doc)
-print(len(docs))
-for i in range(5):
-	pprint(docs[i])
 
+for doc in docs:
+	es.index(index="hvertfarapeningarnir", doc_type='tweet', body=doc)
 
+print('Finished!')
 
-#with open('data.json', 'w') as outfile:
-#	json.dump(rows, outfile)
-
+res = es.search(index="hvertfarapeningarnir", body={"query": {"match_all": {}}})
+print("Got %d Hits:" % res['hits']['total'])
