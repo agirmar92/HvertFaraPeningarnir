@@ -28,29 +28,12 @@ api.get('/', (req, res) => {
 		res.status(200).send(docs);
 	});*/
 
-	// Save to Elastic Search
-	elasticClient.index({
-		'index' : 'hvertfarapeningarnir',
-		'type'  : 'test',
-		'body'  : {
-			'name' : 'leikskólinn playplay',
-			'expenses' : 1000000,
-			'income' : 500000,
-			'special-income' : 500000
-		}
-	}).then((respo) => {
-		console.log('inserted to elastic:' + respo)
-	},(error) => {
-		res.status(500).send('Server error (elastic).\n');
-		return;
-	});
-
 	setTimeout(function() {
 		elasticClient.search({
-			'index'  : 'hvertfarapeningarnir',
-			'type'   : 'test',
+			index: 'hvertfarapeningarnir',
 		}).then((doc) => {
-			res.status(200).send(doc.hits.hits[0]._source);
+			//res.status(200).send(doc.hits.hits[0]._source);
+			res.status(200).send(doc);
 		}, (err) => {
 			res.status(500).send('Server error\n');
 		});

@@ -15,16 +15,18 @@ with open('results-3.csv', encoding='utf-16') as infile:
 	for x in readr:
 		rows.append([ y.strip() for y in x ])
 
+
 docs = []
-doc = {}
 toprow = rows[0]
-for row in rows:
-	for i,column in enumerate(row):
+for row in rows[2:]:
+	doc = {}
+	for i, column in enumerate(row):
 		doc[toprow[i]] = column
 	docs.append(doc)
+
 i = 0
 for doc in docs:
-	es.index(index="hvertfarapeningarnir", doc_type='tweet', body=doc)
+	es.index(index="hvertfarapeningarnir", doc_type='db_entry', body=doc)
 	if i % 10000 == 0:
 		print('Processing database.. ' + str(i) + ' documents created.')
 	i += 1
