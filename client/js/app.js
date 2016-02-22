@@ -14,7 +14,7 @@ angular.module('hvertfarapeningarnir')
 				method: 'GET',
 				url: 'http://localhost:4000/'
 			}).success(function(response) {
-				$scope.testString = response.name;
+				$scope.testString = response.hits.hits[0]._source.Deild;
 				console.log(response);
 			}).error(function(err) {
 				console.log(err);

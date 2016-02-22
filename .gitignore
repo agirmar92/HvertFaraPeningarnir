@@ -7,4 +7,4 @@
 /database/results.txt
 /database/results-2.txt
 */**/results.csv
-
+.idea/

@@ -9,7 +9,7 @@ const elasticsearch = require('elasticsearch');
 const api = express();
 const cluster = 'http://localhost:9200/ClusterForPunchy/';
 const elasticClient = new elasticsearch.Client({
-	host: 'localhost:9200'
+	host: 'http://hfpserver.westeurope.cloudapp.azure.com:9200'
 });
 
 api.use(bodyParser.json());
@@ -28,16 +28,15 @@ api.get('/', (req, res) => {
 		res.status(200).send(docs);
 	});*/
 
-	setTimeout(function() {
-		elasticClient.search({
-			index: 'hvertfarapeningarnir',
-		}).then((doc) => {
-			//res.status(200).send(doc.hits.hits[0]._source);
-			res.status(200).send(doc);
-		}, (err) => {
-			res.status(500).send('Server error\n');
-		});
-	}, 1000);
+	elasticClient.search({
+		index: 'hvertfarapeningarnir'
+	}).then((doc) => {
+		//res.status(200).send(doc.hits.hits[0]._source);
+		res.status(200).send(doc);
+	}, (err) => {
+		console.log(err);
+		res.status(500).send('Server error\n');
+	});
 
 });
 
