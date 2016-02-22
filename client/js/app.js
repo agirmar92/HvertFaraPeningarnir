@@ -5,6 +5,7 @@ angular.module('hvertfarapeningarnir')
 		'user strict';
 
 		$scope.testString = "pruffaaaaa";
+		$scope.testData = [];
 
 		/*
 			asdasd
@@ -15,6 +16,7 @@ angular.module('hvertfarapeningarnir')
 				url: 'http://localhost:4000/'
 			}).success(function(response) {
 				$scope.testString = response.hits.hits[0]._source.Deild;
+				$scope.testData = response.hits.hits;
 				console.log(response);
 			}).error(function(err) {
 				console.log(err);
