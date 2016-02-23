@@ -49,30 +49,37 @@
 		<!-- /#sidebar-wrapper -->
 
 		<!-- Page Content -->
-		<div id="page-content-wrapper" class="hfp-content container-fluid">
+		<div id="page-content-wrapper" class="container-fluid hfp-content">
 
 			<div class="row hfp-header">
-				<div class="col-lg-2">
-					<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Sjá síur</a>
+				<div class="col-lg-2 hfp-headerbuttons hfp-div">
+					<a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-filter" id="menu-toggle"></a>
+					<button class="btn btn-default glyphicon glyphicon-apple" ng-click="testFunc()"></button>
 				</div>
-				<div class="col-lg-8">
-					<h1>Hvert Fara Peningarnir!</h1>
+				<div class="col-lg-8 hfp-div">
+					<div class="col-lg-4 hfp-div">
+						<img src="koplogo.gif" alt="">
+					</div>
+					<div class="col-lg-4">
+						<h1 ng-bind="testString"></h1>
+						<h2>Hvert Fara Peningarnir</h2>
+					</div>
+
+					<div class="col-lg-4 hfp-div"></div>
 				</div>
-				<div class="col-lg-2">
-					Hlutfallsmælir
+				<div class="col-lg-2 hfp-div">
+					<p>Hlutfallsmælir</p>
 				</div>
 			</div>
 
 			<div class="row hfp-chart">
-				<div class="col-lg-12">
-					<p ng-bind="testString"></p>
-					<a class="btn btn-default" ng-click="testFunc()">Ná í prufugögn</a>
+				<div class="col-lg-12 hfp-div">
 					<div class="hfp-circle"></div>
 				</div>
 			</div>
 
-			<div class="row hfp-footer">
-				<h1>Footer</h1>
+			<div class="row hfp-minichart">
+				<h1>Stöplar</h1>
 			</div>
 
 		</div>

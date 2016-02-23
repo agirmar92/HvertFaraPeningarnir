@@ -4,7 +4,7 @@ angular.module('hvertfarapeningarnir')
 	.controller('testController', ['$scope', '$http', function ($scope, $http) {
 		'user strict';
 
-		$scope.testString = "pruffaaaaa";
+		$scope.testString = "Kópavogsbær";
 		$scope.testData = [];
 
 		/*
