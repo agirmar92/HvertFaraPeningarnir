@@ -13,11 +13,16 @@
 </head>
 <body ng-app="hvertfarapeningarnir">
 
+	<!-- hvertfarapeningarnir -->
 	<div id="wrapper" ng-controller="testController" class="toggled hfp-wrapper">
 
-		<!-- Sidebar -->
+		<!-- sidebar-wrapper -->
 		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
+			<ul class="sidebar-nav nav-tabs nav nav-justified">
+				<li role="presentation" class="hfp-tab active"><a href="#">Síur</a></li>
+				<li role="presentation" class="hfp-tab"><a href="#">Algengar fyrirspurnir</a></li>
+			</ul>
+			<!--<ul class="sidebar-nav">
 				<li class="sidebar-brand">
 					<a href="#">
 						Hvert Fara Peningarnir
@@ -44,63 +49,81 @@
 				<li>
 					<a href="#">Contact</a>
 				</li>
-			</ul>
+			</ul>-->
 		</div>
 		<!-- /#sidebar-wrapper -->
 
-		<!-- Page Content -->
+		<!-- page-content-wrapper -->
 		<div id="page-content-wrapper" class="container-fluid hfp-content">
 
+			<!-- header -->
 			<div class="row hfp-header">
+
+				<!-- header-buttons -->
 				<div class="col-lg-2 hfp-headerbuttons hfp-div">
-					<a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-filter" id="menu-toggle"></a>
-					<button class="btn btn-default glyphicon glyphicon-apple" ng-click="testFunc()"></button>
-				</div>
-				<div class="col-lg-8 hfp-div">
-					<div class="col-lg-4 hfp-div">
-						<img src="koplogo.gif" alt="">
+					<button class="btn btn-default glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
+					<button class="btn btn-default glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
+					<button class="btn btn-default glyphicon glyphicon-download-alt"  ng-click="testFunc()"></button>
+					<button class="btn btn-default glyphicon glyphicon-question-sign" ng-click="testFunc()"></button>
+
+					<!-- calendar-dropdown -->
+					<div id="hfp-calendar-dropdown" class="hfp-hidden">
 					</div>
-					<div class="col-lg-4">
+					<!-- /#calendar-dropdown -->
+				</div>
+				<!-- /#header-buttons -->
+
+				<!-- title -->
+				<div class="col-lg-8 hfp-div hfp-title">
+					<div class="col-lg-4 hfp-div hfp-title-logo">
+						<img src="koplogo.gif" alt="" id="kop-logo">
+					</div>
+					<div class="col-lg-4" hfp-title-text>
 						<h1 ng-bind="testString"></h1>
 						<h2>Hvert Fara Peningarnir</h2>
 					</div>
 
-					<div class="col-lg-4 hfp-div"></div>
+					<div class="col-lg-4 dummyDiv"></div>
 				</div>
-				<div class="col-lg-2 hfp-div">
-					<p>Hlutfallsmælir</p>
-				</div>
-			</div>
+				<!-- /#title -->
 
+				<!-- progress-meter -->
+				<div class="col-lg-2 hfp-div hfp-meter">
+					<uib-progressbar max="max" value="dynamic"><span style="color:white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
+				</div>
+				<!-- /#progress-meter -->
+
+			</div>
+			<!-- /#header -->
+
+			<!-- chart-area -->
 			<div class="row hfp-chart">
 				<div class="col-lg-12 hfp-div">
 					<div class="hfp-circle"></div>
 				</div>
 			</div>
+			<!-- /#chart-area -->
 
+			<!-- mini-chart-area -->
 			<div class="row hfp-minichart">
 				<h1>Stöplar</h1>
 			</div>
+			<!-- /#mini-chart-area -->
 
 		</div>
 		<!-- /#page-content-wrapper -->
 
 	</div>
+	<!-- /#hvertfarapeningarnir -->
 
 	<script src="node_modules/angular/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script src="node_modules/angular-animate/angular-animate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="node_modules/angular-route/angular-route.js" type="text/javascript" charset="utf-8"></script>
 	<script src="node_modules/angular-loading-bar/src/loading-bar.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
-
-	<!-- Menu Toggle Script -->
-	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
-	</script>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
