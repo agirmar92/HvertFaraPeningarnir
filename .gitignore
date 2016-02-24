@@ -6,5 +6,5 @@
 /database/data.json
 /database/results.txt
 /database/results-2.txt
-*/**/results.csv
+**/**/results.csv
 .idea/

@@ -34,11 +34,12 @@ with open('../results.csv', encoding='utf-16') as infile:
 
 # Convert to a list of dictionaries
 docs = []
-toprow = rows[0]
+cols = [ 'Date', 'Division', 'DepartmentID', 'Department', 'Unused1', 'AffairID', 'Affair', 'Unused2', 'Unused3', 'Creditor', 'PrimaryFinanceKey', 'FinanceKeyID', 'FinanceKey', 'Amount' ]
+
 for row in rows[2:-2]:
 	doc = {}
 	for i, column in enumerate(row):
-		doc[toprow[i]] = column
+		doc[cols[i]] = column
 	docs.append(doc)
 
 # Process dictionaries into ElasticSearch
