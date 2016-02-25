@@ -18,7 +18,7 @@ angular.module('hvertfarapeningarnir')
 				url: 'http://localhost:4000/'
 			}).success(function(response) {
 				if ($scope.testString === "Kópavogsbær") {
-					$scope.testString = response.hits.hits[0]._source.Deild;
+					$scope.testString = response.hits.hits[0]._source.Affair;
 					$scope.dynamic = 30;
 				} else {
 					$scope.testString = "Kópavogsbær";
@@ -30,15 +30,15 @@ angular.module('hvertfarapeningarnir')
 			}).error(function(err) {
 				console.log(err);
 			});
-		}
+		};
 
 		$scope.toggleDrawer = function() {
 			$("#wrapper").toggleClass("toggled");
 			$("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-filter");
-		}
+		};
 
 		$scope.toggleCalendar = function() {
 			$("#hfp-calendar-dropdown").toggleClass("hfp-hidden");
 			$("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-calendar");
-		}
+		};
 	}]);

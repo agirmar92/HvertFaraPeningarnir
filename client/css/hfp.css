@@ -1,6 +1,16 @@
 body {
-    background-color: #2B2922;
+    background-color: #1b1b1b;
     color: white;
+}
+
+@font-face {
+    font-family: font2;
+    src: url(../fonts/ufonts.com_gill-sans-mt-bold-italic.ttf);
+}
+
+@font-face {
+    font-family: font3;
+    src: url(../fonts/HelveticaNeue-Light.otf);
 }
 
 html, body {
@@ -14,7 +24,7 @@ html, body {
 }
 
 .hfp-header {
-    background-color: #1b6d85;
+    //background-color: #1b6d85;
     height: 69px;
 }
 
@@ -31,7 +41,7 @@ html, body {
 }
 
 .hfp-chart {
-    background-color: #2b542c;
+    //background-color: #2b542c;
     height: 85%;
     height: calc(100% - 69px);
 }
@@ -53,6 +63,7 @@ html, body {
     background-color: gray;
     margin: auto;
     /* width and height can be anything, as long as they're equal */
+    box-shadow: 0px 0px 135px #696969;
 }
 
 .hfp-headerbuttons {
@@ -91,6 +102,20 @@ h1, h2 {
     margin: 0;
 }
 
+h1 {
+    font-family: font3;
+}
+
 h2 {
     font-size: 25px;
+    font-family: font2;
+}
+
+#hfp-progress-bar > * {
+    background-image: -webkit-linear-gradient(top, #00853E 0%, #3E4C3E 100%);
+    background-image: -o-linear-gradient(top, #00853E 0%, #3E4C3E 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#00853E), to(#3E4C3E));
+    background-image: linear-gradient(to bottom, #00853E 0%, #3E4C3E 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff286090', GradientType=0);
+    background-repeat: repeat-x;
 }
