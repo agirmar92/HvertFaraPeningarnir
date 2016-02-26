@@ -10,6 +10,56 @@
 	<link rel="stylesheet" type="text/css" href="node_modules/angular-loading-bar/src/loading-bar.css">
 	<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css">
 	<link rel="stylesheet" type="text/css" href="css/hfp.css">
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Mushrooms', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2]
+        ]);
+
+        // Set chart options
+        var options = {
+        	title: 'Málaflokkar',
+        	titleTextStyle: {
+        		color: '#dadada',
+        		fontName: 'font2'
+        	},
+        	backgroundColor: '#2b2b2b',
+        	legend: {
+        		position: 'labeled',
+        		textStyle: {
+        			color: '#dadada'
+        		}
+        	},
+        	chartArea: {
+        		width: '80%'
+        	}
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 </head>
 <body ng-app="hvertfarapeningarnir">
 
@@ -97,9 +147,9 @@
 			<!-- /#header -->
 
 			<!-- chart-area -->
-			<div class="row hfp-chart">
+			<div id="chartContainer" class="row hfp-chart">
 				<div class="col-lg-12 hfp-div">
-					<div class="hfp-circle"></div>
+					<div id ="chart_div" class="hfp-pie"><div>
 				</div>
 			</div>
 			<!-- /#chart-area -->
@@ -121,6 +171,7 @@
 	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="node_modules/canvasjs/dist/canvasjs.min.js"></script>
 	<script src="node_modules/angular-route/angular-route.js" type="text/javascript" charset="utf-8"></script>
 	<script src="node_modules/angular-loading-bar/src/loading-bar.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
