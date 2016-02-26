@@ -60,11 +60,11 @@
 			<div class="row hfp-header">
 
 				<!-- header-buttons -->
-				<div class="col-lg-2 hfp-headerbuttons hfp-div">
-					<button class="btn btn-default glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
-					<button class="btn btn-default glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
-					<button class="btn btn-default glyphicon glyphicon-download-alt"  ng-click="testFunc()"></button>
-					<button class="btn btn-default glyphicon glyphicon-question-sign" ng-click="testFunc()"></button>
+				<div class="col-lg-4 hfp-headerbuttons hfp-div">
+					<button class="btn btn-default hfp-btn glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
+					<button class="btn btn-default hfp-btn glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
+					<button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click="testFunc()"></button>
+					<button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click="testFunc()"></button>
 
 					<!-- calendar-dropdown -->
 					<div id="hfp-calendar-dropdown" class="hfp-hidden">
@@ -74,22 +74,16 @@
 				<!-- /#header-buttons -->
 
 				<!-- title -->
-				<div class="col-lg-8 hfp-div hfp-title">
-					<div class="col-lg-4 hfp-div hfp-title-logo">
-						<img src="koplogo.gif" alt="" id="kop-logo">
-					</div>
-					<div class="col-lg-4" hfp-title-text>
-						<h1 ng-bind="testString"></h1>
-						<h2>Hvert fara peningarnir</h2>
-					</div>
-
-					<div class="col-lg-4 dummyDiv"></div>
+				<div class="col-lg-4 hfp-div hfp-title hfp-title">
+					<h2 id="main-title">Hvert fara peningarnir?</h2>
+					<h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
 				</div>
 				<!-- /#title -->
 
 				<!-- progress-meter -->
-				<div class="col-lg-2 hfp-div hfp-meter">
+				<div class="col-lg-4 hfp-div hfp-meter">
 					<uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="color:white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
+					<p id="hfp-curr-amount">kr. {{totalAmount}}.-</p>
 				</div>
 				<!-- /#progress-meter -->
 
