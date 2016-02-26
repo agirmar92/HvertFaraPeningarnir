@@ -4,7 +4,7 @@ angular.module('hvertfarapeningarnir')
 	.controller('testController', ['$scope', '$http', function ($scope, $http) {
 		'user strict';
 
-		$scope.testString = "Kópavogsbær";
+		$scope.totalAmount = "732.027.971";
 		$scope.testData = [];
 		$scope.dynamic = 80;
 		$scope.max = 100;
@@ -17,11 +17,11 @@ angular.module('hvertfarapeningarnir')
 				method: 'GET',
 				url: 'http://localhost:4000/'
 			}).success(function(response) {
-				if ($scope.testString === "Kópavogsbær") {
-					$scope.testString = response.hits.hits[0]._source.Affair;
+				if ($scope.totalAmount === "732.027.971") {
+					$scope.totalAmount = "274.510.489";
 					$scope.dynamic = 30;
 				} else {
-					$scope.testString = "Kópavogsbær";
+					$scope.totalAmount = "732.027.971";
 					$scope.dynamic = 80;
 				}
 

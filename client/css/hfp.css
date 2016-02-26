@@ -1,6 +1,6 @@
 body {
     background-color: #1b1b1b;
-    color: white;
+    color: #dadada;
 }
 
 @font-face {
@@ -54,7 +54,7 @@ html, body {
 .hfp-minichart {
     background-color: #7a43b6;
     position: fixed;
-    bottom: 45px;
+    bottom: 30px;
     right: 40px;
     height: 180px;
     width: 250px;
@@ -88,9 +88,9 @@ html, body {
 #hfp-calendar-dropdown {
     z-index: 1000;
     position: absolute;
-    left: 59px;
+    left: 75px;
     width: 300px;
-    top: 206px;
+    top: 208px;
     height: 300px;
     overflow-y: auto;
     background: #888888;
@@ -104,22 +104,24 @@ html, body {
     display: none;
 }
 
-img {
-    zoom: 50%;
-    float: right;
+#kop-logo {
+    width: 28px;
+    margin-right: 6px;
 }
 
 h1, h2 {
     margin: 0;
 }
 
-h1 {
+#sub-title {
     font-family: font3;
+    font-size: 28px;
 }
 
-h2 {
-    font-size: 25px;
+#main-title {
+    font-size: 32px;
     font-family: font2;
+    margin-bottom: 10px;
 }
 
 #hfp-progress-bar > * {
@@ -129,4 +131,36 @@ h2 {
     background-image: linear-gradient(to bottom, #00853E 0%, #3E4C3E 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff286090', GradientType=0);
     background-repeat: repeat-x;
+}
+
+#hfp-progress-bar {
+    width: 60%;
+    min-width: 220px;
+    right: 15px;
+    position: absolute;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: 1px solid #dadada;
+}
+
+#hfp-curr-amount {
+    position: absolute;
+    display: inline;
+    right: 15px;
+    top: 58px;
+}
+
+.hfp-btn {
+    margin-right: 12px;
+    color: #dadada;
+    background: transparent;
+    font-size: 20px;
+    padding: 2px;
+    text-shadow: none;
+    width: 44px;
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius: 0;
+    border-width: 2px;
 }

@@ -8,3 +8,5 @@
 /database/results-2.txt
 **/**/results.csv
 .idea/
+client/build
+client/package.json~
