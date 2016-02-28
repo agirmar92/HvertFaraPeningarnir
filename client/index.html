@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular/angular-csp.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular-loading-bar/src/loading-bar.css">
+	<link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
 	<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css">
 	<link rel="stylesheet" type="text/css" href="css/hfp.css">
 </head>
@@ -91,9 +92,9 @@
 			<!-- /#header -->
 
 			<!-- chart-area -->
-			<div class="row hfp-chart">
+			<div id="chartContainer" class="row hfp-chart">
 				<div class="col-lg-12 hfp-div">
-					<div class="hfp-circle"></div>
+					<div id="chart_div" class="hfp-pie"></div>
 				</div>
 			</div>
 			<!-- /#chart-area -->
@@ -116,8 +117,51 @@
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="node_modules/angular-route/angular-route.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="bower_components/Chart.js/Chart.js"></script>
+	<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+	<script type="text/javascript" src="node_modules/canvasjs/dist/canvasjs.min.js"></script>
 	<script src="node_modules/angular-loading-bar/src/loading-bar.js" type="text/javascript" charset="utf-8"></script>
 	<script src="build/app.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Mushrooms', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2]
+        ]);
+
+        // Set chart options
+        var options = {
+        	backgroundColor: '#1b1b1b',
+        	legend: {
+        		position: 'none'
+        	}
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

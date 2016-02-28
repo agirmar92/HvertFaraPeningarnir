@@ -1,4 +1,4 @@
-angular.module('hvertfarapeningarnir', ['ngRoute', 'angular-loading-bar', 'ui.bootstrap']);
+angular.module('hvertfarapeningarnir', ['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'chart.js']);
 
 angular.module('hvertfarapeningarnir')
 	.controller('testController', ['$scope', '$http', function ($scope, $http) {
@@ -41,4 +41,14 @@ angular.module('hvertfarapeningarnir')
 			$("#hfp-calendar-dropdown").toggleClass("hfp-hidden");
 			$("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-calendar");
 		};
+
+		$scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+		$scope.data = [300, 500, 100];
 	}]);
+
+angular.module('hvertfarapeningarnir').controller('PieCtrl', ['$scope', function ($scope) {
+	// TODO: Láta þetta virka!
+	'user strict';
+	$scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+	$scope.data = [300, 500, 100];
+}]);
