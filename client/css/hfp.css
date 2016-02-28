@@ -123,6 +123,7 @@ h1, h2 {
 }
 
 #hfp-progress-bar {
+    height: 26px;
     width: 60%;
     min-width: 220px;
     right: 15px;
