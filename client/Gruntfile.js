@@ -31,14 +31,14 @@ module.exports = function(grunt) {
           jQuery: true
         },
       },
-      uses_defaults: ['Gruntfile.js', 'js/**/*.js'],
+      uses_defaults: ['Gruntfile.js', 'js/app.js'],
       with_overrides: {
         options: {
           curly: false,
           undef: true,
         },
         files: {
-          src: ['Gruntfile.js', 'js/**/*.js']
+          src: ['Gruntfile.js', 'js/app.js']
         },
       }
     }

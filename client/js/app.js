@@ -15,7 +15,7 @@ angular.module('hvertfarapeningarnir')
 		$scope.testFunc = function() {
 			$http({
 				method: 'GET',
-				url: 'http://localhost:4000/'
+				url: 'http://hfpserver.westeurope.cloudapp.azure.com:4000/'
 			}).success(function(response) {
 				if ($scope.totalAmount === "732.027.971") {
 					$scope.totalAmount = "274.510.489";
