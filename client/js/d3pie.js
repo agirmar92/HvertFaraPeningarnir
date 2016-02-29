@@ -1,10 +1,12 @@
 var pie = new d3pie("mypie", {
 	header: {
 		title: {
-			text: "Málaflokkar",
+			text: "",
 			color: "#dadada",
-			font: "font2"
-		} 
+			font: "font4",
+			fontSize: 24
+		},
+		location: "pie-center"
 	},
 	size: {
 		canvasWidth: 800,
@@ -32,8 +34,8 @@ var pie = new d3pie("mypie", {
 		},
 		mainLabel: {
 			color: "#dadada",
-			font: "font4",
-			fontSize: "14"
+			font: "font1",
+			fontSize: "18"
 		},
 		value: {
 			color: "#dadada",
@@ -47,11 +49,16 @@ var pie = new d3pie("mypie", {
 	misc: {
 		colors: {
 			segmentStroke: "null"
+		},
+		gradient: {
+			//enabled: "true",
+			percentage: 99,
+			color: "#1b1b1b"
 		}
 	},
 	effects: {
 		load: {
-			speed: 500
+			speed: 800
 		},
 		pullOutSegmentOnClick: {
 			effect: "none"
@@ -60,7 +67,12 @@ var pie = new d3pie("mypie", {
 	tooltips: {
 		enabled: true,
 		type: "placeholder",
-		string: "kr. {value} ({percentage}%)",
+		string: "kr. {value} ({percentage}%) ~",
+		styles: {
+			color: "#dadada",
+			font: "font4",
+			fontSize: 14
+		},
 		placeholderParser: function(index, data) {
 			var valueStr = data.value.toString();
 			data.value = "";

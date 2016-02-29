@@ -4,6 +4,12 @@ body {
 }
 
 @font-face {
+    font-family: font1;
+    src: url(../fonts/Optima-Italic.ttf);
+    font-weigth: bold;
+}
+
+@font-face {
     font-family: font2;
     src: url(../fonts/ufonts.com_gill-sans-mt-bold-italic.ttf);
 }
@@ -15,7 +21,7 @@ body {
 
 @font-face {
     font-family: font4;
-    src: url(../fonts/Optima-Bold_34072.ttf);
+    src: url(../fonts/Optima-Regular.ttf);
 }
 
 html, body {
