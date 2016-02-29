@@ -23,6 +23,7 @@ module.exports = function(grunt) {
           angular: true,
           element: true,
           module: true,
+          d3pie: true,
           console: true,
           by: true,
           io: true,

@@ -110,7 +110,7 @@ angular.module('hvertfarapeningarnir')
 					}
 				}
 			});
-		}
+		};
 		$scope.pie = $scope.reCreate();
 
 		/*
