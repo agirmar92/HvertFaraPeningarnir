@@ -15,47 +15,19 @@
 <body ng-app="hvertfarapeningarnir">
 
 	<!-- hvertfarapeningarnir -->
-	<div id="wrapper" ng-controller="testController" class="toggled hfp-wrapper">
+	<div id="wrapper" class="toggled hfp-wrapper">
 
 		<!-- sidebar-wrapper -->
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav nav-tabs nav nav-justified">
-				<li role="presentation" class="hfp-tab active"><a href="#">Síur</a></li>
-				<li role="presentation" class="hfp-tab"><a href="#">Algengar fyrirspurnir</a></li>
-			</ul>
-			<!--<ul class="sidebar-nav">
-				<li class="sidebar-brand">
-					<a href="#">
-						Hvert Fara Peningarnir
-					</a>
-				</li>
-				<li>
-					<a href="#">Dashboard</a>
-				</li>
-				<li>
-					<a href="#">Shortcuts</a>
-				</li>
-				<li>
-					<a href="#">Overview</a>
-				</li>
-				<li>
-					<a href="#">Events</a>
-				</li>
-				<li>
-					<a href="#">About</a>
-				</li>
-				<li>
-					<a href="#">Services</a>
-				</li>
-				<li>
-					<a href="#">Contact</a>
-				</li>
-			</ul>-->
+		<div id="sidebar-wrapper" ng-controller="tabsController">
+			<uib-tabset active="activeJustified" justified="true">
+				<uib-tab index="0" heading="Síur">Síur</uib-tab>
+				<uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
+			</uib-tabset>
 		</div>
 		<!-- /#sidebar-wrapper -->
 
 		<!-- page-content-wrapper -->
-		<div id="page-content-wrapper" class="container-fluid hfp-content">
+		<div id="page-content-wrapper" ng-controller="testController" class="container-fluid hfp-content">
 
 			<!-- header -->
 			<div class="row hfp-header">
