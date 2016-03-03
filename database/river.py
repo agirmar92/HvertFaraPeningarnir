@@ -34,11 +34,16 @@ with open('../results.csv', encoding='utf-16') as infile:
 
 # Convert to a list of dictionaries
 docs = []
-cols = [ 'Date', 'Division', 'DepartmentID', 'Department', 'Unused1', 'AffairID', 'Affair', 'Unused2', 'Unused3', 'Creditor', 'PrimaryFinanceKey', 'FinanceKeyID', 'FinanceKey', 'Amount' ]
+#cols = [ 'Date', 'Division', 'DepartmentID', 'Department', 'Unused1', 'AffairID', 'Affair', 'Unused2', 'Unused3', 'Creditor', 'PrimaryFinanceKey', 'FinanceKeyID', 'FinanceKey', 'Amount' ]
+cols = rows[0]
 
 for row in rows[2:-2]:
 	doc = {}
 	for i, column in enumerate(row):
+		if i == len(row)-1:
+			column = column.split('.', 1)[0]
+			if column == '':
+				column = '0'
 		doc[cols[i]] = column
 	docs.append(doc)
 
