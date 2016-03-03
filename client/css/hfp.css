@@ -173,6 +173,13 @@ h1, h2 {
     border-width: 2px;
 }
 
+.hfp-btn:focus {
+    color: #dadada;
+    border-color: #dadada;
+    outline: none;
+    background: transparent;
+}
+
 #mypie {
     /*border: 1px solid red;*/
 }
