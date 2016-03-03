@@ -15,11 +15,11 @@ parser.add_argument("password", help="You know passwords right?")
 args = parser.parse_args()
 
 user = 'admin'
-pswd = args.password
+#pswd = args.password
 
 es = Elasticsearch(
-	['http://eca51012e819d5eb6403e0765dcd91b9.eu-west-1.aws.found.io'],
-	http_auth=(user, pswd),
+	['http://hfpserver.westeurope.cloudapp.azure.com:9200'],
+	#http_auth=(user, pswd),
 	port=9200,
 	verify_certs=True,
 	ca_certs=certifi.where(),
