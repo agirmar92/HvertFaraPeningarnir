@@ -49,7 +49,6 @@ for row in rows[2:-2]:
 
 # Process dictionaries into ElasticSearch
 for i, doc in enumerate(docs):
-	print(doc['Amount'])
 	es.index(index="hvertfarapeningarnir", doc_type='doc', body=doc)
 	if i % 10000 == 0:
 		print('Processing database.. ' + str(i) + ' documents created.')
