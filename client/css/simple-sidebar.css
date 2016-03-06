@@ -26,11 +26,15 @@
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #888888;
+    background: #2b2b2b;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+
+#sidebar-wrapper > div > ul > li > a {
+    color: white;
 }
 
 #wrapper.toggled #sidebar-wrapper {

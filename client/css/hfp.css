@@ -99,11 +99,12 @@ html, body {
     top: 208px;
     height: 300px;
     overflow-y: auto;
-    background: #888888;
+    background: #2b2b2b;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+    opacity: 0.5;
 }
 
 .hfp-hidden {
@@ -131,10 +132,10 @@ h1, h2 {
 }
 
 #hfp-progress-bar > * {
-    background-image: -webkit-linear-gradient(top, #00853E 0%, #3E4C3E 100%);
-    background-image: -o-linear-gradient(top, #00853E 0%, #3E4C3E 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#00853E), to(#3E4C3E));
-    background-image: linear-gradient(to bottom, #00853E 0%, #3E4C3E 100%);
+    background-image: -webkit-linear-gradient(top, #007339 0%, #007339 100%);
+    background-image: -o-linear-gradient(top, #007339 0%, #007339 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#007339), to(#007339));
+    background-image: linear-gradient(to bottom, #007339 0%, #007339 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff286090', GradientType=0);
     background-repeat: repeat-x;
 }
@@ -172,6 +173,37 @@ h1, h2 {
     border-width: 2px;
 }
 
+.hfp-btn:focus {
+    color: #dadada;
+    border-color: #dadada;
+    outline: none;
+    background: transparent;
+}
+
 #mypie {
     /*border: 1px solid red;*/
+}
+
+.nav-tabs.nav-justified > li > a,
+.nav-tabs.nav-justified > li.active > a,
+.nav-tabs.nav-justified > li.active > a:hover,
+.nav-tabs.nav-justified > li.active > a:focus
+{
+    border: 1px solid #4b4b4b;
+}
+
+.nav-tabs.nav-justified > li.active > a {
+    background-color: #007339;
+}
+
+.nav-tabs > li > a:hover {
+    background-color: #6b6b6b;
+}
+
+#sidebar-wrapper {
+    font-family: font3;
+}
+
+#accordionA {
+    margin: 10px;
 }

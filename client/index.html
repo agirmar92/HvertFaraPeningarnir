@@ -2,6 +2,7 @@
 <html data-framework="angularjs">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Kópavogsbær | Hvert fara peningarnir</title>
 	<link rel='shortcut icon' href='fav.ico' type='image/x-icon' />
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
@@ -9,53 +10,37 @@
 	<link rel="stylesheet" type="text/css" href="node_modules/angular/angular-csp.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular-loading-bar/src/loading-bar.css">
 	<link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/v-accordion/dist/v-accordion.min.css">
 	<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css">
 	<link rel="stylesheet" type="text/css" href="css/hfp.css">
 </head>
 <body ng-app="hvertfarapeningarnir">
 
 	<!-- hvertfarapeningarnir -->
-	<div id="wrapper" ng-controller="testController" class="toggled hfp-wrapper">
+	<div id="wrapper" class="toggled hfp-wrapper">
 
 		<!-- sidebar-wrapper -->
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav nav-tabs nav nav-justified">
-				<li role="presentation" class="hfp-tab active"><a href="#">Síur</a></li>
-				<li role="presentation" class="hfp-tab"><a href="#">Algengar fyrirspurnir</a></li>
-			</ul>
-			<!--<ul class="sidebar-nav">
-				<li class="sidebar-brand">
-					<a href="#">
-						Hvert Fara Peningarnir
-					</a>
-				</li>
-				<li>
-					<a href="#">Dashboard</a>
-				</li>
-				<li>
-					<a href="#">Shortcuts</a>
-				</li>
-				<li>
-					<a href="#">Overview</a>
-				</li>
-				<li>
-					<a href="#">Events</a>
-				</li>
-				<li>
-					<a href="#">About</a>
-				</li>
-				<li>
-					<a href="#">Services</a>
-				</li>
-				<li>
-					<a href="#">Contact</a>
-				</li>
-			</ul>-->
+		<div id="sidebar-wrapper" ng-controller="tabsController">
+			<uib-tabset active="activeJustified" justified="true">
+				<uib-tab index="0" heading="Síur">
+					<v-accordion id="accordionA" class="vAccordion--default" multiple control="accordionA">
+						<v-pane id="{{ pane.id }}" ng-repeat="pane in panesA" expanded="pane.isExpanded">
+							<v-pane-header>
+								{{ ::pane.header }}
+							</v-pane-header>
+							<v-pane-content>
+								{{ ::pane.content }}
+							</v-pane-content>
+						</v-pane>
+					</v-accordion>
+				</uib-tab>
+				<uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
+			</uib-tabset>
 		</div>
 		<!-- /#sidebar-wrapper -->
 
 		<!-- page-content-wrapper -->
-		<div id="page-content-wrapper" class="container-fluid hfp-content">
+		<div id="page-content-wrapper" ng-controller="testController" class="container-fluid hfp-content">
 
 			<!-- header -->
 			<div class="row hfp-header">
@@ -123,6 +108,7 @@
 	<script src="node_modules/angular-loading-bar/src/loading-bar.js" type="text/javascript" charset="utf-8"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
 	<script src="js/d3pie.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="node_modules/v-accordion/dist/v-accordion.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 
 	<!--<script src="js/d3pie.js"></script>-->
