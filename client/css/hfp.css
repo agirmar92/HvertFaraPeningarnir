@@ -203,3 +203,7 @@ h1, h2 {
 #sidebar-wrapper {
     font-family: font3;
 }
+
+#accordionA {
+    margin: 10px;
+}

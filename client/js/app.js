@@ -1,4 +1,5 @@
-var hfpApp = angular.module('hvertfarapeningarnir', ['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'chart.js']);
+var hfpApp = angular.module('hvertfarapeningarnir',
+	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'chart.js', 'vAccordion']);
 
 hfpApp.controller('testController', function ($scope, $http) {
 	'user strict';
@@ -159,4 +160,37 @@ hfpApp.controller('tabsController', function ($scope, $http, $window) {
 	$scope.model = {
 		name: 'Tabs'
 	};
+
+	$scope.panesA = [
+		{
+			id: '1',
+			header: 'Málaflokkar',
+			content: 'Fræðslumál',
+			isExpanded: true
+		},
+		{
+			id: '2',
+			header: 'Second filter',
+			content: 'yeboi',
+			isExpanded: true
+		},
+		{
+			id: '3',
+			header: 'Third filter',
+			content: 'yeboi',
+			isExpanded: true
+		}
+	];
+
+	$scope.expandCallback = function (index, id) {
+		console.log('expand:', index, id);
+	};
+
+	$scope.collapseCallback = function (index, id) {
+		console.log('collapse:', index, id);
+	};
+
+	$scope.$on('accordionA:onReady', function () {
+		console.log('accordionA is ready!');
+	});
 });
