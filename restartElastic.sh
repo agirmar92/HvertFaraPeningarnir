@@ -4,5 +4,5 @@ if [ $# == 0 ]; then
 else
   PASS=$1
 fi
-curl -XDELETE 'http://hfpserver.westeurope.cloudapp.azure.com:9200/hvertfarapeningarnir'
-curl -XPUT    'http://hfpserver.westeurope.cloudapp.azure.com:9200/hvertfarapeningarnir'
+#curl -XDELETE 'http://hfpserver.westeurope.cloudapp.azure.com:9200/hfp'
+#curl -XPUT    'http://hfpserver.westeurope.cloudapp.azure.com:9200/hfp'
