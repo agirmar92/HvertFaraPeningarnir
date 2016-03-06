@@ -34,8 +34,8 @@ with open('../results.csv', encoding='utf-16') as infile:
 
 # Convert to a list of dictionaries
 docs = []
-#cols = [ 'Date', 'Division', 'DepartmentID', 'Department', 'Unused1', 'AffairID', 'Affair', 'Unused2', 'Unused3', 'Creditor', 'PrimaryFinanceKey', 'FinanceKeyID', 'FinanceKey', 'Amount' ]
-cols = rows[0]
+cols = [ 'Date', 'Division', 'DepartmentID', 'Department', 'Unused1', 'AffairID', 'Affair', 'Unused2', 'Unused3', 'Creditor', 'PrimaryFinanceKey', 'FinanceKeyID', 'FinanceKey', 'Amount' ]
+#cols = rows[0]
 
 for row in rows[2:-2]:
 	doc = {}
@@ -49,6 +49,7 @@ for row in rows[2:-2]:
 
 # Process dictionaries into ElasticSearch
 for i, doc in enumerate(docs):
+	print(doc.Amount)
 	es.index(index="hvertfarapeningarnir", doc_type='db_entry', body=doc)
 	if i % 10000 == 0:
 		print('Processing database.. ' + str(i) + ' documents created.')
