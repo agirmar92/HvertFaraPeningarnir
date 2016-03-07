@@ -36,7 +36,7 @@ html, body {
 
 .hfp-header {
     //background-color: #1b6d85;
-    height: 69px;
+    height: 90px;
 }
 
 .hfp-div {
@@ -53,18 +53,18 @@ html, body {
 
 .hfp-chart {
     //background-color: #2b542c;
-    height: 85%;
-    height: calc(100% - 69px);
+    //height: 85%;
+    height: calc(100% - 90px);
 }
 
 .hfp-minichart {
-    background-color: #7a43b6;
+    //background-color: #7a43b6;
     position: fixed;
     bottom: 30px;
     right: 40px;
-    height: 180px;
+    height: 250px;
     width: 250px;
-    opacity: 0.5;
+    //opacity: 0.5;
 }
 
 .hfp-circle {
@@ -95,16 +95,17 @@ html, body {
     z-index: 1000;
     position: absolute;
     left: 75px;
-    width: 300px;
-    top: 208px;
-    height: 300px;
-    overflow-y: auto;
+    width: auto;
+    top: 150px;
+    height: auto;
+    overflow-y: visible;
     background: #2b2b2b;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-    opacity: 0.5;
+    opacity: 0.8;
+    padding: 0;
 }
 
 .hfp-hidden {
@@ -156,7 +157,7 @@ h1, h2 {
     position: absolute;
     display: inline;
     right: 15px;
-    top: 58px;
+    top: 68px;
 }
 
 .hfp-btn {
@@ -257,4 +258,12 @@ h1, h2 {
     -ms-transition: all 1s ease;
     -o-transition: all 1s ease;
     transition: all 1s ease;
+}
+
+.canvasjs-chart-credit {
+    display: none;
+}
+
+.calendar-row {
+    margin: 15px 0 15px 0;
 }
