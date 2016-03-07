@@ -175,7 +175,7 @@ curl -XPUT    "http://hfpserver.westeurope.cloudapp.azure.com:9200/hfp" -d'
                     "type": "string"
                 },
                 "Amount": {
-                    "type": "integer"
+                    "type": "long"
                 },
                 "PrimaryFinanceKey": {
                     "type": "string"
