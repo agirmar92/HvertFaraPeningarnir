@@ -23,7 +23,7 @@
 		<div id="sidebar-wrapper" ng-controller="tabsController">
 			<uib-tabset active="activeJustified" justified="true">
 				<uib-tab index="0" heading="Síur">
-					<v-accordion id="accordionA" class="vAccordion--default" multiple control="accordionA">
+					<!--<v-accordion id="accordionA" class="vAccordion&#45;&#45;default" multiple control="accordionA">
 						<v-pane id="{{ pane.id }}" ng-repeat="pane in panesA" expanded="pane.isExpanded">
 							<v-pane-header>
 								{{ ::pane.header }}
@@ -32,7 +32,20 @@
 								{{ ::pane.content }}
 							</v-pane-content>
 						</v-pane>
-					</v-accordion>
+					</v-accordion>-->
+
+					<uib-accordion close-others="oneAtATime">
+
+						<uib-accordion-group class="hfp-filter-group" is-open="group.status" ng-repeat="group in groups">
+							<uib-accordion-heading>
+								{{group.title}} <i class="hfp-filter-arrow pull-right glyphicon glyphicon-chevron-down" ng-class="{'arrow-down': group.status, 'arrow-right': !group.status}"></i>
+							</uib-accordion-heading>
+							<div ng-repeat="filter in group.filters">
+								{{filter.content}}
+							</div>
+						</uib-accordion-group>
+
+					</uib-accordion>
 				</uib-tab>
 				<uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
 			</uib-tabset>

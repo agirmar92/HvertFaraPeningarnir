@@ -161,7 +161,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window) {
 		name: 'Tabs'
 	};
 
-	$scope.panesA = [
+	/*$scope.panesA = [
 		{
 			id: '1',
 			header: 'Málaflokkar',
@@ -192,5 +192,37 @@ hfpApp.controller('tabsController', function ($scope, $http, $window) {
 
 	$scope.$on('accordionA:onReady', function () {
 		console.log('accordionA is ready!');
-	});
+	});*/
+
+	$scope.oneAtATime = false;
+
+	$scope.groups = [
+		{
+			status: true,
+			title: 'Málaflokkar',
+			filters: [
+				{ content: 'bla' },
+				{ content: 'bla' },
+				{ content: 'bla' }
+			]
+		},
+		{
+			status: true,
+			title: 'Fjárhagslyklar',
+			filters: [
+				{ content: 'bla' },
+				{ content: 'bla' },
+				{ content: 'bla' }
+			]
+		},
+		{
+			status: true,
+			title: 'Lánadrottnar',
+			filters: [
+				{ content: 'bla' },
+				{ content: 'bla' },
+				{ content: 'bla' }
+			]
+		}
+	];
 });

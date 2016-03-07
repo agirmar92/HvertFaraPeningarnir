@@ -202,8 +202,59 @@ h1, h2 {
 
 #sidebar-wrapper {
     font-family: font3;
+    border-right: 1px solid #4b4b4b;
 }
 
 #accordionA {
     margin: 10px;
+}
+
+.hfp-filter-group.panel {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    color: #dadada;
+}
+
+.panel-default > .panel-heading {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    background: #1b1b1b;
+    color: #dadada;
+    font-family: font3;
+}
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #4b4b4b;
+}
+
+.hfp-filter-arrow {
+    -webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    -ms-transition: -ms-transform 0.5s;
+    -o-transition: -i-transform 0.5s;
+    transition: transform 0.5s;
+}
+
+.arrow-right {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.panel-collapse.collapse,
+.panel-collapse.collapse.in {
+    display: block;
+    overflow: hidden;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
 }
