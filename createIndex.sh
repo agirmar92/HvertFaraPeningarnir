@@ -139,46 +139,58 @@ curl -XPUT    "http://hfpserver.westeurope.cloudapp.azure.com:9200/hfp" -d'
         "doc": {
             "properties": {
                 "Department": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "DepartmentID": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Unused1": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "FinanceKey": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "FinanceKeyID": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Creditor": {
                     "type": "string"
                 },
                 "Date": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Affair": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Unused2": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "AffairID": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Unused3": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Division": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "Amount": {
                     "type": "long"
                 },
                 "PrimaryFinanceKey": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 }
             }
         }
