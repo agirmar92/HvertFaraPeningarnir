@@ -2,15 +2,15 @@
 <html data-framework="angularjs">
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Kópavogsbær | Hvert fara peningarnir</title>
 	<link rel='shortcut icon' href='fav.ico' type='image/x-icon' />
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular/angular-csp.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular-loading-bar/src/loading-bar.css">
-	<link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/v-accordion/dist/v-accordion.min.css">
+	<!--<link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">-->
 	<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css">
 	<link rel="stylesheet" type="text/css" href="css/hfp.css">
 </head>
@@ -66,7 +66,55 @@
 					<button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click="testFunc()"></button>
 
 					<!-- calendar-dropdown -->
-					<div id="hfp-calendar-dropdown" class="hfp-hidden">
+					<div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
+
+						<div class="calendar-row row">
+							<div class="col-lg-12">
+								<span>Ár: </span>
+								<div class="btn-group" uib-dropdown>
+									<button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+										{{selectedYear}} <span class="caret"></span>
+									</button>
+									<ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+										<li role="menuitem" ng-repeat="year in years">
+											<a href="#" ng-click="setYear(year)">{{year}}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="calendar-row row">
+							<div class="col-lg-12">
+								<span>Mánuður: </span>
+								<div class="btn-group" uib-dropdown>
+								<button id="derka" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+									{{selectedMonth}} <span class="caret"></span>
+								</button>
+								<ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
+									<li role="menuitem" ng-repeat="month in months">
+										<a href="#" ng-click="setMonth(month)">{{month}}</a>
+									</li>
+								</ul>
+							</div>
+							</div>
+						</div>
+
+						<div class="calendar-row row">
+							<div class="col-lg-12">
+								<span>Ársfjórðungur: </span>
+								<div class="btn-group" uib-dropdown>
+									<button id="" type="button" class="btn btn-default" uib-dropdown-toggle>
+										{{selectedQuarter}} <span class="caret"></span>
+									</button>
+									<ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
+										<li role="menuitem" ng-repeat="quarter in quarters">
+											<a href="#" ng-click="setQuarter(quarter)">{{quarter}}</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 					<!-- /#calendar-dropdown -->
 				</div>
@@ -74,8 +122,10 @@
 
 				<!-- title -->
 				<div class="col-lg-4 hfp-div hfp-title hfp-title">
-					<h2 id="main-title">Hvert fara peningarnir?</h2>
-					<h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
+					<div>
+						<h2 id="main-title">Hvert fara peningarnir?</h2>
+						<h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
+					</div>
 				</div>
 				<!-- /#title -->
 
@@ -98,8 +148,7 @@
 			<!-- /#chart-area -->
 
 			<!-- mini-chart-area -->
-			<div class="row hfp-minichart">
-				<h1>Stöplar</h1>
+			<div id="miniChartContainer" class="row hfp-minichart">
 			</div>
 			<!-- /#mini-chart-area -->
 
@@ -114,14 +163,108 @@
 	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="bower_components/Chart.js/Chart.js"></script>
-	<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
-	<script type="text/javascript" src="node_modules/canvasjs/dist/canvasjs.min.js"></script>
+	<!--<script src="bower_components/Chart.js/Chart.js"></script>-->
+	<!--<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>-->
+
 	<script src="node_modules/angular-route/angular-route.js" type="text/javascript" charset="utf-8"></script>
 	<script src="node_modules/angular-loading-bar/src/loading-bar.js" type="text/javascript" charset="utf-8"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
 	<script src="js/d3pie.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="node_modules/v-accordion/dist/v-accordion.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/canvasjs.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		window.onload = function () {
+			CanvasJS.addCultureInfo("is",
+				{
+					digitGroupSeparator: "."
+
+				});
+
+			var chart = new CanvasJS.Chart("miniChartContainer",
+				{
+					/*title:{
+						text: "Samanburður gjalda og tekna"
+					},*/
+					data: [
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 111338 , label: "Gjöld", color: "#0dad5c"},
+								{  y: 1000000, label: "Tekjur" }
+							]
+						},  {
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#ff906d"}
+							]
+						},
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#5594ba"}
+							]
+						},
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#90e662"}
+							]
+						},
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#ffbd6d"}
+							]
+						},
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#f16785"}
+							]
+						},
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#e6fa6b"}
+							]
+						},
+						{
+							type: "stackedColumn",
+							axisYType: "secondary",
+							dataPoints: [
+								{  y: 135305 , label: "Gjöld", color: "#b352bd"}
+							]
+						}
+					],
+					backgroundColor: "transparent",
+					toolTip: {
+						enabled: false
+					},
+					culture: "is",
+					axisY2: {
+						gridThickness: 0,
+						labelFontSize: 12,
+						labelAngle: 50,
+						valueFormatString: "#,###,### kr."
+					},
+					axisX: {
+						labelFontSize: 14
+					},
+					animationEnabled: true
+				});
+
+			chart.render();
+		}
+	</script>
+	<!--<script type="text/javascript" src="node_modules/canvasjs/dist/canvasjs.min.js"></script>-->
+
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 
 	<!--<script src="js/d3pie.js"></script>-->

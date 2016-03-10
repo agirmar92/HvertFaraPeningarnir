@@ -1,5 +1,5 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
-	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'chart.js', 'vAccordion']);
+	['ngRoute', 'angular-loading-bar', 'ui.bootstrap']);
 
 hfpApp.controller('testController', function ($scope, $http) {
 	'user strict';
@@ -157,43 +157,6 @@ hfpApp.controller('testController', function ($scope, $http) {
 });
 
 hfpApp.controller('tabsController', function ($scope, $http, $window) {
-	$scope.model = {
-		name: 'Tabs'
-	};
-
-	/*$scope.panesA = [
-		{
-			id: '1',
-			header: 'Málaflokkar',
-			content: 'Fræðslumál',
-			isExpanded: true
-		},
-		{
-			id: '2',
-			header: 'Second filter',
-			content: 'yeboi',
-			isExpanded: true
-		},
-		{
-			id: '3',
-			header: 'Third filter',
-			content: 'yeboi',
-			isExpanded: true
-		}
-	];
-
-	$scope.expandCallback = function (index, id) {
-		console.log('expand:', index, id);
-	};
-
-	$scope.collapseCallback = function (index, id) {
-		console.log('collapse:', index, id);
-	};
-
-	$scope.$on('accordionA:onReady', function () {
-		console.log('accordionA is ready!');
-	});*/
-
 	$scope.oneAtATime = false;
 
 	$scope.groups = [
@@ -225,4 +188,50 @@ hfpApp.controller('tabsController', function ($scope, $http, $window) {
 			]
 		}
 	];
+});
+
+hfpApp.controller('calendarController', function ($scope) {
+	$scope.selectedYear = 2015;
+	$scope.selectedMonth = "Janúar";
+	$scope.selectedQuarter = "Veitggi";
+
+	$scope.years = [
+		2010,
+		2011,
+		2012,
+		2013,
+		2014
+	];
+
+	$scope.months = [
+		"Janúar",
+		"Febrúar",
+		"Mars",
+		"Apríl",
+		"Maí",
+		"Júní",
+		"Júlí",
+		"Ágúst",
+		"September",
+		"Október",
+		"Nóvember",
+		"Desember"
+	];
+
+	$scope.quarters = [
+		"wat",
+		"bla"
+	];
+
+	$scope.setYear = function(year) {
+		$scope.selectedYear = year;
+	};
+
+	$scope.setMonth = function(month) {
+		$scope.selectedMonth = month;
+	};
+
+	$scope.setQuarter = function(quarter) {
+		$scope.selectedQuarter = quarter;
+	};
 });

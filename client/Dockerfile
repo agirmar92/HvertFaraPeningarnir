@@ -24,6 +24,7 @@ ADD koplogo.gif /app/koplogo.gif
 ADD js/app.js /app/js/app.js
 ADD js/d3pie.js /app/js/d3pie.js
 ADD js/d3pie.min.js /app/js/d3pie.min.js
+ADD js/canvasjs.min.js /app/js/canvasjs.min.js
 ADD fonts /app/fonts
 ADD css /app/css
 

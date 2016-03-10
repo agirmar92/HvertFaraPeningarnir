@@ -15,8 +15,7 @@
     "angular-route": "^1.4.9",
     "bootstrap": "^3.3.6",
     "canvasjs": "^1.8.1",
-    "jquery": "^2.2.0",
-    "v-accordion": "^1.5.1"
+    "jquery": "^2.2.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
