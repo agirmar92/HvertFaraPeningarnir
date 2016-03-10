@@ -155,8 +155,7 @@ curl -XPUT    "http://hfpserver.westeurope.cloudapp.azure.com:9200/hfp" -d'
                     "index": "not_analyzed"
                 },
                 "FinanceKeyID": {
-                    "type": "string",
-                    "index": "not_analyzed"
+                    "type": "integer"
                 },
                 "Creditor": {
                     "type": "string"
