@@ -154,6 +154,19 @@ hfpApp.controller('testController', function ($scope, $http) {
 		$("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-calendar");
 	};
 
+	$scope.switchView = function() {
+		$("#chartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+			$("#chartContainer").removeClass("zoomOut").addClass("zoomIn");
+		});
+
+		$("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+			$("#miniChartContainer").removeClass("zoomOut").addClass("zoomIn");
+		});
+
+		$(".hfp-rotate").removeClass("pulse infinite").addClass("rotateOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+			$(".hfp-rotate").removeClass("rotateOut").addClass("pulse infinite");
+		});
+	};
 });
 
 hfpApp.controller('tabsController', function ($scope, $http, $window) {
@@ -234,4 +247,10 @@ hfpApp.controller('calendarController', function ($scope) {
 	$scope.setQuarter = function(quarter) {
 		$scope.selectedQuarter = quarter;
 	};
+});
+
+$("#miniChartContainer").hover(function() {
+	$(".hfp-rotate").fadeIn("slow");
+}, function() {
+	$(".hfp-rotate").fadeOut();
 });

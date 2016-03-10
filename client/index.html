@@ -12,6 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="node_modules/angular-loading-bar/src/loading-bar.css">
 	<!--<link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">-->
 	<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css">
+	<link rel="stylesheet" type="text/css" href="css/animate.css">
 	<link rel="stylesheet" type="text/css" href="css/hfp.css">
 </head>
 <body ng-app="hvertfarapeningarnir">
@@ -59,7 +60,8 @@
 			<div class="row hfp-header">
 
 				<!-- header-buttons -->
-				<div class="col-lg-4 hfp-headerbuttons hfp-div">
+				<div class="col-xs-4 hfp-headerbuttons hfp-div">
+
 					<button class="btn btn-default hfp-btn glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
 					<button class="btn btn-default hfp-btn glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
 					<button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click="testFunc()"></button>
@@ -121,7 +123,7 @@
 				<!-- /#header-buttons -->
 
 				<!-- title -->
-				<div class="col-lg-4 hfp-div hfp-title hfp-title">
+				<div class="col-xs-4 hfp-div hfp-title hfp-title">
 					<div>
 						<h2 id="main-title">Hvert fara peningarnir?</h2>
 						<h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
@@ -130,7 +132,7 @@
 				<!-- /#title -->
 
 				<!-- progress-meter -->
-				<div class="col-lg-4 hfp-div hfp-meter">
+				<div class="col-xs-4 hfp-div hfp-meter">
 					<uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
 					<p id="hfp-curr-amount">kr. {{totalAmount}}.-</p>
 				</div>
@@ -140,15 +142,19 @@
 			<!-- /#header -->
 
 			<!-- chart-area -->
-			<div id="chartContainer" class="row hfp-chart">
+			<div id="chartContainer" class="row hfp-chart animated">
 				<div class="col-lg-12 hfp-div">
 					<div id="mypie"></div>
 				</div>
 			</div>
 			<!-- /#chart-area -->
+			
+			<!-- rotate-arrows -->
+			<img src="arrows.svg" alt="" class="hfp-rotate hfp-hidden animated pulse infinite">
+			<!-- /#rotate-arrows -->
 
 			<!-- mini-chart-area -->
-			<div id="miniChartContainer" class="row hfp-minichart">
+			<div id="miniChartContainer" class="row hfp-minichart animated" ng-click="switchView()">
 			</div>
 			<!-- /#mini-chart-area -->
 

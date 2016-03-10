@@ -35,7 +35,6 @@ html, body {
 }
 
 .hfp-header {
-    //background-color: #1b6d85;
     height: 90px;
 }
 
@@ -52,8 +51,6 @@ html, body {
 }
 
 .hfp-chart {
-    //background-color: #2b542c;
-    //height: 85%;
     height: calc(100% - 90px);
 }
 
@@ -267,3 +264,42 @@ h1, h2 {
 .calendar-row {
     margin: 15px 0 15px 0;
 }
+
+#chartContainer, #miniChartContainer {
+    -webkit-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    -o-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+}
+
+.hfp-rotate {
+    height: 90px;
+    position: fixed;
+    bottom: 150px;
+    right: 340px;
+    opacity: 0.7;
+}
+
+@media(max-width:1089px) {
+    .hfp-header {
+        height: 122px;
+    }
+
+    .hfp-chart {
+        height: calc(100% - 122px);
+    }
+
+    #hfp-curr-amount {
+        top: 85px;
+    }
+
+    #hfp-calendar-dropdown {
+        top: 165px;
+    }
+}
+
+@media(max-width:1089px) {
+
+}
+
+/* TODO, support screens down to 768pixels wide */
