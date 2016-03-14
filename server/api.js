@@ -7,9 +7,8 @@ const elasticsearch = require('elasticsearch');
 
 // Globals
 const api = express();
-const cluster = 'http://localhost:9200/ClusterForPunchy/';
 const elasticClient = new elasticsearch.Client({
-	host: 'http://hfpserver.westeurope.cloudapp.azure.com:9200'
+	host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
 
 api.use(bodyParser.json());

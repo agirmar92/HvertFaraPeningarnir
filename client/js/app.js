@@ -119,7 +119,7 @@ hfpApp.controller('testController', function ($scope, $http) {
 	$scope.testFunc = function() {
 		$http({
 			method: 'GET',
-			url: 'http://hfpserver.westeurope.cloudapp.azure.com:4000/'
+			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/'
 		}).success(function(response) {
 			for (var i = 0; i < 8; i++) {
 				/* random int between 587.234.610-25.623.456.789*/
@@ -161,10 +161,6 @@ hfpApp.controller('testController', function ($scope, $http) {
 
 		$("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
 			$("#miniChartContainer").removeClass("zoomOut").addClass("zoomIn");
-		});
-
-		$(".hfp-rotate").removeClass("pulse infinite").addClass("rotateOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-			$(".hfp-rotate").removeClass("rotateOut").addClass("pulse infinite");
 		});
 	};
 });
@@ -249,8 +245,3 @@ hfpApp.controller('calendarController', function ($scope) {
 	};
 });
 
-$("#miniChartContainer").hover(function() {
-	$(".hfp-rotate").fadeIn("slow");
-}, function() {
-	$(".hfp-rotate").fadeOut();
-});
