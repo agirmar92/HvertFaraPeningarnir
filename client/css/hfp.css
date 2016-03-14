@@ -93,7 +93,7 @@ html, body {
     position: absolute;
     left: 75px;
     width: auto;
-    top: 150px;
+    top: 180px;
     height: auto;
     overflow-y: visible;
     background: #2b2b2b;
@@ -280,6 +280,10 @@ h1, h2 {
     opacity: 0.7;
 }
 
+.btn-group, .dropdown-toggle {
+    width: 100%;
+}
+
 @media(max-width:1089px) {
     .hfp-header {
         height: 122px;
@@ -294,7 +298,7 @@ h1, h2 {
     }
 
     #hfp-calendar-dropdown {
-        top: 165px;
+        top: 195px;
     }
 }
 
