@@ -18,7 +18,7 @@ user = 'admin'
 #pswd = args.password
 
 es = Elasticsearch(
-	['http://hfpserver.westeurope.cloudapp.azure.com:9200'],
+	['http://hfp.northeurope.cloudapp.azure.com:9200'],
 	#http_auth=(user, pswd),
 	port=9200,
 	verify_certs=True,
