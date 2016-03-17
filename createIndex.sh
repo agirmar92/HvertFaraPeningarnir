@@ -138,37 +138,7 @@ curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
     "mappings": {
         "doc": {
             "properties": {
-                "Department": {
-                    "type": "string",
-                    "index": "not_analyzed"
-                },
-                "DepartmentID": {
-                    "type": "string",
-                    "index": "not_analyzed"
-                },
-                "Unused1": {
-                    "type": "string",
-                    "index": "not_analyzed"
-                },
-                "FinanceKey": {
-                    "type": "string",
-                    "index": "not_analyzed"
-                },
-                "FinanceKeyID": {
-                    "type": "integer"
-                },
-                "Creditor": {
-                    "type": "string"
-                },
-                "Date": {
-                    "type": "string",
-                    "index": "not_analyzed"
-                },
-                "Affair": {
-                    "type": "string",
-                    "index": "not_analyzed"
-                },
-                "Unused2": {
+            	"Date": {
                     "type": "string",
                     "index": "not_analyzed"
                 },
@@ -176,18 +146,40 @@ curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
                     "type": "string",
                     "index": "not_analyzed"
                 },
-                "Unused3": {
+                "DepartmentID": {
                     "type": "string",
                     "index": "not_analyzed"
                 },
-                "Division": {
-                    "type": "string",
-                    "index": "not_analyzed"
+                "FinanceKeyID": {
+                    "type": "integer"
                 },
                 "Amount": {
                     "type": "long"
                 },
+                "FinanceKey": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
                 "PrimaryFinanceKey": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "SecondaryFinanceKey": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "Department": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "Affair": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "Creditor": {
+                    "type": "string"
+                },
+                "DepartmentGroup": {
                     "type": "string",
                     "index": "not_analyzed"
                 }
