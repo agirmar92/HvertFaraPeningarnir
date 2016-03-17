@@ -28,7 +28,7 @@ api.get('/', (req, res) => {
 	});*/
 
 	elasticClient.search({
-		index: 'hvertfarapeningarnir'
+		index: 'hfp'
 	}).then((doc) => {
 		//res.status(200).send(doc.hits.hits[0]._source);
 		res.status(200).send(doc);
