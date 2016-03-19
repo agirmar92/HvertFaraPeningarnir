@@ -134,10 +134,12 @@ hfpApp.controller('pieController', function ($scope, $http) {
 					console.log(a);
 
 					// Swapping from showing by affairs and primary finance keys for test
-					if ($scope.level === "Affair")
+					if ($scope.level === "Affair") {
 						$scope.level = "PrimaryFinanceKey";
-					else
+					}
+					else {
 						$scope.level = "Affair";
+					}
 
 					$scope.testFunc();
 				}
