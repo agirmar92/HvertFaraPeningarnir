@@ -1,8 +1,8 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
 	['ngRoute', 'angular-loading-bar', 'ui.bootstrap']);
 
-hfpApp.controller('testController', function ($scope, $http) {
-	'user strict';
+hfpApp.controller('pieController', function ($scope, $http) {
+	'use strict';
 
 	$scope.totalAmount = "732.027.971";
 	$scope.testData = [];
