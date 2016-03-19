@@ -24,7 +24,7 @@ api.use(bodyParser.json());
 		totalDebit
 	}
 */
-api.get('/:fieldToGet', (req, res) => {
+api.get('/expenses/:fieldToGet', (req, res) => {
 	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',
@@ -83,6 +83,102 @@ api.get('/:fieldToGet', (req, res) => {
 		}).then((docum) => {
 			// Store the response and convert to absolute value
 			const totalDebit = Math.abs(docum.aggregations.total_amount.value);
+			res.status(200).send({ slices, totalCredit, totalDebit });
+		}, (err) => {
+			console.log(err);
+			res.status(500).send('Server error\n');
+		});
+	}, (err) => {
+		console.log(err);
+		res.status(500).send('Server error\n');
+	});
+});
+
+/*
+ This route will return an object containing 3 things:
+ - a bucket from an aggregation in ES, which is an array of objects or slices
+ - the total amount of all expenses
+ - the total amount of all income.
+ Example: {
+ slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
+ totalCredit,
+ totalDebit
+ }
+ */
+api.get('/income/', (req, res) => {
+	// Query the database for all expenses
+	elasticClient.search({
+		index: 'hfp',
+		body: {
+			"query": {
+				"filtered": {
+					"query": {
+						"bool": {
+							"must": [
+								{
+									"term": {
+										"Affair": {
+											"value": "Tekjur"
+										}
+									}
+								}
+							]
+						}
+					},
+					"filter": {
+						"range" : {
+							"Amount" : {
+								"lt" : 0
+							}
+						}
+					}
+				}
+			},
+			"size": 0,
+			"aggs" : {
+				"amounts" : {
+					"terms": {
+						"field": "Department",
+						"order": { "sum_amount": "asc" },
+						"size": 0
+					},
+					"aggs" : {
+						"sum_amount": { "sum": { "field": "Amount" } }
+					}
+				},
+				"total_amount": { "sum": { "field": "Amount" }}
+			}
+		}
+	}).then((doc) => {
+		// store the response from the database
+		const slices = doc.aggregations.amounts.buckets.map(entry => {
+			entry.sum_amount.value = Math.abs(entry.sum_amount.value);
+			return entry;
+		});
+		const totalDebit = Math.abs(doc.aggregations.total_amount.value);
+		// Query the database for all incomes
+		elasticClient.search({
+			index: 'hfp',
+			body: {
+				"query": {
+					"filtered": {
+						"filter": {
+							"range" : {
+								"Amount" : {
+									"gt" : 0
+								}
+							}
+						}
+					}
+				},
+				"size": 0,
+				"aggs" : {
+					"total_amount": { "sum": { "field": "Amount" }}
+				}
+			}
+		}).then((docum) => {
+			// Store the response and convert to absolute value
+			const totalCredit = docum.aggregations.total_amount.value;
 			res.status(200).send({ slices, totalCredit, totalDebit });
 		}, (err) => {
 			console.log(err);

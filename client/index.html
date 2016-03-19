@@ -24,17 +24,24 @@
 		<div id="sidebar-wrapper" ng-controller="tabsController">
 			<uib-tabset active="activeJustified" justified="true">
 				<uib-tab index="0" heading="Síur">
-					<!--<v-accordion id="accordionA" class="vAccordion&#45;&#45;default" multiple control="accordionA">
-						<v-pane id="{{ pane.id }}" ng-repeat="pane in panesA" expanded="pane.isExpanded">
-							<v-pane-header>
-								{{ ::pane.header }}
-							</v-pane-header>
-							<v-pane-content>
-								{{ ::pane.content }}
-							</v-pane-content>
-						</v-pane>
-					</v-accordion>-->
-
+					<div role="tab" class="panel-heading">
+						<div class="panel-title">
+							<span>Skoða</span>
+							<div class="btn-group" uib-dropdown>
+								<button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+									<span ng-if="expenses">Gjöld</span> <span ng-if="!expenses">Tekjur</span> <span class="caret"></span>
+								</button>
+								<ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+									<li role="menuitem">
+										<a href="#" ng-click="changeView(true)">Gjöld</a>
+									</li>
+									<li role="menuitem">
+										<a href="#" ng-click="changeView(false)">Tekjur</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 					<uib-accordion close-others="oneAtATime">
 
 						<uib-accordion-group class="hfp-filter-group" is-open="group.status" ng-repeat="group in groups">

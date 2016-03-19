@@ -1,7 +1,7 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
 	['ngRoute', 'angular-loading-bar', 'ui.bootstrap']);
 
-hfpApp.controller('pieController', function ($scope, $http) {
+hfpApp.controller('pieController', function ($scope, $http, $rootScope) {
 	'use strict';
 
 	$scope.pie = new d3pie("mypie", {
@@ -17,7 +17,7 @@ hfpApp.controller('pieController', function ($scope, $http) {
 	$scope.totalDebit = 0;
 	$scope.dynamic = 100;
 	$scope.max = 100;
-	$scope.level = "Affair";
+	$rootScope.level = "expenses/Affair";
 
 	var toNrWithDots = function (num) {
 		var numStr = num.toString();
@@ -37,15 +37,15 @@ hfpApp.controller('pieController', function ($scope, $http) {
 	};
 
 	/*
-		asdasd
+		TODO: Change this from $rootScope (DANGERZONE) to a Factory/Service.
 	*/
-	$scope.testFunc = function() {
+	$rootScope.testFunc = function() {
 		$http({
 			method: 'GET',
 			/* Uncomment line below to call local server */
-			//url: 'http://localhost:4000/' + $scope.level
+			//url: 'http://localhost:4000/' + $rootScope.level
 			/* Uncomment line below to call azure server */
-			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/' + $scope.level
+			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/' + $rootScope.level
 		}).success(function (response) {
 			console.log(response);
 			$scope.slices      = response.slices;
@@ -59,9 +59,31 @@ hfpApp.controller('pieController', function ($scope, $http) {
 			console.log(err);
 		});
 	};
-	$scope.testFunc();
+	$rootScope.testFunc();
 
 	$scope.reCreate = function() {
+		var sliceNumber = 0;
+		var colors = [
+			"#0dad5c",
+			"#ff906d",
+			"#5594ba",
+			"#90e662",
+			"#ffbd6d",
+			 "#f16785",
+			 "#e6fa6b",
+			 "#b352bd"
+		];
+
+		var newContent = $scope.slices.map(function(slice) {
+			var newSlice = {
+				label: slice.key,
+				value: slice.sum_amount.value,
+				color: colors[sliceNumber]
+			};
+			sliceNumber++;
+			return newSlice;
+		});
+
 		return new d3pie("mypie", {
 			header: {
 				title: {
@@ -77,16 +99,7 @@ hfpApp.controller('pieController', function ($scope, $http) {
 				canvasHeight: 500
 			},
 			data: {
-				content: [
-					{ label: $scope.slices[0].key, value: $scope.slices[0].sum_amount.value, color: "#0dad5c" },
-					{ label: $scope.slices[1].key, value: $scope.slices[1].sum_amount.value, color: "#ff906d" },
-					{ label: $scope.slices[2].key, value: $scope.slices[2].sum_amount.value, color: "#5594ba" },
-					{ label: $scope.slices[3].key, value: $scope.slices[3].sum_amount.value, color: "#90e662" },
-					{ label: $scope.slices[4].key, value: $scope.slices[4].sum_amount.value, color: "#ffbd6d" },
-					{ label: $scope.slices[5].key, value: $scope.slices[5].sum_amount.value, color: "#f16785" },
-					{ label: $scope.slices[6].key, value: $scope.slices[6].sum_amount.value, color: "#e6fa6b" },
-					{ label: $scope.slices[7].key, value: $scope.slices[7].sum_amount.value, color: "#b352bd" }
-				]
+				content: newContent
 			},
 			labels: {
 				outer: {
@@ -134,14 +147,14 @@ hfpApp.controller('pieController', function ($scope, $http) {
 					console.log(a);
 
 					// Swapping from showing by affairs and primary finance keys for test
-					if ($scope.level === "Affair") {
-						$scope.level = "PrimaryFinanceKey";
+					if ($rootScope.level === "expenses/Affair") {
+						$rootScope.level = "expenses/PrimaryFinanceKey";
 					}
 					else {
-						$scope.level = "Affair";
+						$rootScope.level = "expenses/Affair";
 					}
 
-					$scope.testFunc();
+					$rootScope.testFunc();
 				}
 			},
 			tooltips: {
@@ -193,8 +206,16 @@ hfpApp.controller('pieController', function ($scope, $http) {
 	};
 });
 
-hfpApp.controller('tabsController', function ($scope, $http, $window) {
+hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope) {
 	$scope.oneAtATime = false;
+	// true = view expenses ; false = view income
+	$scope.expenses = true;
+
+	$scope.changeView = function(toExpenses) {
+		$scope.expenses = toExpenses;
+		$rootScope.level = toExpenses? 'expenses/Affair' : 'income';
+		$rootScope.testFunc();
+	};
 
 	$scope.groups = [
 		{
