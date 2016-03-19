@@ -24,18 +24,41 @@ api.use(bodyParser.json());
 		totalDebit
 	}
 */
-api.get('/:fieldToGet', (req, res) => {
+api.get('/:period/:fieldToGet', (req, res) => {
+	/*	convert period to string that we use in queries
+		<year>-0: all year
+		<year>-1 ... <year>-4: quarter of year
+		<year>-01 ... <year>-12: month of year
+	*/
+	var period = req.params.period;
+	console.log('period in api: ' + period);
+	if (period.length === 6) {
+		if (period.charAt(5) === '0') {
+			period = period.substring(0,4);
+		} else {
+			// TODO: QUARTERS!
+		}
+	}
 	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',
 		body: {
 			"query": {
 		        "filtered": {
+		        	// We only want expenses
 		            "filter": {
 		                "range" : {
 		                    "Amount" : {
 		                        "gt" : 0
 		                    }
+		                }
+		            },
+		            // Desired period
+		            "query": {
+		                "prefix": {
+		                   "Date": {
+		                       "value": period
+		                   }
 		                }
 		            }
 		        }
@@ -71,6 +94,14 @@ api.get('/:fieldToGet', (req, res) => {
 			                    "Amount" : {
 			                        "lt" : 0
 			                    }
+			                }
+			            },
+			            // Desired period
+			            "query": {
+			                "prefix": {
+			                   "Date": {
+			                       "value": period
+			                   }
 			                }
 			            }
 			        }

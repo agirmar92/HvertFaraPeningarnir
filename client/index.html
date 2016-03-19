@@ -95,7 +95,7 @@
 								</button>
 								<ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
 									<li role="menuitem" ng-repeat="month in months">
-										<a href="#" ng-click="setMonth(month)">{{month}}</a>
+										<a href="#" ng-click="setMonth($index)">{{month}}</a>
 									</li>
 								</ul>
 							</div>

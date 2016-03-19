@@ -1,7 +1,7 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
 	['ngRoute', 'angular-loading-bar', 'ui.bootstrap']);
 
-hfpApp.controller('pieController', function ($scope, $http) {
+hfpApp.controller('pieController', function ($scope, $http, $rootScope) {
 	'use strict';
 
 	$scope.pie = new d3pie("mypie", {
@@ -15,9 +15,11 @@ hfpApp.controller('pieController', function ($scope, $http) {
 	$scope.totalCredit = 0;
 	$scope.totCredStr = '';
 	$scope.totalDebit = 0;
-	$scope.dynamic = 100;
+	var totalC = 1;
+	$scope.dynamic = $scope.totalCredit / totalC;
 	$scope.max = 100;
 	$scope.level = "Affair";
+	$rootScope.period = "2014-0";
 
 	var toNrWithDots = function (num) {
 		var numStr = num.toString();
@@ -43,13 +45,18 @@ hfpApp.controller('pieController', function ($scope, $http) {
 		$http({
 			method: 'GET',
 			/* Uncomment line below to call local server */
-			//url: 'http://localhost:4000/' + $scope.level
+			// url: 'http://localhost:4000/' + $scope.period + '/' + $scope.level
 			/* Uncomment line below to call azure server */
-			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/' + $scope.level
+			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/' + $scope.period + '/' + $scope.level
 		}).success(function (response) {
-			console.log(response);
+			console.log('success');
+			
 			$scope.slices      = response.slices;
 			$scope.totalCredit = response.totalCredit;
+			if ($scope.period.length === 6 && $scope.period.charAt(5) === '0') {
+				totalC = $scope.totalCredit;
+			}
+
 			$scope.totCredStr  = toNrWithDots($scope.totalCredit);
 			$scope.totalDebit  = response.totalDebit;
 
@@ -62,6 +69,8 @@ hfpApp.controller('pieController', function ($scope, $http) {
 	$scope.testFunc();
 
 	$scope.reCreate = function() {
+		console.log(totalC);
+		$scope.dynamic = $scope.totalCredit / totalC * 100;
 		return new d3pie("mypie", {
 			header: {
 				title: {
@@ -141,7 +150,7 @@ hfpApp.controller('pieController', function ($scope, $http) {
 						$scope.level = "Affair";
 					}
 
-					$scope.testFunc();
+					$scope.testFunc($scope.period);
 				}
 			},
 			tooltips: {
@@ -227,20 +236,21 @@ hfpApp.controller('tabsController', function ($scope, $http, $window) {
 	];
 });
 
-hfpApp.controller('calendarController', function ($scope) {
-	$scope.selectedYear = 2015;
-	$scope.selectedMonth = "Janúar";
+hfpApp.controller('calendarController', function ($scope, $rootScope) {
+	$scope.selectedYear = 2014;
+	$scope.selectedMonth = "Allir";
 	$scope.selectedQuarter = "Veitggi";
 
 	$scope.years = [
-		2010,
-		2011,
-		2012,
-		2013,
-		2014
+		"2010",
+		"2011",
+		"2012",
+		"2013",
+		"2014"
 	];
 
 	$scope.months = [
+		"Allir",
 		"Janúar",
 		"Febrúar",
 		"Mars",
@@ -252,7 +262,7 @@ hfpApp.controller('calendarController', function ($scope) {
 		"September",
 		"Október",
 		"Nóvember",
-		"Desember"
+		"Desember",
 	];
 
 	$scope.quarters = [
@@ -264,8 +274,14 @@ hfpApp.controller('calendarController', function ($scope) {
 		$scope.selectedYear = year;
 	};
 
-	$scope.setMonth = function(month) {
-		$scope.selectedMonth = month;
+	$scope.setMonth = function(i) {
+		$scope.selectedMonth = $scope.months[i];
+		if (i < 10 && i !== 0) {
+			$rootScope.period = $scope.selectedYear + '-0' + i;
+		} else {
+			$rootScope.period = $scope.selectedYear + '-' + i;
+		}
+		$scope.testFunc();
 	};
 
 	$scope.setQuarter = function(quarter) {
