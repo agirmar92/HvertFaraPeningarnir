@@ -148,6 +148,7 @@ h1, h2 {
     -moz-border-radius: 0;
     border-radius: 0;
     border: 1px solid #dadada;
+    font-family: font4;
 }
 
 #hfp-curr-amount {
@@ -295,6 +296,7 @@ h1, h2 {
 
     #hfp-curr-amount {
         top: 85px;
+        font-family: "font4";
     }
 
     #hfp-calendar-dropdown {
