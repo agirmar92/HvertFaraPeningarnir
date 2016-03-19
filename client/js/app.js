@@ -17,7 +17,7 @@ hfpApp.controller('pieController', function ($scope, $http) {
 	$scope.totalDebit = 0;
 	$scope.dynamic = 100;
 	$scope.max = 100;
-	$scope.values = [25623456789, 7758493758, 5039485736, 3657483920, 2916473026, 1647309887, 587234610, 11909871825];
+	$scope.level = "Affair";
 
 	var toNrWithDots = function (num) {
 		var numStr = num.toString();
@@ -43,9 +43,9 @@ hfpApp.controller('pieController', function ($scope, $http) {
 		$http({
 			method: 'GET',
 			/* Uncomment line below to call local server */
-			// url: 'http://localhost:4000/'
+			//url: 'http://localhost:4000/' + $scope.level
 			/* Uncomment line below to call azure server */
-			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/'
+			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/' + $scope.level
 		}).success(function (response) {
 			console.log(response);
 			$scope.slices      = response.slices;
@@ -132,6 +132,13 @@ hfpApp.controller('pieController', function ($scope, $http) {
 				onClickSegment: function(a) {
 					console.log("Segment clicked! See the console for all data passed to the click handler.");
 					console.log(a);
+
+					// Swapping from showing by affairs and primary finance keys for test
+					if ($scope.level === "Affair")
+						$scope.level = "PrimaryFinanceKey";
+					else
+						$scope.level = "Affair";
+
 					$scope.testFunc();
 				}
 			},

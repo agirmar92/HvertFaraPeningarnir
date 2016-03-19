@@ -19,12 +19,12 @@ api.use(bodyParser.json());
 	- the total amount of all expenses
 	- the total amount of all income.
 	Example: {
-		slices: [ { key: <Affair>, doc_count: <number>, sum_amount: { value: <number> }} ],
+		slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
 		totalCredit,
 		totalDebit
 	}
 */
-api.get('/', (req, res) => {
+api.get('/:fieldToGet', (req, res) => {
 	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',
@@ -45,7 +45,7 @@ api.get('/', (req, res) => {
 		    "aggs" : {
 		        "amounts" : {
 		            "terms": {
-		                "field": "Affair",
+		                "field": req.params.fieldToGet,
 		                "order": { "sum_amount": "desc" },
 		                "size": 0
 		            },
