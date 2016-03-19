@@ -70,7 +70,7 @@ hfpApp.controller('pieController', function ($scope, $http, $rootScope) {
 
 	$scope.reCreate = function() {
 		console.log(totalC);
-		$scope.dynamic = $scope.totalCredit / totalC * 100;
+		$scope.dynamic = ($scope.totalCredit / totalC * 100).toFixed(1);
 		return new d3pie("mypie", {
 			header: {
 				title: {
