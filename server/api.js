@@ -14,24 +14,18 @@ const elasticClient = new elasticsearch.Client({
 api.use(bodyParser.json());
 
 /* 
-*	This route will return two buckets from a aggregations in elasticSearch
-*	which are arrays of objects like so:
-*	[ {key:Affair, doc_count: number, sum_amount: {value}} ]
+	This route will return an object containing 3 things:
+	- a bucket from an aggregation in ES, which is an array of objects or slices
+	- the total amount of all expenses
+	- the total amount of all income.
+	Example: {
+		slices: [ { key: <Affair>, doc_count: <number>, sum_amount: { value: <number> }} ],
+		totalCredit,
+		totalDebit
+	}
 */
 api.get('/', (req, res) => {
-	/* Fetch all answers from database
-	models.Answer.find({}, (err, docs) => {
-		if (err) {
-			res.status(500).send('Server error.\n');
-			return;
-		}
-		if (docs.length === 0) {
-			res.status(404).send(docs);
-			return;
-		}
-		res.status(200).send(docs);
-	});*/
-
+	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',
 		body: {
@@ -47,6 +41,7 @@ api.get('/', (req, res) => {
 		        }
 		    }, 
 		    "size": 0, 
+		    // Aggregate the total sums of Affairs and total expenses
 		    "aggs" : {
 		        "amounts" : {
 		            "terms": {
@@ -62,11 +57,10 @@ api.get('/', (req, res) => {
 		    }
 		}
 	}).then((doc) => {
-		//res.status(200).send(doc.hits.hits[0]._source);
-
+		// store the response from the database
 		const slices = doc.aggregations.amounts.buckets;
 		const totalCredit = doc.aggregations.total_amount.value;
-
+		// Query the database for all incomes
 		elasticClient.search({
 			index: 'hfp',
 			body: {
@@ -87,6 +81,7 @@ api.get('/', (req, res) => {
 			    }
 			}
 		}).then((docum) => {
+			// Store the response and convert to absolute value
 			const totalDebit = Math.abs(docum.aggregations.total_amount.value);
 			res.status(200).send({ slices, totalCredit, totalDebit });
 		}, (err) => {
