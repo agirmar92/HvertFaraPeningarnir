@@ -4,11 +4,62 @@ var hfpApp = angular.module('hvertfarapeningarnir',
 hfpApp.controller('pieController', function ($scope, $http) {
 	'use strict';
 
-	$scope.totalAmount = "732.027.971";
-	$scope.testData = [];
-	$scope.dynamic = 80;
+	$scope.pie = new d3pie("mypie", {
+		data: {
+			content: [
+				{ label: "label", value: 1 }
+			]
+		}
+	});
+	$scope.slices = [];
+	$scope.totalCredit = 0;
+	$scope.totCredStr = '';
+	$scope.totalDebit = 0;
+	$scope.dynamic = 100;
 	$scope.max = 100;
 	$scope.values = [25623456789, 7758493758, 5039485736, 3657483920, 2916473026, 1647309887, 587234610, 11909871825];
+
+	var toNrWithDots = function (num) {
+		var numStr = num.toString();
+		var newStr = "";
+		var i = numStr.length;
+		var j = 1;
+		while (i > 0) {
+			if (j % 4 === 0) {
+				newStr = '.' + newStr;
+			} else {
+				newStr = numStr[i-1] + newStr;
+				i--;
+			}
+			j++;
+		}
+		return newStr;
+	};
+
+	/*
+		asdasd
+	*/
+	$scope.testFunc = function() {
+		$http({
+			method: 'GET',
+			/* Uncomment line below to call local server */
+			// url: 'http://localhost:4000/'
+			/* Uncomment line below to call azure server */
+			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/'
+		}).success(function (response) {
+			console.log(response);
+			$scope.slices      = response.slices;
+			$scope.totalCredit = response.totalCredit;
+			$scope.totCredStr  = toNrWithDots($scope.totalCredit);
+			$scope.totalDebit  = response.totalDebit;
+
+			$scope.pie.destroy();
+			$scope.reCreate();
+		}).error(function(err) {
+			console.log(err);
+		});
+	};
+	$scope.testFunc();
 
 	$scope.reCreate = function() {
 		return new d3pie("mypie", {
@@ -22,19 +73,19 @@ hfpApp.controller('pieController', function ($scope, $http) {
 				location: "pie-center"
 			},
 			size: {
-				canvasWidth: 800,
+				canvasWidth: 900,
 				canvasHeight: 500
 			},
 			data: {
 				content: [
-					{ label: "Fræðslumál", 	 value: $scope.values[0], color: "#0dad5c" },
-					{ label: "MálaflokkurB", value: $scope.values[1], color: "#ff906d" },
-					{ label: "MálaflokkurC", value: $scope.values[2], color: "#5594ba" },
-					{ label: "MálaflokkurD", value: $scope.values[3], color: "#90e662" },
-					{ label: "MálaflokkurE", value: $scope.values[4], color: "#ffbd6d" },
-					{ label: "MálaflokkurF", value: $scope.values[5], color: "#f16785" },
-					{ label: "Annað", 		 value: $scope.values[6], color: "#e6fa6b" },
-					{ label: "MálaflokkurA", value: $scope.values[7], color: "#b352bd" }
+					{ label: $scope.slices[0].key, value: $scope.slices[0].sum_amount.value, color: "#0dad5c" },
+					{ label: $scope.slices[1].key, value: $scope.slices[1].sum_amount.value, color: "#ff906d" },
+					{ label: $scope.slices[2].key, value: $scope.slices[2].sum_amount.value, color: "#5594ba" },
+					{ label: $scope.slices[3].key, value: $scope.slices[3].sum_amount.value, color: "#90e662" },
+					{ label: $scope.slices[4].key, value: $scope.slices[4].sum_amount.value, color: "#ffbd6d" },
+					{ label: $scope.slices[5].key, value: $scope.slices[5].sum_amount.value, color: "#f16785" },
+					{ label: $scope.slices[6].key, value: $scope.slices[6].sum_amount.value, color: "#e6fa6b" },
+					{ label: $scope.slices[7].key, value: $scope.slices[7].sum_amount.value, color: "#b352bd" }
 				]
 			},
 			labels: {
@@ -109,38 +160,6 @@ hfpApp.controller('pieController', function ($scope, $http) {
 					}
 				}
 			}
-		});
-	};
-	$scope.pie = $scope.reCreate();
-
-	/*
-		asdasd
-	*/
-	$scope.testFunc = function() {
-		$http({
-			method: 'GET',
-			url: 'http://hfp.northeurope.cloudapp.azure.com:4000/'
-		}).success(function(response) {
-			for (var i = 0; i < 8; i++) {
-				/* random int between 587.234.610-25.623.456.789*/
-				$scope.values[i] = Math.floor((Math.random() * 25623456789) + 587234610);
-			}
-
-			if ($scope.totalAmount === "732.027.971") {
-				$scope.totalAmount = "274.510.489";
-				$scope.dynamic = Math.floor((Math.random() * 100) + 1);
-			} else {
-				$scope.totalAmount = "732.027.971";
-				$scope.dynamic = Math.floor((Math.random() * 100) + 1);
-			}
-
-			$scope.pie.destroy();
-			$scope.reCreate();
-
-			$scope.testData = response.hits.hits;
-			console.log(response);
-		}).error(function(err) {
-			console.log(err);
 		});
 	};
 
