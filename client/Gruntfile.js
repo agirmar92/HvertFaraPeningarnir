@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'js/app.js',
+        src: ['js/app.js', 'js/constants/*.js', 'js/controllers/*.js'],
         dest: 'build/app.min.js'
       }
     },
@@ -29,7 +29,8 @@ module.exports = function(grunt) {
           io: true,
           _: false,
           $: false,
-          jQuery: true
+          jQuery: true,
+          hfpApp: true
         },
       },
       uses_defaults: ['Gruntfile.js', 'js/app.js'],
@@ -39,7 +40,7 @@ module.exports = function(grunt) {
           undef: true,
         },
         files: {
-          src: ['Gruntfile.js', 'js/app.js']
+          src: ['Gruntfile.js', 'js/app.js', 'js/constants/*.js', 'js/controllers/*.js']
         },
       }
     }
