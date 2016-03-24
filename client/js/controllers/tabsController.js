@@ -19,20 +19,24 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     $scope.groups = [
         {
             status: true,
-            title: 'Málaflokkar',
+            title: 'Yfirmálaflokkar',
             filters: [
-                { content: 'bla' },
-                { content: 'bla' },
-                { content: 'bla' }
+                { content: 'Málaflokkar' }
             ]
         },
         {
             status: true,
-            title: 'Fjárhagslyklar',
+            title: 'Yfirdeild',
             filters: [
-                { content: 'bla' },
-                { content: 'bla' },
-                { content: 'bla' }
+                { content: 'Deild' }
+            ]
+        },
+        {
+            status: true,
+            title: 'Yfirfjárhagslyklar',
+            filters: [
+                { content: 'Millifjárhagslyklar' },
+                { content: 'Fjárhagslyklar' }
             ]
         },
         {

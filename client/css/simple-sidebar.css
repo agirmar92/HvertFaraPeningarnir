@@ -24,11 +24,13 @@
     left: 250px;
     bottom: 0;
     width: 0;
-    height: 90%;
+    height: calc(100% - 105px);
     margin-left: -250px;
     overflow-y: auto;
     background: rgb(43, 43, 43);
     background: rgba(43, 43, 43, .8);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
