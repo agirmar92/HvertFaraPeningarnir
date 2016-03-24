@@ -1,26 +1,27 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('calendarController', function ($scope, $rootScope, years, months, quarters) {
-    $scope.years = years;
-    $scope.months = months;
-    $scope.quarters = quarters;
-    $scope.selectedYear = years[4];
-    $scope.selectedMonth = months[0];
-    $scope.selectedQuarter = quarters[0];
+hfpApp.controller('calendarController', function ($scope, $rootScope, hfpResource, YEARS, MONTHS, QUARTERS) {
+    $scope.years = YEARS;
+    $scope.months = MONTHS;
+    $scope.quarters = QUARTERS;
+    $scope.selectedYear = YEARS[4];
+    $scope.selectedMonth = MONTHS[0];
+    $scope.selectedQuarter = QUARTERS[0];
 
     $scope.setYear = function(year) {
         $scope.selectedYear = year;
     };
 
     $scope.setMonth = function(i) {
-        $scope.selectedMonth = months[i];
+        $scope.selectedMonth = MONTHS[i];
         if (i < 10 && i !== 0) {
-            $rootScope.period = $scope.selectedYear + '-0' + i;
+            hfpResource.setPeriod($scope.selectedYear + '-0' + i);
         } else {
-            $rootScope.period = $scope.selectedYear + '-' + i;
+            hfpResource.setPeriod($scope.selectedYear + '-' + i);
         }
-        $scope.testFunc();
+
+        hfpResource.showMeTheMoney();
     };
 
     $scope.setQuarter = function(quarter) {
