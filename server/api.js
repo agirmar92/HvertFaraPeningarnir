@@ -63,17 +63,17 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		}
 	}
 
-	// Query the database for all expenses (quarter)
+	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',
 		body: {
 			"query": {
 		        "filtered": {
-		        	// We only want expenses
+		        	// Exclude "Tekjur" Affair
 		            "filter": {
 		                "range" : {
-		                    "Amount" : {
-		                        "gt" : 0
+		                    "AffairID" : {
+		                        "gt" : "01"
 		                    }
 		                }
 		            },
@@ -165,7 +165,7 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
  totalDebit
  }
  */
-api.get('/income/:period', (req, res) => {
+api.get('/income/:period/:fieldToGet', (req, res) => {
 	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',
