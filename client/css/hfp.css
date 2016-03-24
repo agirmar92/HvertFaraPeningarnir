@@ -285,6 +285,10 @@ h1, h2 {
     width: 100%;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 @media(max-width:1089px) {
     .hfp-header {
         height: 122px;
