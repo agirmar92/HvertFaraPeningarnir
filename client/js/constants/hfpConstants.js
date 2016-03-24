@@ -1,9 +1,9 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-//hfpApp.constant('apiURL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
-hfpApp.constant('apiURL', 'http://localhost:4000/');
-hfpApp.constant('colors', [
+//hfpApp.constant('API_URL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
+hfpApp.constant('API_URL', 'http://localhost:4000/');
+hfpApp.constant('COLORS', [
     "#0dad5c",
     "#ff906d",
     "#5594ba",
@@ -13,8 +13,8 @@ hfpApp.constant('colors', [
     "#e6fa6b",
     "#b352bd"
 ]);
-hfpApp.constant('chartTextColor', '#dadada');
-hfpApp.constant('months', [
+hfpApp.constant('CHART_TEXT_COLOR', '#dadada');
+hfpApp.constant('MONTHS', [
     "Veldu",
     "Janúar",
     "Febrúar",
@@ -29,17 +29,24 @@ hfpApp.constant('months', [
     "Nóvember",
     "Desember"
 ]);
-hfpApp.constant('years', [
+hfpApp.constant('YEARS', [
     "2010",
     "2011",
     "2012",
     "2013",
     "2014"
 ]);
-hfpApp.constant('quarters', [
+hfpApp.constant('QUARTERS', [
     "Veldu",
     "Fyrsti",
     "Annar",
     "Þriðji",
     "Fjórði"
 ]);
+hfpApp.constant('INITIAL_VALUES', {
+    'TYPE': 'Expenses',
+    'PERIOD': '2014-0',
+    'LEVEL': 'Affair'
+});
+
+

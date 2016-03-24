@@ -146,7 +146,7 @@
 				<!-- progress-meter -->
 				<div class="col-xs-4 hfp-div hfp-meter">
 					<uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-					<p id="hfp-curr-amount">kr. {{totCredStr}}.-</p>
+					<p id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
 				</div>
 				<!-- /#progress-meter -->
 
@@ -189,6 +189,7 @@
 	<!--[if development]-->
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/constants/hfpConstants.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/factories/hfpResource.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/calendarController.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/chartController.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/tabsController.js" type="text/javascript" charset="utf-8"></script>

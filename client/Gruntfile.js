@@ -40,7 +40,7 @@ module.exports = function(grunt) {
           undef: true,
         },
         files: {
-          src: ['Gruntfile.js', 'js/app.js', 'js/constants/*.js', 'js/controllers/*.js']
+          src: ['Gruntfile.js', 'js/app.js', 'js/constants/*.js', 'js/controllers/*.js', 'js/factories/*.js']
         },
       }
     }
