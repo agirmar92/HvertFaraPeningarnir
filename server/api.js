@@ -24,23 +24,46 @@ api.use(bodyParser.json());
 		totalDebit
 	}
 */
-api.get('/:period/expenses/:fieldToGet', (req, res) => {
-	/*	convert period to string that we use in queries
+api.get('/expenses/:period/:fieldToGet', (req, res) => {
+	/*	Checking if we need to change period
+		(user asking for whole year or quarter)
 		<year>-0: all year
 		<year>-1 ... <year>-4: quarter of year
 		<year>-01 ... <year>-12: month of year
 	*/
 	var period = req.params.period;
-	console.log('period in api: ' + period);
+	var year = period.substring(0,5);
+	var from = ''; var to = '';
 	if (period.length === 6) {
 		if (period.charAt(5) === '0') {
-			period = period.substring(0,4);
+			// whole year
+			from = year + '01'; to = year + '13';
+		} else if (period.charAt(5) === '1') {
+			// quarters
+			from = year + '01'; to = year + '04';
+		} else if (period.charAt(5) === '2') {
+			from = year + '04'; to = year + '07';
+		} else if (period.charAt(5) === '3') {
+			from = year + '07'; to = year + '10';
+		} else if (period.charAt(5) === '4') {
+			from = year + '10'; to = year + '13';
+		}
+	} else {
+		// months
+		var month = parseInt(period.substring(5,7), 10);
+		if (month < 9) {
+			from = year + '0' + month;
+			to = year + '0' + (month + 1);
+		} else if (month === 9) {
+			from = year + '0' + month;
+			to = year + (month + 1);
 		} else {
-			// TODO: QUARTERS!
+			from = year + month;
+			to = year + (month + 1);
 		}
 	}
 
-	// Query the database for all expenses
+	// Query the database for all expenses (quarter)
 	elasticClient.search({
 		index: 'hfp',
 		body: {
@@ -56,10 +79,15 @@ api.get('/:period/expenses/:fieldToGet', (req, res) => {
 		            },
 		            // Desired period
 		            "query": {
-		                "prefix": {
-		                   "Date": {
-		                       "value": period
-		                   }
+		                "filtered": {
+		                    "filter": {
+		                        "range": {
+		                            "Date": {
+		                                "from": from,
+		                                "to": to
+		                            }
+		                        }
+		                    }
 		                }
 		            }
 		        }
@@ -137,7 +165,7 @@ api.get('/:period/expenses/:fieldToGet', (req, res) => {
  totalDebit
  }
  */
-api.get('/:period/income/', (req, res) => {
+api.get('/income/:period', (req, res) => {
 	// Query the database for all expenses
 	elasticClient.search({
 		index: 'hfp',

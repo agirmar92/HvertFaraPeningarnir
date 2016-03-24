@@ -1,7 +1,8 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.constant('apiURL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
+//hfpApp.constant('apiURL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
+hfpApp.constant('apiURL', 'http://localhost:4000/');
 hfpApp.constant('colors', [
     "#0dad5c",
     "#ff906d",
@@ -14,7 +15,7 @@ hfpApp.constant('colors', [
 ]);
 hfpApp.constant('chartTextColor', '#dadada');
 hfpApp.constant('months', [
-    "Allir",
+    "Veldu",
     "Janúar",
     "Febrúar",
     "Mars",
@@ -36,6 +37,9 @@ hfpApp.constant('years', [
     "2014"
 ]);
 hfpApp.constant('quarters', [
-    "wat",
-    "bla"
+    "Veldu",
+    "Fyrsti",
+    "Annar",
+    "Þriðji",
+    "Fjórði"
 ]);

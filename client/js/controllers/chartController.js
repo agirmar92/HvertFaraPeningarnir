@@ -16,8 +16,9 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, apiURL
     var totalC = 1;
     $scope.dynamic = $scope.totalCredit / totalC;
     $scope.max = 100;
-    $rootScope.level = "expenses/Affair";
+    $rootScope.level = "expenses/";
     $rootScope.period = "2014-0";
+    // TODO: make years function as well
 
     var toNrWithDots = function (num) {
         var numStr = num.toString();
@@ -42,7 +43,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, apiURL
     $rootScope.testFunc = function() {
         $http({
             method: 'GET',
-            url: apiURL + $scope.period + '/' + $rootScope.level
+            url: apiURL + $rootScope.level + $scope.period + '/Affair'
         }).success(function (response) {
             console.log('success');
 
