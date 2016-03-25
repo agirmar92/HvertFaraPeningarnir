@@ -34,7 +34,7 @@ with open('../results.csv', encoding='utf-16') as infile:
 
 # Convert to a list of dictionaries
 docs = []
-cols = [ 'Date', 'AffairID', 'DepartmentID', 'FinanceKeyID', 'Amount', 'FinanceKey', 'PrimaryFinanceKey', 'SecondaryFinanceKey', 'Department', 'Affair', 'Creditor', 'DepartmentGroup' ]
+cols = [ 'Date', 'AffairID', 'DepartmentID', 'FinanceKeyID', 'Amount', 'FinanceKey', 'PrimaryFinanceKey', 'SecondaryFinanceKey', 'Department', 'Affair', 'Creditor', 'DepartmentGroup', 'AffairGroup' ]
 #cols = rows[0]
 
 for row in rows[2:-2]:
