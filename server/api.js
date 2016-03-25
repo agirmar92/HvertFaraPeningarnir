@@ -69,11 +69,11 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		body: {
 			"query": {
 		        "filtered": {
-		        	// Exclude "Tekjur" Affair
+		        	// Only expenses
 		            "filter": {
 		                "range" : {
-		                    "AffairID" : {
-		                        "gt" : "01"
+		                    "Amount" : {
+		                        "gt" : 0
 		                    }
 		                }
 		            },
@@ -87,6 +87,18 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		                                "to": to
 		                            }
 		                        }
+		                    },
+		                    // Exclude "Tekjur" Affair
+		                    "query": {
+		                    	"filtered": {
+		                    		"filter": {
+		                    			"range": {
+		                    				"AffairID": {
+		                    					"gt": "01"
+		                    				}
+		                    			}
+		                    		}
+		                    	}
 		                    }
 		                }
 		            }
@@ -143,7 +155,9 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		}).then((docum) => {
 			// Store the response and convert to absolute value
 			const totalDebit = Math.abs(docum.aggregations.total_amount.value);
-			res.status(200).send({ slices, totalCredit, totalDebit });
+			const respObj = { slices, totalCredit, totalDebit };
+			console.log(respObj);
+			res.status(200).send(respObj);
 		}, (err) => {
 			console.log(err);
 			res.status(500).send('Server error\n');
