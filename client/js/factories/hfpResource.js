@@ -108,6 +108,11 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
             factory.setTotalCredit(response.totalCredit);
             factory.setTotalDebit(response.totalDebit);
 
+            // Updating bar chart data
+            $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
+            $rootScope.chart.options.data[0].dataPoints[1].y = factory.getTotalDebit();
+            $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
+
             // Check if totalYearAmount should be changed
             if (factory.getPeriod().length === 6 && factory.getPeriod().charAt(5) === '0') {
                 factory.setTotalC(factory.getTotalCredit());
@@ -117,7 +122,7 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
             factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
 
             // Change total credit to have dots every the digits
-            factory.setTotalCredit(toNrWithDots(factory.getTotalCredit()));
+            factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
 
             // Update the root variables
             changeRootVariables();
@@ -132,20 +137,16 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
     };
 
     /*
-    *       Private methods
-    * */
-
-    /*
-    *       Method that takes a number and returns the same number as a string with a dot inserted every three digits.
-    *       Example: toNrWithDots(123456) = 123.456
-    * */
-    var toNrWithDots = function (num) {
+     *       Method that takes a number and returns the same number as a string with a dot inserted every three digits.
+     *       Example: toNrWithDots(123456) = 123.456
+     * */
+    factory.toNrWithDots = function(num) {
         var numStr = num.toString();
         var newStr = "";
         var i = numStr.length;
         var j = 1;
         while (i > 0) {
-            if (j % 4 === 0) {
+            if (j % 4 === 0 && numStr[i-1] !== '-') {
                 newStr = '.' + newStr;
             } else {
                 newStr = numStr[i-1] + newStr;
@@ -157,12 +158,27 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
     };
 
     /*
+    *       Private methods
+    * */
+
+    /*
     *       Method called once new data has been fetched. It updates the $rootScope variables
     * */
     var changeRootVariables = function() {
+        // Sums
         $rootScope.totalCredit = factory.getTotalCredit();
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
+
+        // Recreate the bar chart with a nice animation to hide the ugly transition
+        $("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+            $("#miniChartContainer").removeClass("zoomOut").addClass("zoomIn");
+        });
+        setTimeout(function() {
+            $rootScope.chart.render();
+        }, 500);
+
+        // Recreate the pie chart
         $rootScope.pie.destroy();
         $rootScope.pie = new d3pie("mypie", {
             header: {
