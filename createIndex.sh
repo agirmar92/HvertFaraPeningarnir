@@ -1,4 +1,4 @@
-curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
+curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp2" -d'
 {
     "settings": {
         "number_of_replicas": 0,
@@ -180,6 +180,10 @@ curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
                     "type": "string"
                 },
                 "DepartmentGroup": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "AffairGroup": {
                     "type": "string",
                     "index": "not_analyzed"
                 }
