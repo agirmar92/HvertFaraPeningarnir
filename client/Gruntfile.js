@@ -30,7 +30,8 @@ module.exports = function(grunt) {
           _: false,
           $: false,
           jQuery: true,
-          hfpApp: true
+          hfpApp: true,
+          CanvasJS: true
         },
       },
       uses_defaults: ['Gruntfile.js', 'js/app.js'],
