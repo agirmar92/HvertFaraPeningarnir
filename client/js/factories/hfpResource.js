@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -155,6 +155,10 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
             j++;
         }
         return newStr;
+    };
+
+    factory.parseRouteParams = function() {
+        console.log($routeParams);
     };
 
     /*

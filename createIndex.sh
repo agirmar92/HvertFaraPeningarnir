@@ -1,4 +1,4 @@
-curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp2" -d'
+curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
 {
     "settings": {
         "number_of_replicas": 0,
