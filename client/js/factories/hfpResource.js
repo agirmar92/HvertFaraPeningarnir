@@ -131,10 +131,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
         $http({
             // Fetch the data
             method: 'GET',
-            url: API_URL + this.getType() + '/' + this.getPeriod() 
-                + '/' + this.getAffairGroup() + '/' + this.getAffair() 
-                + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() 
-                + '/' + this.getFinanceKey()
+            url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey()
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
@@ -314,7 +311,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
                 onClickSegment: function(a) {
                     console.log("Segment clicked! See the console for all data passed to the click handler.");
                     factory.setClickedSlice(a.data.key);
-                    const id = a.data.key;
+                    var id = a.data.key;
                     if (factory.getLevel() === 0) {
                         factory.setAffairGroup(id);
                     } else if (factory.getLevel() === 1) {
