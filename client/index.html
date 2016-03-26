@@ -47,18 +47,17 @@
 							</div>
 						</div>
 					</div>
-					<uib-accordion close-others="oneAtATime">
 
-						<uib-accordion-group class="hfp-filter-group" is-open="group.status" ng-repeat="group in groups">
-							<uib-accordion-heading>
-								{{group.title}} <i class="hfp-filter-arrow pull-right glyphicon glyphicon-chevron-down" ng-class="{'arrow-down': group.status, 'arrow-right': !group.status}"></i>
-							</uib-accordion-heading>
-							<div ng-repeat="filter in group.filters">
-								{{filter.content}}
-							</div>
-						</uib-accordion-group>
+					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}">
+						<div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
+							<span>{{option.label}}</span>
+						</div>
 
-					</uib-accordion>
+						<div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
+							<span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
+						</div>
+					</div>
+
 				</uib-tab>
 
 				<uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>

@@ -289,6 +289,60 @@ h1, h2 {
     display: none;
 }
 
+.option-header {
+    height: 50px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.option-choices {
+    height: 35px;
+    background-color: rgb(43, 43, 43);
+    background-color: rgba(43, 43, 43, 0.8);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.option-hidden {
+    height: 0;
+}
+
+.option {
+    height: auto;
+}
+
+.locked-choice {
+    height: 35px;
+    background-color: rgb(0, 43, 7);
+    background-color: rgba(0, 43, 7, 0.8);
+}
+
+.option span {
+    transition: all 0.5s ease;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+span.option-selected {
+    left: 30%;
+}
+
 @media(max-width:1089px) {
     .hfp-header {
         height: 122px;
