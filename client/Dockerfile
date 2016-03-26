@@ -16,6 +16,7 @@ WORKDIR /app
 
 ADD package.json /app/package.json
 ADD index.html /app/index.html
+ADD views /app/views
 ADD fav.ico /app/fav.ico
 ADD koplogo.gif /app/koplogo.gif
 ADD js /app/js
