@@ -21,18 +21,20 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     *       If the option to expand is already expanded, the function collapses it.
     * */
     $scope.toggleOption = function(optionId) {
-        if ($scope.expandedOption === optionId) {
-            // Collapse the option
-            $scope.options[optionId].open = false;
-            $scope.expandedOption = -1;
-        } else {
-            // Expand the option
-            if ($scope.expandedOption !== -1) {
-                // Collapse currently open option
-                $scope.options[$scope.expandedOption].open = false;
+        if (optionId < 8) {
+            if ($scope.expandedOption === optionId) {
+                // Collapse the option
+                $scope.options[optionId].open = false;
+                $scope.expandedOption = -1;
+            } else {
+                // Expand the option
+                if ($scope.expandedOption !== -1) {
+                    // Collapse currently open option
+                    $scope.options[$scope.expandedOption].open = false;
+                }
+                $scope.expandedOption = optionId;
+                $scope.options[$scope.expandedOption].open = true;
             }
-            $scope.expandedOption = optionId;
-            $scope.options[$scope.expandedOption].open = true;
         }
     };
 
@@ -237,7 +239,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     };
 
     /*
-    *       Choice [choice] in that belongs to the option [option] has been clicked.
+    *       Choice [choice] that belongs to the option [option] has been clicked.
     *       Either makes the choice chosen, or un-chosen (if it already is).
     * */
     $scope.choiceClicked = function(option, choice) {
@@ -255,8 +257,14 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         } else {
             $scope.options[option].currChoice = -1;
         }
-
-        // Expand/collapse the option
+        // Expand/collapse the option and open the next that is unlocked
         $scope.toggleOption(option);
+        if ($scope.options[option].choices[choice].chosen) {
+            var i = option + 1;
+            while (i < 8 && $scope.options[i].currChoice !== -1) {
+                i++;
+            }
+            $scope.toggleOption(i);
+        }
     };
 });

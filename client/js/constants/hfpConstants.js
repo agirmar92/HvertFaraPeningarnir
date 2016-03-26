@@ -48,5 +48,3 @@ hfpApp.constant('INITIAL_VALUES', {
     'PERIOD': '2014-0',
     'LEVEL': 'Affair'
 });
-
-

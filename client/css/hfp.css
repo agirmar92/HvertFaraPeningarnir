@@ -296,15 +296,20 @@ h1, h2 {
     -ms-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgb(39, 39, 39);
+    background-color: rgba(39, 39, 39, 0.8);
     position: relative;
+    border-top: 1px solid black;
+}
+
+.option-header:hover {
+    background-color: rgb(1, 114, 57);
 }
 
 .option-choices {
     height: 35px;
-    background-color: rgb(43, 43, 43);
-    background-color: rgba(43, 43, 43, 0.8);
+    background-color: rgb(27, 27, 27);
+    background-color: rgba(27, 27, 27, 0.8);
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -313,6 +318,10 @@ h1, h2 {
     -ms-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+
+.option-choices.:hover {
+    background-color: rgb(10, 10, 10);
 }
 
 .option-hidden {
@@ -329,12 +338,55 @@ h1, h2 {
     background-color: rgba(0, 43, 7, 0.8);
 }
 
+.option span.option-arrow, .option span.choice-remove {
+    left: 90%;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    width: auto;
+}
+
+.option span.choice-remove.add-choice {
+    color: #0a894a;
+    -webkit-transform: translate(-50%, -50%) rotate(45deg);
+    -moz-transform: translate(-50%, -50%) rotate(45deg);
+    -ms-transform: translate(-50%, -50%) rotate(45deg);
+    -o-transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.option span.choice-remove {
+    color: #c04541;
+}
+
+.option span.option-arrow.arrow-down {
+    -webkit-transform: translate(-50%, -50%) rotate(90deg);
+    -moz-transform: translate(-50%, -50%) rotate(90deg);
+    -ms-transform: translate(-50%, -50%) rotate(90deg);
+    -o-transform: translate(-50%, -50%) rotate(90deg);
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.hideThis {
+    display: none;
+}
+
 .option span {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     width: 100%;
 }
