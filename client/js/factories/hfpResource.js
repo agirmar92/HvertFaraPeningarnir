@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -9,21 +9,27 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
     /*
     *       Private properties
     * */
-    var level = INITIAL_VALUES.LEVEL;
+    var currLevel = INITIAL_VALUES.LEVEL;
     var type = INITIAL_VALUES.TYPE;
     var period = INITIAL_VALUES.PERIOD;
 
     var slices = [];
     var totalCredit = 0;
     var totalDebit = 0;
-    var totalC = 1;
+    var totalC = 32321545934;
     var dynamic = 100;
+    var clickedSlice = "";
+    var affairGroup = "all";
+    var affair = "all";
+    var departmentGroup = "all";
+    var department = "all";
+    var financeKey = "all";
 
     /*
     *       Getters
     * */
     factory.getLevel = function() {
-        return level;
+        return currLevel;
     };
     factory.getType = function() {
         return type;
@@ -46,12 +52,30 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
     factory.getDynamic = function() {
         return dynamic;
     };
+    factory.getClickedSlice = function() {
+        return clickedSlice;
+    };
+    factory.getAffairGroup = function() {
+        return affairGroup;
+    };
+    factory.getAffair = function() {
+        return affair;
+    };
+    factory.getDepartmentGroup = function() {
+        return departmentGroup;
+    };
+    factory.getDepartment = function() {
+        return department;
+    };
+    factory.getFinanceKey = function() {
+        return financeKey;
+    };
 
     /*
     *       Setters
     * */
     factory.setLevel = function(newLevel) {
-        level = newLevel;
+        currLevel = newLevel;
     };
     factory.setType = function(newType) {
         type = newType;
@@ -74,6 +98,24 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
     factory.setDynamic = function(newDynamic) {
         dynamic = newDynamic;
     };
+    factory.setClickedSlice = function(newclickedSlice) {
+        clickedSlice = newclickedSlice;
+    };
+    factory.setAffairGroup = function(newAffairGroup) {
+        affairGroup = newAffairGroup;
+    };
+    factory.setAffair = function(newAffair) {
+        affair = newAffair;
+    };
+    factory.setDepartmentGroup = function(newDepartmentGroup) {
+        departmentGroup = newDepartmentGroup;
+    };
+    factory.setDepartment = function(newDepartment) {
+        department = newDepartment;
+    };
+    factory.setFinanceKey = function(newFinanceKey) {
+        financeKey = newFinanceKey;
+    };
 
     /*
     *       Public methods
@@ -85,20 +127,46 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
     * */
     factory.showMeTheMoney = function() {
         var deferred = $q.defer();
-
+        
         $http({
             // Fetch the data
             method: 'GET',
-            url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel()
+            url: API_URL + this.getType() + '/' + this.getPeriod() 
+                + '/' + this.getAffairGroup() + '/' + this.getAffair() 
+                + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() 
+                + '/' + this.getFinanceKey()
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
             factory.setSlices(response.slices.map(function(slice) {
-                var newSlice = {
-                    label: slice.key,
-                    value: slice.sum_amount.value,
-                    color: COLORS[sliceNumber]
-                };
+                var cut = 0;
+                var newSlice = {};
+                if (factory.getLevel() === 0) {
+                    cut = 1;
+                } else if (factory.getLevel() === 1) {
+                    cut = 2;
+                } else if (factory.getLevel() === 2) {
+                    cut = 3;
+                } else if (factory.getLevel() === 3) {
+                    cut = 6;
+                } else if (factory.getLevel() > 6) {
+                    newSlice = {
+                        label: slice.key,
+                        value: slice.sum_amount.value,
+                        color: COLORS[sliceNumber],
+                        key: slice.key
+                    };
+                } else {
+                    cut = 4;
+                }
+                if (factory.getLevel() < 7) {
+                    newSlice = {
+                        label: slice.key.substring(cut + 1),
+                        value: slice.sum_amount.value,
+                        color: COLORS[sliceNumber],
+                        key: slice.key.substring(0,cut)
+                    };
+                }
                 sliceNumber++;
                 sliceNumber %= 8;
                 return newSlice;
@@ -108,10 +176,10 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
             factory.setTotalCredit(response.totalCredit);
             factory.setTotalDebit(response.totalDebit);
 
-            // Check if totalYearAmount should be changed
-            if (factory.getPeriod().length === 6 && factory.getPeriod().charAt(5) === '0') {
+            /* Check if totalYearAmount should be changed
+            if (factory.getPeriod().substring(0,4) === factory.getPeriod().substring(0,4)) {
                 factory.setTotalC(factory.getTotalCredit());
-            }
+            }*/
 
             // Change the percentage number
             factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
@@ -224,18 +292,25 @@ hfpApp.factory('hfpResource', function($http, $q, INITIAL_VALUES, API_URL, COLOR
             callbacks: {
                 onClickSegment: function(a) {
                     console.log("Segment clicked! See the console for all data passed to the click handler.");
-                    console.log(a);
-
-                    // Swapping from showing by affairs and primary finance keys for test
-                    if (factory.getLevel() === "Affair") {
-                        factory.setLevel("PrimaryFinanceKey");
+                    factory.setClickedSlice(a.data.key);
+                    const id = a.data.key;
+                    if (factory.getLevel() === 0) {
+                        factory.setAffairGroup(id);
+                    } else if (factory.getLevel() === 1) {
+                        factory.setAffair(id);
+                    } else if (factory.getLevel() === 2) {
+                        factory.setDepartmentGroup(id);
+                    } else if (factory.getLevel() === 3) {
+                        factory.setDepartment(id);
+                    } else if (factory.getLevel() > 3 && factory.getLevel() < 7) {
+                        factory.setFinanceKey(id);
+                    } else if (factory.getLevel() === 7) {
+                        console.log('Show the creditors!!!');
                     }
-                    else {
-                        factory.setLevel("Affair");
+                    if (factory.getLevel() < 8) {
+                        factory.setLevel(factory.getLevel() + 1);
+                        factory.showMeTheMoney();
                     }
-
-                    factory.showMeTheMoney();
-
                 }
             },
             tooltips: {

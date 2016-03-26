@@ -24,16 +24,28 @@ api.use(bodyParser.json());
 		totalDebit
 	}
 */
-api.get('/expenses/:period/:fieldToGet', (req, res) => {
+api.get('/expenses/:per/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
+	const period              = req.params.per;
+	const affairGroupID       = req.params.agroup;
+	const affairID            = req.params.aff;
+	const departmentGroupID   = req.params.dgroup;
+	const departmentID        = req.params.dep;
+	const financeKeyID        = req.params.fin;
+	let mustAffairGroup       = {};
+	let mustAffair            = {};
+	let mustDepartmentGroup   = {};
+	let mustDepartment        = {};
+	let mustFinanceKey        = {};
+	let aggregator            = 'AffairGroup';
 	/*	Checking if we need to change period
 		(user asking for whole year or quarter)
 		<year>-0: all year
 		<year>-1 ... <year>-4: quarter of year
 		<year>-01 ... <year>-12: month of year
 	*/
-	var period = req.params.period;
-	var year = period.substring(0,5);
-	var from = ''; var to = '';
+	let year = period.substring(0,5);
+	let from = '';
+	let to = '';
 	if (period.length === 6) {
 		if (period.charAt(5) === '0') {
 			// whole year
@@ -50,7 +62,7 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		}
 	} else {
 		// months
-		var month = parseInt(period.substring(5,7), 10);
+		let month = parseInt(period.substring(5,7), 10);
 		if (month < 9) {
 			from = year + '0' + month;
 			to = year + '0' + (month + 1);
@@ -62,6 +74,50 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 			to = year + (month + 1);
 		}
 	}
+
+	// Generate database queries based on parameters
+	if (affairGroupID !== 'all') {
+		mustAffairGroup = { 
+			"prefix": { "AffairGroup": { "value": affairGroupID } } 
+		};
+		aggregator = "Affair";
+	}
+	if (affairID !== 'all') {
+		mustAffair = { 
+			"prefix": { "Affair": { "value": affairID } } 
+		};
+		aggregator = "DepartmentGroup";
+	}
+	if (departmentGroupID !== 'all') {
+		mustDepartmentGroup = { 
+			"prefix": { "DepartmentGroup": { "value": departmentGroupID } } 
+		};
+		aggregator = "Department";
+	}
+	if (departmentID !== 'all') {
+		mustDepartmentGroup = { 
+			"prefix": { "Department": { "value": departmentID } } 
+		};
+		aggregator = "PrimaryFinanceKey";
+	}
+	if (financeKeyID !== 'all') {
+		if (financeKeyID.substring(1,4) === '000') {
+			mustFinanceKey = { 
+				"prefix": { "PrimaryFinanceKey": { "value": financeKeyID } } 
+			};
+			aggregator = "SecondaryFinanceKey";
+		} else if (financeKeyID.substring(2,4) === '00') {
+			mustFinanceKey = { 
+				"prefix": { "SecondaryFinanceKey": { "value": financeKeyID } } 
+			};
+			aggregator = "FinanceKey";
+		} else {
+			mustFinanceKey = { 
+				"prefix": { "FinanceKey": { "value": financeKeyID } } 
+			};
+			aggregator = "Creditor";
+		}
+	}	
 
 	// Query the database for all expenses
 	elasticClient.search({
@@ -97,6 +153,18 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		                    					"gt": "01"
 		                    				}
 		                    			}
+		                    		},
+		                    		// Drilldown
+		                    		"query": {
+		                    			"bool": {
+		                    				"must" : [
+		                    					mustAffairGroup,
+		                    					mustAffair,
+		                    					mustDepartmentGroup,
+		                    					mustDepartment,
+		                    					mustFinanceKey
+		                    				]
+		                    			}
 		                    		}
 		                    	}
 		                    }
@@ -109,7 +177,7 @@ api.get('/expenses/:period/:fieldToGet', (req, res) => {
 		    "aggs" : {
 		        "amounts" : {
 		            "terms": {
-		                "field": req.params.fieldToGet,
+		                "field": aggregator,
 		                "order": { "sum_amount": "desc" },
 		                "size": 0
 		            },

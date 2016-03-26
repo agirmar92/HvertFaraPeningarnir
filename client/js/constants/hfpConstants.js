@@ -1,8 +1,8 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.constant('API_URL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
-//hfpApp.constant('API_URL', 'http://localhost:4000/');
+//hfpApp.constant('API_URL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
+hfpApp.constant('API_URL', 'http://localhost:4000/');
 hfpApp.constant('COLORS', [
     "#0dad5c",
     "#ff906d",
@@ -46,7 +46,17 @@ hfpApp.constant('QUARTERS', [
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'Expenses',
     'PERIOD': '2014-0',
-    'LEVEL': 'Affair'
+    'LEVEL': 0
+});
+hfpApp.constant('LEVELS', {
+    0: 'AffairGroup',
+    1: 'Affair',
+    2: 'DivisionGroup',
+    3: 'Division',
+    4: 'PrimaryFinanceKey',
+    5: 'SecondaryFinanceKey',
+    6: 'FinanceKey',
+    7: 'Creditors'
 });
 
 

@@ -177,9 +177,14 @@ curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
                     "index": "not_analyzed"
                 },
                 "Creditor": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "DepartmentGroup": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "AffairGroup": {
                     "type": "string",
                     "index": "not_analyzed"
                 }
