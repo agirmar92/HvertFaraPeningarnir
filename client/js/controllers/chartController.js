@@ -16,8 +16,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     type: "stackedColumn",
                     axisYType: "primary",
                     dataPoints: [
-                        {  y: 0, label: "Gjöld", color: "#0dad5c" },
-                        {  y: 0, label: "Tekjur" },
+                        {  y: 0, label: "Útgjöld" },
+                        {  y: 0, label: "Innkoma" },
                         {  y: 0, label: "Nettó" }
                     ]
                 }
@@ -34,7 +34,15 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                 fontStyle: "normal",
                 fontFamily: "font4",
                 contentFormatter: function(e) {
-                    return "kr. " + hfpResource.toNrWithDots(e.entries[0].dataPoint.y);
+                    var pre = '';
+                    if (e.entries[0].dataPoint.label === 'Útgjöld') {
+                        pre = ' (Kakan)';
+                    } else if (e.entries[0].dataPoint.label === 'Innkoma') {
+                        pre = '<br>(Sértekjur, leiðréttingar og millifærslur)';
+                    } else {
+                        pre = ' (Mismunur)';
+                    }
+                    return "kr. " + hfpResource.toNrWithDots(e.entries[0].dataPoint.y) + pre;
                 }
             },
             culture: "is",
