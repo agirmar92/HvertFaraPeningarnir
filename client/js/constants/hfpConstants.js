@@ -1,8 +1,8 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.constant('API_URL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
-//hfpApp.constant('API_URL', 'http://localhost:4000/');
+//hfpApp.constant('API_URL', 'http://hfp.northeurope.cloudapp.azure.com:4000/');
+hfpApp.constant('API_URL', 'http://localhost:4000/');
 hfpApp.constant('COLORS', [
     "#0dad5c",
     "#ff906d",

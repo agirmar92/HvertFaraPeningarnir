@@ -207,11 +207,40 @@ api.get('/expenses/:per/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 			            },
 			            // Desired period
 			            "query": {
-			                "prefix": {
-			                   "Date": {
-			                       "value": period
-			                   }
-			                }
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Date": {
+                                            "from": from,
+                                            "to": to
+                                        }
+                                    }
+                                },
+                                // Exclude "Tekjur" Affair
+                                "query": {
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "AffairID": {
+                                                    "gt": "01"
+                                                }
+                                            }
+                                        },
+                                        // Drilldown
+                                        "query": {
+                                            "bool": {
+                                                "must" : [
+                                                    mustAffairGroup,
+                                                    mustAffair,
+                                                    mustDepartmentGroup,
+                                                    mustDepartment,
+                                                    mustFinanceKey
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 			            }
 			        }
 			    }, 
