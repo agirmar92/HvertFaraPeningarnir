@@ -127,12 +127,18 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     * */
     factory.showMeTheMoney = function() {
         var deferred = $q.defer();
+        var queryURL;
+        if ($factory.getType() === 'expenses') {
+            queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
+        } else {
+            queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
+        }
         
         $http({
             // Fetch the data
             method: 'GET',
             //url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + '0' + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + '2521'
-            url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey()
+            url: queryURL
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
@@ -381,9 +387,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         var newPathPrefix = $location.path().split('/');
                         newPathPrefix[3]++;
                         newPathPrefix[4 + key] = id;
-                        newPathPrefix = replaceAllCommasWithSlashes(newPathPrefix.toString());
-
-                        console.log(newPathPrefix);
+                        newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
                         // Change the path
                         $rootScope.$apply(function(){
@@ -423,7 +427,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Helper method that replaces all commas in the given string with a slash
     * */
-    var replaceAllCommasWithSlashes = function(stringToFix) {
+    factory.replaceAllCommasWithSlashes = function(stringToFix) {
         var changed = true;
 
         do {

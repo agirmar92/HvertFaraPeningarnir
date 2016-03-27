@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('calendarController', function ($scope, $rootScope, hfpResource, YEARS, MONTHS, QUARTERS) {
+hfpApp.controller('calendarController', function ($scope, $rootScope, $location, $route, hfpResource, YEARS, MONTHS, QUARTERS) {
     $scope.years = YEARS;
     $scope.months = MONTHS;
     $scope.quarters = QUARTERS;
@@ -11,35 +11,49 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, hfpResourc
 
     $scope.setYear = function(year) {
         $scope.selectedYear = year;
-        $scope.testFunc();
     };
 
     $scope.setMonth = function(i) {
         $scope.selectedQuarter = QUARTERS[0];
         $scope.selectedMonth = MONTHS[i];
+        var newPeriod = $scope.selectedYear;
         if (i < 10 && i !== 0) {
-            hfpResource.setPeriod($scope.selectedYear + '-0' + i);
+            newPeriod += '-0' + i;
         } else {
-            hfpResource.setPeriod($scope.selectedYear + '-' + i);
+            newPeriod += '-' + i;
         }
 
-        hfpResource.showMeTheMoney();
+        // Create a new path
+        var newPathPrefix = $location.path().split('/');
+        newPathPrefix[2] = newPeriod;
+        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+        // Change the path
+        $location.path(newPathPrefix, false, 'setPeriod', newPeriod);
     };
 
     $scope.setQuarter = function(quarter) {
         $scope.selectedQuarter = quarter;
         $scope.selectedMonth = MONTHS[0];
+        var newPeriod = $scope.selectedYear;
         if (quarter === 'Veldu') {
-            hfpResource.setPeriod($scope.selectedYear + '-0');
+            newPeriod += '-0';
         } else if (quarter === 'Fyrsti') {
-            hfpResource.setPeriod($scope.selectedYear + '-1');
+            newPeriod += '-1';
         } else if (quarter === 'Annar') {
-            hfpResource.setPeriod($scope.selectedYear + '-2');
+            newPeriod += '-2';
         } else if (quarter === 'Þriðji') {
-            hfpResource.setPeriod($scope.selectedYear + '-3');
+            newPeriod += '-3';
         } else if (quarter === 'Fjórði') {
-            hfpResource.setPeriod($scope.selectedYear + '-4');
+            newPeriod += '-4';
         }
-        hfpResource.showMeTheMoney();
+
+        // Create a new path
+        var newPathPrefix = $location.path().split('/');
+        newPathPrefix[2] = newPeriod;
+        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+        // Change the path
+        $location.path(newPathPrefix, false, 'setPeriod', newPeriod);
     };
 });
