@@ -235,7 +235,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         console.log("currLeveL: " + factory.getLevel());
 
         //var paramCounter = -3;
-        for (param in $routeParams) {
+        for (var param in $routeParams) {
             var value = $routeParams[param];
             if (value === 'n') {
                 value = 'all';
@@ -434,7 +434,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
         } while (changed);
 
-        return stringToFix
+        return stringToFix;
     };
 
     return factory;
