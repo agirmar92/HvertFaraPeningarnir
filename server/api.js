@@ -10,7 +10,7 @@ const api = express();
 const elasticClient = new elasticsearch.Client({
 	host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
-const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditors" ]
+const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditor" ]
 
 api.use(bodyParser.json());
 
@@ -39,6 +39,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 	let mustDepartment        = {};
 	let mustFinanceKey        = {};
 	let aggregator            = aggs[level];
+	console.log(aggregator);
 	/*	Checking if we need to change period
 		(user asking for whole year or quarter)
 		<year>-0: all year
@@ -249,7 +250,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 			// Store the response and convert to absolute value
 			const totalDebit = Math.abs(docum.aggregations.total_amount.value);
 			const respObj = { slices, totalCredit, totalDebit };
-			console.log(respObj);
+			//console.log(respObj);
 			res.status(200).send(respObj);
 		}, (err) => {
 			console.log(err);

@@ -84,10 +84,6 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         });
     });
 
-    $scope.testFunc = function() {
-        $location.path($location.path() + '/3', false, 'AffairGroup', 3);
-    };
-
     $scope.toggleDrawer = function() {
         $("#wrapper").toggleClass("toggled");
         $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-filter");

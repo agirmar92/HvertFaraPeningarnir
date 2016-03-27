@@ -168,7 +168,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 }
                 sliceNumber++;
                 sliceNumber %= 8;
-                console.log(newSlice);
                 return newSlice;
             }));
 
@@ -235,7 +234,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         console.log("parsing");
         console.log("currLeveL: " + factory.getLevel());
 
-        var paramCounter = -3;
+        //var paramCounter = -3;
         for (param in $routeParams) {
             var value = $routeParams[param];
             if (value === 'n') {
@@ -244,18 +243,15 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 value = parseInt(value);
             }
             console.log(param + ": " + value);
-            if (param === 'PFinanceKey' || param === 'SFinanceKey') {
-                param = 'FinanceKey';
-            }
             factory['set' + param](value);
-            paramCounter++;
+            //paramCounter++;
         }
         //factory.setLevel($routeParams['Level']);
         console.log("currLeveL: " + factory.getLevel());
         deferred.resolve();
 
-        // Set others to default
-        /*while (paramCounter < 5) {
+        /*// Set others to default
+        while (paramCounter < 5) {
             var funcName = 'set' + LEVELS[paramCounter];
             if (paramCounter === 4) {
                 funcName = 'setFinanceKey';
@@ -353,22 +349,28 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     factory.setClickedSlice(a.data.key);
                     var id = a.data.key;
                     var field = "set";
+                    var key;
                     console.log("yoyo: " + id);
                     if (factory.getLevel() === 0) {
                         //factory.setAffairGroup(id);
                         field += 'AffairGroup';
+                        key = 0;
                     } else if (factory.getLevel() === 1) {
                         //factory.setAffair(id);
                         field += 'Affair';
+                        key = 1;
                     } else if (factory.getLevel() === 2) {
                         //factory.setDepartmentGroup(id);
                         field += 'DepartmentGroup';
+                        key = 2;
                     } else if (factory.getLevel() === 3) {
                         //factory.setDepartment(id);
                         field += 'Department';
+                        key = 3;
                     } else if (factory.getLevel() > 3 && factory.getLevel() < 7) {
                         //factory.setFinanceKey(id);
                         field += 'FinanceKey';
+                        key = 4;
                     } else if (factory.getLevel() === 7) {
                         console.log('Show the creditors!!!');
                     }
@@ -378,11 +380,14 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
                         newPathPrefix[3]++;
+                        newPathPrefix[4 + key] = id;
                         newPathPrefix = replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+                        console.log(newPathPrefix);
 
                         // Change the path
                         $rootScope.$apply(function(){
-                            $location.path(newPathPrefix + id + '/', false, field, id);
+                            $location.path(newPathPrefix, false, field, id);
                         });
                     }
                 }

@@ -13,20 +13,16 @@ hfpApp.config(['$routeProvider',
 			.when('/admin', {
 				templateUrl: 'views/adminLoginView.html'
 			})
-			.when('/:Type/:Period/:Level/', {
+			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?', {
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:PFinanceKey?/:SFinanceKey?/:FinanceKey?', {
-				templateUrl: 'views/chartView.html',
-				controller: 'chartController'
-			})
-			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:PFinanceKey/:SFinanceKey/:FinanceKey/', {
+			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
 			.otherwise( {
-				redirectTo: '/expenses/2014-0/0'
+				redirectTo: '/expenses/2014-0/0/n/n/n/n/n/'
 			});
 	}
 ]);
