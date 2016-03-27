@@ -10,6 +10,7 @@ const api = express();
 const elasticClient = new elasticsearch.Client({
 	host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
+const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditors" ]
 
 api.use(bodyParser.json());
 
@@ -24,8 +25,9 @@ api.use(bodyParser.json());
 		totalDebit
 	}
 */
-api.get('/expenses/:per/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
+api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 	const period              = req.params.per;
+    const level               = req.params.lvl;
 	const affairGroupID       = req.params.agroup;
 	const affairID            = req.params.aff;
 	const departmentGroupID   = req.params.dgroup;
@@ -36,7 +38,7 @@ api.get('/expenses/:per/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 	let mustDepartmentGroup   = {};
 	let mustDepartment        = {};
 	let mustFinanceKey        = {};
-	let aggregator            = 'AffairGroup';
+	let aggregator            = aggs[level];
 	/*	Checking if we need to change period
 		(user asking for whole year or quarter)
 		<year>-0: all year
@@ -75,47 +77,41 @@ api.get('/expenses/:per/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		}
 	}
 
+
 	// Generate database queries based on parameters
 	if (affairGroupID !== 'all') {
 		mustAffairGroup = { 
 			"prefix": { "AffairGroup": { "value": affairGroupID } } 
 		};
-		aggregator = "Affair";
 	}
 	if (affairID !== 'all') {
 		mustAffair = { 
 			"prefix": { "Affair": { "value": affairID } } 
 		};
-		aggregator = "DepartmentGroup";
 	}
 	if (departmentGroupID !== 'all') {
 		mustDepartmentGroup = { 
 			"prefix": { "DepartmentGroup": { "value": departmentGroupID } } 
 		};
-		aggregator = "Department";
 	}
 	if (departmentID !== 'all') {
 		mustDepartmentGroup = { 
 			"prefix": { "Department": { "value": departmentID } } 
 		};
-		aggregator = "PrimaryFinanceKey";
 	}
 	if (financeKeyID !== 'all') {
 		if (financeKeyID.substring(1,4) === '000') {
 			mustFinanceKey = { 
 				"prefix": { "PrimaryFinanceKey": { "value": financeKeyID } } 
 			};
-			aggregator = "SecondaryFinanceKey";
 		} else if (financeKeyID.substring(2,4) === '00') {
 			mustFinanceKey = { 
 				"prefix": { "SecondaryFinanceKey": { "value": financeKeyID } } 
 			};
-			aggregator = "FinanceKey";
 		} else {
 			mustFinanceKey = { 
 				"prefix": { "FinanceKey": { "value": financeKeyID } } 
 			};
-			aggregator = "Creditor";
 		}
 	}	
 
@@ -207,11 +203,40 @@ api.get('/expenses/:per/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 			            },
 			            // Desired period
 			            "query": {
-			                "prefix": {
-			                   "Date": {
-			                       "value": period
-			                   }
-			                }
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Date": {
+                                            "from": from,
+                                            "to": to
+                                        }
+                                    }
+                                },
+                                // Exclude "Tekjur" Affair
+                                "query": {
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "AffairID": {
+                                                    "gt": "01"
+                                                }
+                                            }
+                                        },
+                                        // Drilldown
+                                        "query": {
+                                            "bool": {
+                                                "must" : [
+                                                    mustAffairGroup,
+                                                    mustAffair,
+                                                    mustDepartmentGroup,
+                                                    mustDepartment,
+                                                    mustFinanceKey
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 			            }
 			        }
 			    }, 
