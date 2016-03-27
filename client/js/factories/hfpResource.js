@@ -128,7 +128,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.showMeTheMoney = function() {
         var deferred = $q.defer();
         var queryURL;
-        if ($factory.getType() === 'expenses') {
+        if (factory.getType() === 'expenses') {
             queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
         } else {
             queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
