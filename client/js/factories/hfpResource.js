@@ -131,7 +131,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
         $http({
             // Fetch the data
             method: 'GET',
-            url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey()
+            //url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + '0' + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + '2521'
+            url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey()
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
@@ -166,6 +167,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
                 }
                 sliceNumber++;
                 sliceNumber %= 8;
+                console.log(newSlice);
                 return newSlice;
             }));
 
