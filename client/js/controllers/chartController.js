@@ -1,10 +1,11 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource) {
+hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource) {
     /*
     *       rootScope variables
     * */
+
     CanvasJS.addCultureInfo("is", {
             digitGroupSeparator: "."
 
@@ -76,12 +77,16 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.max = 100;
 
     // If there are any route params we should parse them
-    if (Object.keys($routeParams).length !== 0) {
-        hfpResource.parseRouteParams();
-    }
-    hfpResource.showMeTheMoney().then(function() {
-        console.log("Inital data fetched");
+    console.log(Object.keys($routeParams).length);
+    hfpResource.parseRouteParams().then(function() {
+        hfpResource.showMeTheMoney().then(function() {
+            console.log("Inital data fetched");
+        });
     });
+
+    $scope.testFunc = function() {
+        $location.path($location.path() + '/3', false, 'AffairGroup', 3);
+    };
 
     $scope.toggleDrawer = function() {
         $("#wrapper").toggleClass("toggled");

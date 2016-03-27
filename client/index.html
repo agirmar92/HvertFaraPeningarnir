@@ -2,6 +2,7 @@
 <html data-framework="angularjs">
 <head>
 	<meta charset="utf-8">
+	<base href="client">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Kópavogsbær | Hvert fara peningarnir</title>
 	<link rel='shortcut icon' href='fav.ico' type='image/x-icon' />
@@ -23,8 +24,52 @@
 <body ng-app="hvertfarapeningarnir">
 
 	<!-- hvertfarapeningarnir -->
-	<div id="wrapper" class="toggled hfp-wrapper" ng-view>
-		<!--views injected here-->
+	<div id="wrapper" class="toggled hfp-wrapper">
+		<!-- sidebar-wrapper -->
+		<div id="sidebar-wrapper" ng-controller="tabsController">
+			<uib-tabset active="activeJustified" justified="true">
+				<uib-tab index="0" heading="Síur">
+					<div role="tab" class="panel-heading">
+						<div class="panel-title">
+							<span>Skoða</span>
+							<div class="btn-group" uib-dropdown>
+								<button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+									<span ng-if="expenses">Gjöld</span> <span ng-if="!expenses">Tekjur</span> <span class="caret"></span>
+								</button>
+								<ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+									<li role="menuitem">
+										<a href="#" ng-click="changeView(true)">Gjöld</a>
+									</li>
+									<li role="menuitem">
+										<a href="#" ng-click="changeView(false)">Tekjur</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}">
+						<div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
+							<span>{{option.label}}</span>
+							<span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
+						</div>
+
+						<div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
+							<span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
+							<span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>
+						</div>
+					</div>
+
+				</uib-tab>
+
+				<uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
+			</uib-tabset>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+		<!-- page-content-wrapper -->
+		<div id="page-content-wrapper" class="container-fluid hfp-content" ng-view></div>
+		<!-- /#page-content-wrapper -->
 	</div>
 	<!-- /#hvertfarapeningarnir -->
 

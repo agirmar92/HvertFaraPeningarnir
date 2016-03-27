@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -135,18 +135,19 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
+            var currLevel = factory.getLevel();
             factory.setSlices(response.slices.map(function(slice) {
                 var cut = 0;
                 var newSlice = {};
-                if (factory.getLevel() === 0) {
+                if (currLevel === 0) {
                     cut = 1;
-                } else if (factory.getLevel() === 1) {
+                } else if (currLevel === 1) {
                     cut = 2;
-                } else if (factory.getLevel() === 2) {
+                } else if (currLevel === 2) {
                     cut = 3;
-                } else if (factory.getLevel() === 3) {
+                } else if (currLevel === 3) {
                     cut = 6;
-                } else if (factory.getLevel() > 6) {
+                } else if (currLevel > 6) {
                     newSlice = {
                         label: slice.key,
                         value: slice.sum_amount.value,
@@ -223,8 +224,46 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
         return newStr;
     };
 
+    /*
+    *       Goes through the route parameters and sets the inital state of the app
+    * */
     factory.parseRouteParams = function() {
-        console.log($routeParams);
+        var deferred = $q.defer();
+
+        console.log("parsing");
+        console.log("currLeveL: " + factory.getLevel());
+
+        var paramCounter = -3;
+        for (param in $routeParams) {
+            var value = $routeParams[param];
+            if (value === 'n') {
+                value = 'all';
+            } else if (param === 'Level') {
+                value = parseInt(value);
+            }
+            console.log(param + ": " + value);
+            if (param === 'PFinanceKey' || param === 'SFinanceKey') {
+                param = 'FinanceKey';
+            }
+            factory['set' + param](value);
+            paramCounter++;
+        }
+        //factory.setLevel($routeParams['Level']);
+        console.log("currLeveL: " + factory.getLevel());
+        deferred.resolve();
+
+        // Set others to default
+        /*while (paramCounter < 5) {
+            var funcName = 'set' + LEVELS[paramCounter];
+            if (paramCounter === 4) {
+                funcName = 'setFinanceKey';
+            }
+            console.log(funcName + '(\'all\')');
+            factory[funcName]('all');
+            paramCounter++;
+        }*/
+
+        return deferred.promise;
     };
 
     /*
@@ -309,25 +348,40 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
             },
             callbacks: {
                 onClickSegment: function(a) {
-                    console.log("Segment clicked! See the console for all data passed to the click handler.");
                     factory.setClickedSlice(a.data.key);
                     var id = a.data.key;
+                    var field = "set";
+                    console.log("yoyo: " + id);
                     if (factory.getLevel() === 0) {
-                        factory.setAffairGroup(id);
+                        //factory.setAffairGroup(id);
+                        field += 'AffairGroup';
                     } else if (factory.getLevel() === 1) {
-                        factory.setAffair(id);
+                        //factory.setAffair(id);
+                        field += 'Affair';
                     } else if (factory.getLevel() === 2) {
-                        factory.setDepartmentGroup(id);
+                        //factory.setDepartmentGroup(id);
+                        field += 'DepartmentGroup';
                     } else if (factory.getLevel() === 3) {
-                        factory.setDepartment(id);
+                        //factory.setDepartment(id);
+                        field += 'Department';
                     } else if (factory.getLevel() > 3 && factory.getLevel() < 7) {
-                        factory.setFinanceKey(id);
+                        //factory.setFinanceKey(id);
+                        field += 'FinanceKey';
                     } else if (factory.getLevel() === 7) {
                         console.log('Show the creditors!!!');
                     }
                     if (factory.getLevel() < 8) {
                         factory.setLevel(factory.getLevel() + 1);
-                        factory.showMeTheMoney();
+
+                        // Create a new path with a incremented level
+                        var newPathPrefix = $location.path().split('/');
+                        newPathPrefix[3]++;
+                        newPathPrefix = replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+                        // Change the path
+                        $rootScope.$apply(function(){
+                            $location.path(newPathPrefix + id + '/', false, field, id);
+                        });
                     }
                 }
             },
@@ -357,6 +411,23 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, INITIAL_VALUES, 
                 }
             }
         });
+    };
+
+    /*
+    *       Helper method that replaces all commas in the given string with a slash
+    * */
+    var replaceAllCommasWithSlashes = function(stringToFix) {
+        var changed = true;
+
+        do {
+            var beforeReplace = stringToFix;
+            stringToFix = stringToFix.replace(',', '/');
+            if (beforeReplace === stringToFix) {
+                changed = false;
+            }
+        } while (changed);
+
+        return stringToFix
     };
 
     return factory;

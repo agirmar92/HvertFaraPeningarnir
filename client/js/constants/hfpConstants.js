@@ -44,15 +44,15 @@ hfpApp.constant('QUARTERS', [
     "Fjórði"
 ]);
 hfpApp.constant('INITIAL_VALUES', {
-    'TYPE': 'Expenses',
+    'TYPE': 'expenses',
     'PERIOD': '2014-0',
     'LEVEL': 0
 });
 hfpApp.constant('LEVELS', {
     0: 'AffairGroup',
     1: 'Affair',
-    2: 'DivisionGroup',
-    3: 'Division',
+    2: 'DepartmentGroup',
+    3: 'Department',
     4: 'PrimaryFinanceKey',
     5: 'SecondaryFinanceKey',
     6: 'FinanceKey',
