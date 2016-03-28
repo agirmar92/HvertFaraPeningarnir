@@ -1,19 +1,19 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, hfpResource) {
+hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, hfpResource, $location, INITIAL_VALUES) {
     // true = view expenses ; false = view income
-    $scope.expenses = true;
+    $rootScope.expenses = true;
     $scope.expandedOption = 0;
 
     $scope.changeView = function(toExpenses) {
-        $scope.expenses = toExpenses;
+        $rootScope.expenses = toExpenses;
         if(toExpenses) {
-            hfpResource.setType('expenses');
+            $location.path('/' + INITIAL_VALUES.TYPE + '/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/', false);
         } else {
-            hfpResource.setType('income');
+            //$location.path('/' + INITIAL_VALUES.TYPE + '/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/', false);
+            $location.path('/income/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
         }
-        hfpResource.showMeTheMoney();
     };
 
     /*

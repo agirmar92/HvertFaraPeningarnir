@@ -46,7 +46,8 @@ hfpApp.constant('QUARTERS', [
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'expenses',
     'PERIOD': '2014-0',
-    'LEVEL': 0
+    'LEVEL_EX': 0,
+    'LEVEL_IN': 3
 });
 hfpApp.constant('LEVELS', {
     0: 'AffairGroup',
@@ -57,5 +58,24 @@ hfpApp.constant('LEVELS', {
     5: 'SecondaryFinanceKey',
     6: 'FinanceKey',
     7: 'Creditors'
+});
+hfpApp.constant('URL_PARAMS', {
+    "expenses" : [
+        'Type',
+        'Period',
+        'Level',
+        'AffairGroup',
+        'Affair',
+        'DepartmentGroup',
+        'Department',
+        'FinanceKey'
+    ],
+    "income" : [
+        'Type',
+        'Period',
+        'Level',
+        'Department',
+        'FinanceKey'
+    ]
 });
 

@@ -286,13 +286,13 @@ api.get('/income/:per/:lvl/:dep/:fin', (req, res) => {
     const financeKeyID        = req.params.fin;
     let mustDepartment        = {};
     let mustFinanceKey        = {};
-    let aggregator            = aggs[parseInt(level) + 3];
+    let aggregator            = aggs[parseInt(level)];
 
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
-    console.log(aggregator);
-    console.log(level);
+    console.log(departmentID);
+    console.log(financeKeyID);
 
     if (departmentID !== 'all') {
         mustDepartment = {
@@ -415,7 +415,7 @@ api.get('/income/:per/:lvl/:dep/:fin', (req, res) => {
                                                 // only "Tekjur" Affair
                                                 "term": {
                                                     "Affair": {
-                                                        "value": "Tekjur"
+                                                        "value": "00-Tekjur"
                                                     }
                                                 }
                                             },
@@ -437,7 +437,9 @@ api.get('/income/:per/:lvl/:dep/:fin', (req, res) => {
 		}).then((docum) => {
 			// Store the response and convert to absolute value
 			const totalCredit = docum.aggregations.total_amount.value;
-			res.status(200).send({ slices, totalCredit, totalDebit });
+            const respObj = { slices, totalCredit, totalDebit };
+            console.log(respObj);
+			res.status(200).send(respObj);
 		}, (err) => {
 			console.log(err);
 			res.status(500).send('Server error\n');

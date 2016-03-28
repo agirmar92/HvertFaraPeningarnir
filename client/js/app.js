@@ -10,6 +10,7 @@ hfpApp.config(['$routeProvider',
 
 		$routeProvider
 			// Configuring optional routing parameters. Type, period and all of the levels.
+		// TODO: try to find classier solution
 			.when('/admin', {
 				templateUrl: 'views/adminLoginView.html'
 			})
@@ -18,6 +19,10 @@ hfpApp.config(['$routeProvider',
 				controller: 'chartController'
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
+				templateUrl: 'views/chartView.html',
+				controller: 'chartController'
+			})
+			.when('/:income/:Period/:Level/:Department/:FinanceKey/', {
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
@@ -31,6 +36,7 @@ hfpApp.config(['$routeProvider',
 *		Addition to be able to prevent reload of page when URL changes
 * */
 hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
+	console.log('inside run');
 	var original = $location.path;
 	$location.path = function (path, reload, field, id) {
 		if (reload === false) {
@@ -40,7 +46,8 @@ hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
 				un();
 
 				console.log(field + ": " + id);
-				hfpResource[field](id);
+				//hfpResource[field](id);
+				hfpResource.parseRouteParams($location.path().split('/'));
 				hfpResource.showMeTheMoney();
 			});
 		}

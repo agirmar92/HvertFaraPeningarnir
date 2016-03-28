@@ -76,7 +76,8 @@
     <!-- progress-meter -->
     <div class="col-xs-4 hfp-div hfp-meter">
         <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-        <p id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+        <p ng-if="expenses" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+        <p ng-if="!expenses" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
     </div>
     <!-- /#progress-meter -->
 

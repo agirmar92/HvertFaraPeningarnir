@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, URL_PARAMS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -9,7 +9,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Private properties
     * */
-    var currLevel = INITIAL_VALUES.LEVEL;
+    var currLevelEx = INITIAL_VALUES.LEVEL_EX;
+    var currLevelIn = INITIAL_VALUES.LEVEL_IN;
     var type = INITIAL_VALUES.TYPE;
     var period = INITIAL_VALUES.PERIOD;
 
@@ -17,6 +18,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var totalCredit = 0;
     var totalDebit = 0;
     var totalC = 32321545934;
+    var totalD = 18529125975;
     var dynamic = 100;
     var clickedSlice = "";
     var affairGroup = "all";
@@ -29,7 +31,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Getters
     * */
     factory.getLevel = function() {
-        return currLevel;
+        if (factory.getType() === 'income') {
+            return currLevelIn;
+        } else {
+            return currLevelEx;
+        }
     };
     factory.getType = function() {
         return type;
@@ -48,6 +54,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getTotalC = function() {
         return totalC;
+    };
+    factory.getTotalD = function() {
+        return totalD;
     };
     factory.getDynamic = function() {
         return dynamic;
@@ -75,7 +84,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Setters
     * */
     factory.setLevel = function(newLevel) {
-        currLevel = newLevel;
+        if (factory.getType() === 'income') {
+            currLevelIn = newLevel;
+        } else {
+            currLevelEx = newLevel;
+        }
     };
     factory.setType = function(newType) {
         type = newType;
@@ -94,6 +107,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.setTotalC = function(newTotalC) {
         totalC = newTotalC;
+    };
+    factory.setTotalD = function(newTotalD) {
+        totalD = newTotalD;
     };
     factory.setDynamic = function(newDynamic) {
         dynamic = newDynamic;
@@ -142,19 +158,20 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
-            var currLevel = factory.getLevel();
+            var currLvl = factory.getLevel();
+            console.log('currLvl: ' + currLvl);
             factory.setSlices(response.slices.map(function(slice) {
                 var cut = 0;
                 var newSlice = {};
-                if (currLevel === 0) {
+                if (currLvl === 0) {
                     cut = 1;
-                } else if (currLevel === 1) {
+                } else if (currLvl === 1) {
                     cut = 2;
-                } else if (currLevel === 2) {
+                } else if (currLvl === 2) {
                     cut = 3;
-                } else if (currLevel === 3) {
+                } else if (currLvl === 3) {
                     cut = 6;
-                } else if (currLevel > 6) {
+                } else if (currLvl > 6) {
                     newSlice = {
                         label: slice.key,
                         value: slice.sum_amount.value,
@@ -164,7 +181,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 } else {
                     cut = 4;
                 }
-                if (factory.getLevel() < 7) {
+                if (currLvl < 7) {
                     newSlice = {
                         label: slice.key.substring(cut + 1),
                         value: slice.sum_amount.value,
@@ -190,13 +207,25 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Updating bar chart data
             $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
             $rootScope.chart.options.data[0].dataPoints[1].y = factory.getTotalDebit();
-            $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
 
-            // Change the percentage number
-            factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
+            
+            if (factory.getType() === 'expenses') {
+                $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
+                // Change the percentage number
+                factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
 
-            // Change total credit to have dots every the digits
-            factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
+                // Change total credit to have dots every the digits
+                factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
+            } else {
+                $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalDebit() - factory.getTotalCredit();
+                // Change the percentage number
+                factory.setDynamic((factory.getTotalDebit() / factory.getTotalD() * 100).toFixed(1));
+
+                // Change total debit to have dots every the digits
+                factory.setTotalDebit(factory.toNrWithDots(factory.getTotalDebit()));
+            }
+
+            
 
             // Update the root variables
             changeRootVariables();
@@ -234,15 +263,19 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Goes through the route parameters and sets the inital state of the app
     * */
-    factory.parseRouteParams = function() {
-        var deferred = $q.defer();
+    factory.parseRouteParams = function(params) {
+        //var deferred = $q.defer();
 
         console.log("parsing");
-        console.log("currLeveL: " + factory.getLevel());
 
         //var paramCounter = -3;
-        for (var param in $routeParams) {
-            var value = $routeParams[param];
+        for (var param in params) {
+            var typ = factory.getType();
+            var value = params[param];
+            param = URL_PARAMS[typ][parseInt(param)-1];
+            if (param === undefined) {
+                continue;
+            }
             if (value === 'n') {
                 value = 'all';
             } else if (param === 'Level') {
@@ -251,10 +284,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             console.log(param + ": " + value);
             factory['set' + param](value);
             //paramCounter++;
+
         }
         //factory.setLevel($routeParams['Level']);
-        console.log("currLeveL: " + factory.getLevel());
-        deferred.resolve();
 
         /*// Set others to default
         while (paramCounter < 5) {
@@ -266,8 +298,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             factory[funcName]('all');
             paramCounter++;
         }*/
-
-        return deferred.promise;
     };
 
     /*
@@ -356,35 +386,40 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     var id = a.data.key;
                     var field = "set";
                     var key;
-                    console.log("yoyo: " + id);
-                    if (factory.getLevel() === 0) {
+                    var lvl = factory.getLevel();
+                    console.log("lvl: " + lvl);
+                    if (parseInt(lvl) === 0) {
                         //factory.setAffairGroup(id);
                         field += 'AffairGroup';
                         key = 0;
-                    } else if (factory.getLevel() === 1) {
+                    } else if (lvl === 1) {
                         //factory.setAffair(id);
                         field += 'Affair';
                         key = 1;
-                    } else if (factory.getLevel() === 2) {
+                    } else if (lvl === 2) {
                         //factory.setDepartmentGroup(id);
                         field += 'DepartmentGroup';
                         key = 2;
-                    } else if (factory.getLevel() === 3) {
+                    } else if (lvl === 3) {
                         //factory.setDepartment(id);
                         field += 'Department';
                         key = 3;
-                    } else if (factory.getLevel() > 3 && factory.getLevel() < 7) {
+                    } else if (lvl > 3 && lvl < 7) {
                         //factory.setFinanceKey(id);
                         field += 'FinanceKey';
                         key = 4;
-                    } else if (factory.getLevel() === 7) {
-                        console.log('Show the creditors!!!');
+                    } else if (lvl === 7) {
+                        console.log('Þú ert kominn niður á botninn.');
                     }
-                    if (factory.getLevel() < 8) {
-                        factory.setLevel(factory.getLevel() + 1);
+                    if (lvl < 7) {
+                        //factory.setLevel(factory.getLevel() + 1);
 
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
+                        var typ = factory.getType();
+                        if (typ === 'income') {
+                            key -= 3;
+                        }
                         newPathPrefix[3]++;
                         newPathPrefix[4 + key] = id;
                         newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
