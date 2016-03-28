@@ -320,7 +320,7 @@ h1, h2 {
     transition: all 0.5s ease;
 }
 
-.option-choices.:hover {
+.option-choices:hover {
     background-color: rgb(10, 10, 10);
 }
 
@@ -419,3 +419,33 @@ span.option-selected {
 }
 
 /* TODO, support screens down to 768pixels wide */
+
+/*
+    Login window syle below
+*/
+.hfp-login-panel {
+    max-width: 350px;
+    width: 95%;
+    height: 50%;
+    margin: auto;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background-color: rgb(75, 75, 75);
+    background-color: rgba(75, 75, 75, 0.8);
+}
+
+.login-input-div {
+    width: 80%;
+    margin: auto;
+}
+
+.login-input {
+    background: transparent;
+}
+
+.hfp-login-button {
+    background: yellow;
+    width: 100px;
+    margin:auto;
+}
