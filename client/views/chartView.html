@@ -6,8 +6,8 @@
 
         <button class="btn btn-default hfp-btn glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
         <button class="btn btn-default hfp-btn glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
-        <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click="testFunc()"></button>
-        <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click="testFunc()"></button>
+        <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click=""></button>
+        <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click=""></button>
 
         <!-- calendar-dropdown -->
         <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
@@ -66,8 +66,8 @@
 
     <!-- title -->
     <div class="col-xs-4 hfp-div hfp-title hfp-title">
-        <div>
-            <a class="header-link" href="/HvertFaraPeningarnir/client">
+        <div ng-click="resetApp()">
+            <a class="header-link" href="javascript: void(0)">
                 <h2 id="main-title">Hvert fara peningarnir?</h2>
                 <h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
             </a>
@@ -78,7 +78,8 @@
     <!-- progress-meter -->
     <div class="col-xs-4 hfp-div hfp-meter">
         <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-        <p id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+        <p ng-if="expenses" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+        <p ng-if="!expenses" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
     </div>
     <!-- /#progress-meter -->
 

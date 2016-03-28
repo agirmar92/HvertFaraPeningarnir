@@ -373,7 +373,7 @@ h1, h2 {
     display: none;
 }
 
-.header-link, .header-link:hover {
+.header-link, .header-link:hover, .header-link:visited, .header-link:active, .header-link:link {
     color: inherit;
     text-decoration: none;
 }
@@ -396,9 +396,9 @@ h1, h2 {
     width: 100%;
 }
 
-span.option-selected {
+/*span.option-selected {
     left: 30%;
-}
+}*/
 
 @media(max-width:1089px) {
     .hfp-header {

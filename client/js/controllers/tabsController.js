@@ -1,9 +1,9 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, $location, hfpResource, tabResource, LEVELS) {
+hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, $location, hfpResource, tabResource, LEVELS, INITIAL_VALUES) {
     // true = view expenses ; false = view income
-    $scope.expenses = true;
+    $rootScope.expenses = true;
     $rootScope.expandedOption = 0;
     $rootScope.options = [
         {
@@ -68,21 +68,8 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     ];
 
     $scope.changeView = function(toExpenses) {
-        $scope.expenses = toExpenses;
-        if(toExpenses) {
-            hfpResource.setType('expenses');
-        } else {
-            hfpResource.setType('income');
-        }
-        hfpResource.showMeTheMoney();
-    };
-
-    /*
-    *       Function that expands the option with the given id and closes the currently expanded (if any).
-    *       If the option to expand is already expanded, the function collapses it.
-    * */
-    $scope.toggleOption = function(optionId) {
-        tabResource.toggleOption(optionId);
+        $rootScope.expenses = !$rootScope.expenses;
+        hfpResource.resetApp();
     };
 
     /*
@@ -90,11 +77,24 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     *       Expand the option's choices if not already expanded.
     * */
     $scope.optionClicked = function(optionId) {
-        var newPathPrefix = $location.path().split('/');
-        newPathPrefix[3] = optionId;
+        var paramPosition = Math.min(4, optionId);
+        if (!$rootScope.expenses) {
+            paramPosition -= 3;
+        }
 
-        hfpResource.setLevel(optionId);
-        tabResource.optionClicked(optionId);
+        if (hfpResource.getLevel() === optionId) {
+            // Simply expand/collapse the option
+            tabResource.optionClicked(optionId);
+        } else {
+            // Expand the clicked option and change to it's corresponding level
+            var newPathPrefix = $location.path().split('/');
+            newPathPrefix[3] = optionId;
+            if ($rootScope.options[optionId].currChoice !== -1) {
+                newPathPrefix[4 + paramPosition] = 'n';
+                $rootScope.options[optionId].currChoice = -1;
+            }
+            $location.path(hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString()), false);
+        }
     };
 
     /*
@@ -102,40 +102,44 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     *       Either makes the choice chosen, or un-chosen (if it already is).
     * */
     $scope.choiceClicked = function(option, choice) {
-        var newFieldValue;
-        var level = option;
-        var levelName = LEVELS[level];
-        if (option > 3) {
-            levelName = 'FinanceKey';
-            level = 4;
+        if (option === 7) {
+            console.log("creditor selected, doing nothing.");
+            return;
         }
-        var newPathPrefix = $location.path().split('/');
-        var nextLevel = tabResource.choiceClicked(option, choice);
 
-        if (nextLevel !== -1) {
+        var paramPosition = Math.min(4, option);
+        if (!$rootScope.expenses) {
+            paramPosition -= 3;
+        }
+        
+        var nextLevel = option + 1;
+        var newFieldValue;
+        var newPathPrefix = $location.path().split('/');
+
+        if (!$rootScope.options[option].choices[choice].chosen) {
             // Drill down
             newFieldValue = $rootScope.options[option].choices[choice].key;
-            hfpResource.setLevel(nextLevel);
+
+            while (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) {
+                nextLevel++;
+            }
 
             newPathPrefix[3] = nextLevel;
         } else {
             // Drill up
             if (option === 5) {
-                newFieldValue = newPathPrefix[4 + level].substr(0, 1) + '000';
+                newFieldValue = newPathPrefix[4 + paramPosition].substr(0, 1) + '000';
             } else if (option === 6) {
-                newFieldValue = newPathPrefix[4 + level].substr(0, 2) + '00';
+                newFieldValue = newPathPrefix[4 + paramPosition].substr(0, 2) + '00';
             } else {
                 newFieldValue = 'n';
             }
-            hfpResource.setLevel(option);
-
-            newPathPrefix[3] = hfpResource.getLevel();
         }
 
-        newPathPrefix[4 + level] = newFieldValue;
+        newPathPrefix[4 + paramPosition] = newFieldValue;
         newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
         // Change the path
-        $location.path(newPathPrefix, false, 'set' + levelName, newFieldValue);
+        $location.path(newPathPrefix, false, tabResource.choiceClicked, option, choice, nextLevel);
     };
 });

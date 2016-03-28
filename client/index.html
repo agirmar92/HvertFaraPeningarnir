@@ -48,7 +48,7 @@
 						</div>
 					</div>
 
-					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}">
+					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || expenses">
 						<div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
 							<span>{{option.label}}</span>
 							<span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>

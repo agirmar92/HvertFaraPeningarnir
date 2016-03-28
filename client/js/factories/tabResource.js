@@ -6,10 +6,9 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
     var factory = {};
 
     /*
-    *       Animates the choice clicked and returns true if the choice is about to be chosen
-    *       and false if it is about to be un-chosen
+    *       Animates the choice clicked in the sidebar
     * */
-    factory.choiceClicked = function(option, choice) {
+    factory.choiceClicked = function(option, choice, nextLevel) {
         // If another choice is already chosen, un-choose it
         if ($rootScope.options[option].currChoice !== choice && $rootScope.options[option].currChoice !== -1) {
             $rootScope.options[option].choices[$rootScope.options[option].currChoice].chosen = false;
@@ -24,19 +23,11 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
         } else {
             $rootScope.options[option].currChoice = -1;
         }
-        // Expand/collapse the option and open the next that is unlocked
-        factory.toggleOption(option);
-        if ($rootScope.options[option].choices[choice].chosen) {
-            var i = option + 1;
-            while (i < 8 && $rootScope.options[i].currChoice !== -1) {
-                i++;
-            }
-            factory.toggleOption(i);
-            return i;
-        }
-        return -1;
     };
 
+    /*
+    *       Animates the option clicked in the sidebar
+    * */
     factory.toggleOption = function(optionId) {
         if (optionId < 8) {
             if ($rootScope.expandedOption === optionId) {
@@ -55,11 +46,14 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
         }
     };
 
+    /*
+    *       TODO: I think this is unused. Check it out.
+    * */
     factory.optionClicked = function(optionId) {
         factory.toggleOption(optionId);
 
         if ($rootScope.options[optionId].currChoice !== -1) {
-            $rootScope.options[optionId].choices[$rootScope.options[optionId].currChoice].chosen = false;
+            //$rootScope.options[optionId].choices[$rootScope.options[optionId].currChoice].chosen = false;
             $rootScope.options[optionId].currChoice = -1;
         }
     };
