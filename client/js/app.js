@@ -17,7 +17,7 @@ hfpApp.config(['$routeProvider',
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
+			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
@@ -39,6 +39,9 @@ hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
 				$route.current = lastRoute;
 				un();
 
+				if (id === 'n') {
+					id = 'all';
+				}
 				console.log(field + ": " + id);
 				hfpResource[field](id);
 				hfpResource.showMeTheMoney();

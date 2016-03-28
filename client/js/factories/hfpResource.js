@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, tabResource, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -14,6 +14,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var period = INITIAL_VALUES.PERIOD;
 
     var slices = [];
+    var choices = [];
     var totalCredit = 0;
     var totalDebit = 0;
     var totalC = 32321545934;
@@ -39,6 +40,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getSlices = function() {
         return slices;
+    };
+    factory.getChoices = function() {
+        return choices;
     };
     factory.getTotalCredit = function() {
         return totalCredit;
@@ -85,6 +89,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.setSlices = function(newSlices) {
         slices = newSlices;
+    };
+    factory.setChoices= function(newChoices) {
+        choices = newChoices;
     };
     factory.setTotalCredit = function(newTotalCredit) {
         totalCredit = newTotalCredit;
@@ -137,13 +144,73 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $http({
             // Fetch the data
             method: 'GET',
-            //url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + '0' + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + '2521'
             url: queryURL
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
             var currLevel = factory.getLevel();
-            factory.setSlices(response.slices.map(function(slice) {
+            /*factory.setChoices(reponse.slices.map(function(slice) {
+                var newChoice = {
+                    choiceId: sliceNumber,
+                    content: slice.key,
+                };
+            });
+            sliceNumber = 0;*/
+
+            var newSlices = [];
+            var newChoices = [];
+            response.slices.map(function(slice) {
+                var cut = 0;
+                var newSlice = {};
+                var newChoice = {};
+                if (currLevel === 0) {
+                    cut = 1;
+                } else if (currLevel === 1) {
+                    cut = 2;
+                } else if (currLevel === 2) {
+                    cut = 3;
+                } else if (currLevel === 3) {
+                    cut = 6;
+                } else if (currLevel > 6) {
+                    newSlice = {
+                        label: slice.key,
+                        value: slice.sum_amount.value,
+                        color: COLORS[sliceNumber],
+                        key: slice.key
+                    };
+                    newChoice = {
+                        choiceId: sliceNumber,
+                        content: slice.key,
+                        chosen: false,
+                        key: slice.key
+                    };
+                } else {
+                    cut = 4;
+                }
+                if (factory.getLevel() < 7) {
+                    newSlice = {
+                        label: slice.key.substring(cut + 1),
+                        value: slice.sum_amount.value,
+                        color: COLORS[sliceNumber],
+                        key: slice.key.substring(0,cut)
+                    };
+                    newChoice = {
+                        choiceId: sliceNumber,
+                        content: slice.key.substring(cut + 1),
+                        chosen: false,
+                        key: slice.key.substring(0,cut)
+                    };
+                }
+                sliceNumber++;
+                sliceNumber %= 8;
+                newSlices.push(newSlice);
+                newChoices.push(newChoice);
+            });
+
+            factory.setSlices(newSlices);
+            factory.setChoices(newChoices);
+
+            /*factory.setSlices(response.slices.map(function(slice) {
                 var cut = 0;
                 var newSlice = {};
                 if (currLevel === 0) {
@@ -175,7 +242,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 sliceNumber++;
                 sliceNumber %= 8;
                 return newSlice;
-            }));
+            }));*/
 
             // Change the total amounts
             factory.setTotalCredit(response.totalCredit);
@@ -240,7 +307,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         console.log("parsing");
         console.log("currLeveL: " + factory.getLevel());
 
-        //var paramCounter = -3;
         for (var param in $routeParams) {
             var value = $routeParams[param];
             if (value === 'n') {
@@ -250,22 +316,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
             console.log(param + ": " + value);
             factory['set' + param](value);
-            //paramCounter++;
         }
-        //factory.setLevel($routeParams['Level']);
         console.log("currLeveL: " + factory.getLevel());
         deferred.resolve();
-
-        /*// Set others to default
-        while (paramCounter < 5) {
-            var funcName = 'set' + LEVELS[paramCounter];
-            if (paramCounter === 4) {
-                funcName = 'setFinanceKey';
-            }
-            console.log(funcName + '(\'all\')');
-            factory[funcName]('all');
-            paramCounter++;
-        }*/
 
         return deferred.promise;
     };
@@ -282,6 +335,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalCredit = factory.getTotalCredit();
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
+        $rootScope.options[currLevel].choices = factory.getChoices();
 
         // Recreate the bar chart with a nice animation to hide the ugly transition
         $("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
@@ -389,6 +443,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         newPathPrefix[4 + key] = id;
                         newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
+                        // fetch the equivalent choice in the sidebar and select it
+                        var option = factory.getLevel() - 1;
+                        var eqChoice = factory.searchChoice(id, $rootScope.options[option].choices);
+
+                        tabResource.choiceClicked(option, eqChoice.choiceId);
+
                         // Change the path
                         $rootScope.$apply(function(){
                             $location.path(newPathPrefix, false, field, id);
@@ -439,6 +499,14 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         } while (changed);
 
         return stringToFix;
+    };
+
+    factory.searchChoice = function (myKey, myArray) {
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].key === myKey) {
+                return myArray[i];
+            }
+        }
     };
 
     return factory;
