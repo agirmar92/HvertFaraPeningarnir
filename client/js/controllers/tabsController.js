@@ -1,240 +1,99 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, hfpResource) {
+hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, $location, hfpResource, tabResource, LEVELS, INITIAL_VALUES) {
     // true = view expenses ; false = view income
-    $scope.expenses = true;
-    $scope.expandedOption = 0;
-
-    $scope.changeView = function(toExpenses) {
-        $scope.expenses = toExpenses;
-        if(toExpenses) {
-            hfpResource.setType('expenses');
-        } else {
-            hfpResource.setType('income');
-        }
-        hfpResource.showMeTheMoney();
-    };
-
-    /*
-    *       Function that expands the option with the given id and closes the currently expanded (if any).
-    *       If the option to expand is already expanded, the function collapses it.
-    * */
-    $scope.toggleOption = function(optionId) {
-        if (optionId < 8) {
-            if ($scope.expandedOption === optionId) {
-                // Collapse the option
-                $scope.options[optionId].open = false;
-                $scope.expandedOption = -1;
-            } else {
-                // Expand the option
-                if ($scope.expandedOption !== -1) {
-                    // Collapse currently open option
-                    $scope.options[$scope.expandedOption].open = false;
-                }
-                $scope.expandedOption = optionId;
-                $scope.options[$scope.expandedOption].open = true;
-            }
-        }
-    };
-
-    $scope.options = [
+    $rootScope.expenses = true;
+    $rootScope.expandedOption = 0;
+    $rootScope.options = [
         {
             label: "Yfirmálaflokkar",
             optionId: 0,
             open: true,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Menningarmál",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Menntamál",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Umhverfismál",
-                    chosen: false
-                }
-            ]
+            /*
+             *       choices = Object(choiceId, content, chosen, key)
+             * */
+            choices: []
         },
         {
             label: "Málaflokkar",
             optionId: 1,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Fræðslumál",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Eignasjóður",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Hreinlætismál",
-                    chosen: false
-                }
-            ]
+            choices: []
         },
         {
             label: "Millideildir",
             optionId: 2,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Grunnskólar",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Leikskólar",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Elliheimili",
-                    chosen: false
-                }
-            ]
+            choices: []
         },
         {
             label: "Deildir",
             optionId: 3,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Smáraskóli",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Kársnesskóli",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Leikskólinn Hvammur",
-                    chosen: false
-                }
-            ]
+            choices: []
         },
         {
             label: "Yfirfjárhagslyklar",
             optionId: 4,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "1000-Starfsmannakostnaður",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "4000-Þjónustukaup",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "7000-Fjármagnsliðir",
-                    chosen: false
-                }
-            ]
+            choices: []
         },
         {
             label: "Millifjárhagslyklar",
             optionId: 5,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Önnur vörukaup",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Þjónusta",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Eitthvað",
-                    chosen: false
-                }
-            ]
+            choices: []
         },
         {
             label: "Fjárhagslyklar",
             optionId: 6,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Derka",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Blabla",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Klósettpappír",
-                    chosen: false
-                }
-            ]
+            choices: []
         },
         {
             label: "Lánadrottnar",
             optionId: 7,
             open: false,
             currChoice: -1,
-            choices: [
-                {
-                    choiceId: 0,
-                    content: "Strætó",
-                    chosen: false
-                },
-                {
-                    choiceId: 1,
-                    content: "Vodafone",
-                    chosen: false
-                },
-                {
-                    choiceId: 2,
-                    content: "Goldfinger",
-                    chosen: false
-                }
-            ]
+            choices: []
         }
     ];
+
+    $scope.changeView = function(toExpenses) {
+        $rootScope.expenses = !$rootScope.expenses;
+        hfpResource.resetApp();
+    };
 
     /*
     *       Option with the id [id] has been clicked.
     *       Expand the option's choices if not already expanded.
     * */
-    $scope.optionClicked = function(id) {
-        $scope.toggleOption(id);
+    $scope.optionClicked = function(optionId) {
+        var paramPosition = Math.min(4, optionId);
+        if (!$rootScope.expenses) {
+            paramPosition -= 3;
+        }
 
-        if ($scope.options[id].currChoice !== -1) {
-            $scope.options[id].choices[$scope.options[id].currChoice].chosen = false;
-            $scope.options[id].currChoice = -1;
+        if (hfpResource.getLevel() === optionId) {
+            // Simply expand/collapse the option
+            tabResource.optionClicked(optionId);
+        } else {
+            // Expand the clicked option and change to it's corresponding level
+            var newPathPrefix = $location.path().split('/');
+            newPathPrefix[3] = optionId;
+            if ($rootScope.options[optionId].currChoice !== -1) {
+                newPathPrefix[4 + paramPosition] = 'n';
+                $rootScope.options[optionId].currChoice = -1;
+            }
+            $location.path(hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString()), false);
         }
     };
 
@@ -243,28 +102,44 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     *       Either makes the choice chosen, or un-chosen (if it already is).
     * */
     $scope.choiceClicked = function(option, choice) {
-        // If another choice is already chosen, un-choose it
-        if ($scope.options[option].currChoice !== choice && $scope.options[option].currChoice !== -1) {
-            $scope.options[option].choices[$scope.options[option].currChoice].chosen = false;
+        if (option === 7) {
+            console.log("creditor selected, doing nothing.");
+            return;
         }
 
-        // Toggle the choice to be either chosen or un-chosen
-        $scope.options[option].choices[choice].chosen = !$scope.options[option].choices[choice].chosen;
-
-        // Update the current choice for the option
-        if ($scope.options[option].choices[choice].chosen) {
-            $scope.options[option].currChoice = choice;
-        } else {
-            $scope.options[option].currChoice = -1;
+        var paramPosition = Math.min(4, option);
+        if (!$rootScope.expenses) {
+            paramPosition -= 3;
         }
-        // Expand/collapse the option and open the next that is unlocked
-        $scope.toggleOption(option);
-        if ($scope.options[option].choices[choice].chosen) {
-            var i = option + 1;
-            while (i < 8 && $scope.options[i].currChoice !== -1) {
-                i++;
+        
+        var nextLevel = option + 1;
+        var newFieldValue;
+        var newPathPrefix = $location.path().split('/');
+
+        if (!$rootScope.options[option].choices[choice].chosen) {
+            // Drill down
+            newFieldValue = $rootScope.options[option].choices[choice].key;
+
+            while (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) {
+                nextLevel++;
             }
-            $scope.toggleOption(i);
+
+            newPathPrefix[3] = nextLevel;
+        } else {
+            // Drill up
+            if (option === 5) {
+                newFieldValue = newPathPrefix[4 + paramPosition].substr(0, 1) + '000';
+            } else if (option === 6) {
+                newFieldValue = newPathPrefix[4 + paramPosition].substr(0, 2) + '00';
+            } else {
+                newFieldValue = 'n';
+            }
         }
+
+        newPathPrefix[4 + paramPosition] = newFieldValue;
+        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+        // Change the path
+        $location.path(newPathPrefix, false, tabResource.choiceClicked, option, choice, nextLevel);
     };
 });

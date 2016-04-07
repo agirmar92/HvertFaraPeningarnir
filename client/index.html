@@ -48,7 +48,7 @@
 						</div>
 					</div>
 
-					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}">
+					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || expenses">
 						<div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
 							<span>{{option.label}}</span>
 							<span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
@@ -89,6 +89,7 @@
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/constants/hfpConstants.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/factories/hfpResource.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/factories/tabResource.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/calendarController.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/chartController.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/tabsController.js" type="text/javascript" charset="utf-8"></script>

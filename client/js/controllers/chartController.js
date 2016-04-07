@@ -5,6 +5,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     /*
     *       rootScope variables
     * */
+    console.log('------------------' + hfpResource.getType());
 
     CanvasJS.addCultureInfo("is", {
             digitGroupSeparator: "."
@@ -36,9 +37,17 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                 contentFormatter: function(e) {
                     var pre = '';
                     if (e.entries[0].dataPoint.label === 'Útgjöld') {
-                        pre = ' (Kakan)';
+                        if (hfpResource.getType() === 'income') {
+                            pre = ' (Gjöld)';
+                        } else {
+                            pre = ' (Kakan)';
+                        }
                     } else if (e.entries[0].dataPoint.label === 'Innkoma') {
-                        pre = '<br>(Sértekjur, leiðréttingar og millifærslur)';
+                        if (hfpResource.getType() === 'income') {
+                            pre = ' (Kakan)';
+                        } else {
+                            pre = '<br>(Sértekjur, leiðréttingar og millifærslur)';
+                        }
                     } else {
                         pre = ' (Mismunur)';
                     }
@@ -86,11 +95,17 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
 
     // If there are any route params we should parse them
     console.log(Object.keys($routeParams).length);
-    hfpResource.parseRouteParams().then(function() {
-        hfpResource.showMeTheMoney().then(function() {
-            console.log("Inital data fetched");
-        });
+    hfpResource.parseRouteParams($location.path().split('/'));
+    hfpResource.showMeTheMoney().then(function() {
+        console.log("Initial data fetched");
     });
+
+    /*
+    *       Resets the app to it's initial state
+    * */
+    $scope.resetApp = function() {
+        hfpResource.resetApp();
+    };
 
     $scope.toggleDrawer = function() {
         $("#wrapper").toggleClass("toggled");

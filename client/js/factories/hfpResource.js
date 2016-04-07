@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, tabResource, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, URL_PARAMS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -9,14 +9,17 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Private properties
     * */
-    var currLevel = INITIAL_VALUES.LEVEL;
+    var currLevelEx = INITIAL_VALUES.LEVEL_EX;
+    var currLevelIn = INITIAL_VALUES.LEVEL_IN;
     var type = INITIAL_VALUES.TYPE;
     var period = INITIAL_VALUES.PERIOD;
 
     var slices = [];
+    var choices = [];
     var totalCredit = 0;
     var totalDebit = 0;
     var totalC = 32321545934;
+    var totalD = 18529125975;
     var dynamic = 100;
     var clickedSlice = "";
     var affairGroup = "all";
@@ -29,7 +32,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Getters
     * */
     factory.getLevel = function() {
-        return currLevel;
+        if (factory.getType() === 'income') {
+            return currLevelIn;
+        } else {
+            return currLevelEx;
+        }
     };
     factory.getType = function() {
         return type;
@@ -40,6 +47,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.getSlices = function() {
         return slices;
     };
+    factory.getChoices = function() {
+        return choices;
+    };
     factory.getTotalCredit = function() {
         return totalCredit;
     };
@@ -48,6 +58,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getTotalC = function() {
         return totalC;
+    };
+    factory.getTotalD = function() {
+        return totalD;
     };
     factory.getDynamic = function() {
         return dynamic;
@@ -75,7 +88,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Setters
     * */
     factory.setLevel = function(newLevel) {
-        currLevel = newLevel;
+        if (factory.getType() === 'income') {
+            currLevelIn = newLevel;
+        } else {
+            currLevelEx = newLevel;
+        }
     };
     factory.setType = function(newType) {
         type = newType;
@@ -86,6 +103,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.setSlices = function(newSlices) {
         slices = newSlices;
     };
+    factory.setChoices= function(newChoices) {
+        choices = newChoices;
+    };
     factory.setTotalCredit = function(newTotalCredit) {
         totalCredit = newTotalCredit;
     };
@@ -94,6 +114,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.setTotalC = function(newTotalC) {
         totalC = newTotalC;
+    };
+    factory.setTotalD = function(newTotalD) {
+        totalD = newTotalD;
     };
     factory.setDynamic = function(newDynamic) {
         dynamic = newDynamic;
@@ -137,28 +160,38 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $http({
             // Fetch the data
             method: 'GET',
-            //url: API_URL + this.getType() + '/' + this.getPeriod() + '/' + '0' + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + '2521'
             url: queryURL
         }).success(function (response) {
             // Change the slices
             var sliceNumber = 0;
-            var currLevel = factory.getLevel();
-            factory.setSlices(response.slices.map(function(slice) {
+            var currLvl = factory.getLevel();
+            console.log('currLvl: ' + currLvl);
+
+            var newSlices = [];
+            var newChoices = [];
+            response.slices.map(function(slice) {
                 var cut = 0;
                 var newSlice = {};
-                if (currLevel === 0) {
+                var newChoice = {};
+                if (currLvl === 0) {
                     cut = 1;
-                } else if (currLevel === 1) {
+                } else if (currLvl === 1) {
                     cut = 2;
-                } else if (currLevel === 2) {
+                } else if (currLvl === 2) {
                     cut = 3;
-                } else if (currLevel === 3) {
+                } else if (currLvl === 3) {
                     cut = 6;
-                } else if (currLevel > 6) {
+                } else if (currLvl > 6) {
                     newSlice = {
                         label: slice.key,
                         value: slice.sum_amount.value,
-                        color: COLORS[sliceNumber],
+                        color: COLORS[sliceNumber % 8],
+                        key: slice.key
+                    };
+                    newChoice = {
+                        choiceId: sliceNumber,
+                        content: slice.key,
+                        chosen: false,
                         key: slice.key
                     };
                 } else {
@@ -168,14 +201,23 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     newSlice = {
                         label: slice.key.substring(cut + 1),
                         value: slice.sum_amount.value,
-                        color: COLORS[sliceNumber],
+                        color: COLORS[sliceNumber % 8],
+                        key: slice.key.substring(0,cut)
+                    };
+                    newChoice = {
+                        choiceId: sliceNumber,
+                        content: slice.key.substring(cut + 1),
+                        chosen: false,
                         key: slice.key.substring(0,cut)
                     };
                 }
                 sliceNumber++;
-                sliceNumber %= 8;
-                return newSlice;
-            }));
+                newSlices.push(newSlice);
+                newChoices.push(newChoice);
+            });
+
+            factory.setSlices(newSlices);
+            factory.setChoices(newChoices);
 
             // Change the total amounts
             factory.setTotalCredit(response.totalCredit);
@@ -190,13 +232,25 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Updating bar chart data
             $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
             $rootScope.chart.options.data[0].dataPoints[1].y = factory.getTotalDebit();
-            $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
 
-            // Change the percentage number
-            factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
+            
+            if (factory.getType() === 'expenses') {
+                $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
+                // Change the percentage number
+                factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
 
-            // Change total credit to have dots every the digits
-            factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
+                // Change total credit to have dots every the digits
+                factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
+            } else {
+                $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalDebit() - factory.getTotalCredit();
+                // Change the percentage number
+                factory.setDynamic((factory.getTotalDebit() / factory.getTotalD() * 100).toFixed(1));
+
+                // Change total debit to have dots every the digits
+                factory.setTotalDebit(factory.toNrWithDots(factory.getTotalDebit()));
+            }
+
+            
 
             // Update the root variables
             changeRootVariables();
@@ -234,54 +288,92 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Goes through the route parameters and sets the inital state of the app
     * */
-    factory.parseRouteParams = function() {
-        var deferred = $q.defer();
+    factory.parseRouteParams = function(params) {
 
         console.log("parsing");
-        console.log("currLeveL: " + factory.getLevel());
 
-        //var paramCounter = -3;
-        for (var param in $routeParams) {
-            var value = $routeParams[param];
+        for (var param in params) {
+            var typ = factory.getType();
+            var value = params[param];
+            param = URL_PARAMS[typ][parseInt(param) - 1];
+            if (param === undefined) {
+                continue;
+            }
             if (value === 'n') {
                 value = 'all';
             } else if (param === 'Level') {
                 value = parseInt(value);
+                if ($rootScope.expandedOption !== value) {
+                    tabResource.toggleOption(value);
+                }
             }
             console.log(param + ": " + value);
             factory['set' + param](value);
-            //paramCounter++;
         }
-        //factory.setLevel($routeParams['Level']);
-        console.log("currLeveL: " + factory.getLevel());
-        deferred.resolve();
-
-        /*// Set others to default
-        while (paramCounter < 5) {
-            var funcName = 'set' + LEVELS[paramCounter];
-            if (paramCounter === 4) {
-                funcName = 'setFinanceKey';
-            }
-            console.log(funcName + '(\'all\')');
-            factory[funcName]('all');
-            paramCounter++;
-        }*/
-
-        return deferred.promise;
     };
 
     /*
-    *       Private methods
+    *       Helper method that replaces all commas in the given string with a slash
     * */
+    factory.replaceAllCommasWithSlashes = function(stringToFix) {
+        var changed = true;
+
+        do {
+            var beforeReplace = stringToFix;
+            stringToFix = stringToFix.replace(',', '/');
+            if (beforeReplace === stringToFix) {
+                changed = false;
+            }
+        } while (changed);
+
+        return stringToFix;
+    };
 
     /*
-    *       Method called once new data has been fetched. It updates the $rootScope variables
+    *       Search function that searches for a choice with a given key in the given array.
+    *       Return the choice if found, else null.
     * */
+    factory.searchChoice = function (myKey, myArray) {
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].key === myKey) {
+                return myArray[i];
+            }
+        }
+        return null;
+    };
+
+    /*
+    *       Method that resets the app to it's inital state
+    * */
+    factory.resetApp = function() {
+        for (var i = 0; i < 8;  i++) {
+            $rootScope.options[i].choices = [];
+            $rootScope.options[i].currChoice = -1;
+        }
+        if ($rootScope.expenses) {
+            $location.path('/' + INITIAL_VALUES.TYPE + '/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+        } else {
+            $location.path('/income/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
+        }
+
+    };
+
+    /*
+     *       Private methods
+     * */
+
+    /*
+     *       Method called once new data has been fetched. It updates the $rootScope variables
+     * */
     var changeRootVariables = function() {
         // Sums
         $rootScope.totalCredit = factory.getTotalCredit();
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
+        $rootScope.expenses = factory.getType() === 'expenses';
+
+        // Choices in sidebar
+        $rootScope.options[factory.getLevel()].choices = factory.getChoices();
 
         // Recreate the bar chart with a nice animation to hide the ugly transition
         $("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
@@ -354,44 +446,49 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 onClickSegment: function(a) {
                     factory.setClickedSlice(a.data.key);
                     var id = a.data.key;
-                    var field = "set";
                     var key;
-                    console.log("yoyo: " + id);
-                    if (factory.getLevel() === 0) {
-                        //factory.setAffairGroup(id);
-                        field += 'AffairGroup';
+                    var lvl = factory.getLevel();
+                    console.log("lvl: " + lvl);
+                    if (parseInt(lvl) === 0) {
                         key = 0;
-                    } else if (factory.getLevel() === 1) {
-                        //factory.setAffair(id);
-                        field += 'Affair';
+                    } else if (lvl === 1) {
                         key = 1;
-                    } else if (factory.getLevel() === 2) {
-                        //factory.setDepartmentGroup(id);
-                        field += 'DepartmentGroup';
+                    } else if (lvl === 2) {
                         key = 2;
-                    } else if (factory.getLevel() === 3) {
-                        //factory.setDepartment(id);
-                        field += 'Department';
+                    } else if (lvl === 3) {
                         key = 3;
-                    } else if (factory.getLevel() > 3 && factory.getLevel() < 7) {
-                        //factory.setFinanceKey(id);
-                        field += 'FinanceKey';
+                    } else if (lvl > 3 && lvl < 7) {
                         key = 4;
-                    } else if (factory.getLevel() === 7) {
-                        console.log('Show the creditors!!!');
+                    } else if (lvl === 7) {
+                        console.log('Þú ert kominn niður á botninn.');
                     }
-                    if (factory.getLevel() < 8) {
-                        factory.setLevel(factory.getLevel() + 1);
-
+                    if (lvl < 7) {
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
-                        newPathPrefix[3]++;
+                        var typ = factory.getType();
+                        if (typ === 'income') {
+                            key -= 3;
+                        }
+
+                        // fetch the equivalent choice in the sidebar and select it
+                        var option = factory.getLevel();
+                        var eqChoice = factory.searchChoice(id, $rootScope.options[option].choices);
+
+                        var nextLevel = option + 1;
+                        while (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) {
+                            nextLevel++;
+                        }
+
+                        newPathPrefix[3] = nextLevel;
                         newPathPrefix[4 + key] = id;
+
                         newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+                        //tabResource.choiceClicked(option, eqChoice.choiceId);
 
                         // Change the path
                         $rootScope.$apply(function(){
-                            $location.path(newPathPrefix, false, field, id);
+                            $location.path(newPathPrefix, false, tabResource.choiceClicked, option, eqChoice.choiceId, nextLevel);
                         });
                     }
                 }
@@ -422,23 +519,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 }
             }
         });
-    };
-
-    /*
-    *       Helper method that replaces all commas in the given string with a slash
-    * */
-    factory.replaceAllCommasWithSlashes = function(stringToFix) {
-        var changed = true;
-
-        do {
-            var beforeReplace = stringToFix;
-            stringToFix = stringToFix.replace(',', '/');
-            if (beforeReplace === stringToFix) {
-                changed = false;
-            }
-        } while (changed);
-
-        return stringToFix;
     };
 
     return factory;

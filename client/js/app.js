@@ -10,6 +10,7 @@ hfpApp.config(['$routeProvider',
 
 		$routeProvider
 			// Configuring optional routing parameters. Type, period and all of the levels.
+		// TODO: try to find classier solution
 			.when('/admin', {
 				templateUrl: 'views/adminLoginView.html'
 			})
@@ -17,7 +18,11 @@ hfpApp.config(['$routeProvider',
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
+			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
+				templateUrl: 'views/chartView.html',
+				controller: 'chartController'
+			})
+			.when('/:income/:Period/:Level/:Department/:FinanceKey/', {
 				templateUrl: 'views/chartView.html',
 				controller: 'chartController'
 			})
@@ -32,16 +37,20 @@ hfpApp.config(['$routeProvider',
 * */
 hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
 	var original = $location.path;
-	$location.path = function (path, reload, field, id) {
+	$location.path = function (path, reload, callback, option, choice, nextLevel) {
 		if (reload === false) {
 			var lastRoute = $route.current;
 			var un = $rootScope.$on('$locationChangeSuccess', function () {
 				$route.current = lastRoute;
 				un();
 
-				console.log(field + ": " + id);
-				hfpResource[field](id);
-				hfpResource.showMeTheMoney();
+				hfpResource.parseRouteParams($location.path().split('/'));
+				hfpResource.showMeTheMoney().then(function() {
+					// If there is a callback, then call it once data has been fetched
+					if (callback) {
+						callback(option, choice, nextLevel);
+					}
+				});
 			});
 		}
 		return original.apply($location, [path]);

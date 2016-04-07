@@ -14,6 +14,41 @@ const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "Primar
 
 api.use(bodyParser.json());
 
+const timeProcessor = (period) => {
+    let year = period.substring(0,5);
+    let from = '';
+    let to = '';
+    if (period.length === 6) {
+        if (period.charAt(5) === '0') {
+            // whole year
+            from = year + '01'; to = year + '13';
+        } else if (period.charAt(5) === '1') {
+            // quarters
+            from = year + '01'; to = year + '04';
+        } else if (period.charAt(5) === '2') {
+            from = year + '04'; to = year + '07';
+        } else if (period.charAt(5) === '3') {
+            from = year + '07'; to = year + '10';
+        } else if (period.charAt(5) === '4') {
+            from = year + '10'; to = year + '13';
+        }
+    } else {
+        // months
+        let month = parseInt(period.substring(5,7), 10);
+        if (month < 9) {
+            from = year + '0' + month;
+            to = year + '0' + (month + 1);
+        } else if (month === 9) {
+            from = year + '0' + month;
+            to = year + (month + 1);
+        } else {
+            from = year + month;
+            to = year + (month + 1);
+        }
+    }
+    return { "from": from, "to": to };
+}
+
 /* 
 	This route will return an object containing 3 things:
 	- a bucket from an aggregation in ES, which is an array of objects or slices
@@ -46,38 +81,9 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		<year>-1 ... <year>-4: quarter of year
 		<year>-01 ... <year>-12: month of year
 	*/
-	let year = period.substring(0,5);
-	let from = '';
-	let to = '';
-	if (period.length === 6) {
-		if (period.charAt(5) === '0') {
-			// whole year
-			from = year + '01'; to = year + '13';
-		} else if (period.charAt(5) === '1') {
-			// quarters
-			from = year + '01'; to = year + '04';
-		} else if (period.charAt(5) === '2') {
-			from = year + '04'; to = year + '07';
-		} else if (period.charAt(5) === '3') {
-			from = year + '07'; to = year + '10';
-		} else if (period.charAt(5) === '4') {
-			from = year + '10'; to = year + '13';
-		}
-	} else {
-		// months
-		let month = parseInt(period.substring(5,7), 10);
-		if (month < 9) {
-			from = year + '0' + month;
-			to = year + '0' + (month + 1);
-		} else if (month === 9) {
-			from = year + '0' + month;
-			to = year + (month + 1);
-		} else {
-			from = year + month;
-			to = year + (month + 1);
-		}
-	}
-
+	const foo = timeProcessor(period);
+    const from = foo.from;
+    const to = foo.to;
 
 	// Generate database queries based on parameters
 	if (affairGroupID !== 'all') {
@@ -96,7 +102,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		};
 	}
 	if (departmentID !== 'all') {
-		mustDepartmentGroup = { 
+		mustDepartment = {
 			"prefix": { "Department": { "value": departmentID } } 
 		};
 	}
@@ -273,32 +279,85 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
  totalDebit
  }
  */
-api.get('/income/:period/:fieldToGet', (req, res) => {
-	// Query the database for all expenses
+api.get('/income/:per/:lvl/:dep/:fin', (req, res) => {
+    const period              = req.params.per;
+    const level               = req.params.lvl;
+    const departmentID        = req.params.dep;
+    const financeKeyID        = req.params.fin;
+    let mustDepartment        = {};
+    let mustFinanceKey        = {};
+    let aggregator            = aggs[parseInt(level)];
+
+    const foo = timeProcessor(period);
+    const from = foo.from;
+    const to = foo.to;
+    console.log(departmentID);
+    console.log(financeKeyID);
+
+    if (departmentID !== 'all') {
+        mustDepartment = {
+            "prefix": { "Department": { "value": departmentID } }
+        };
+    }
+    if (financeKeyID !== 'all') {
+        if (financeKeyID.substring(1,4) === '000') {
+            mustFinanceKey = {
+                "prefix": { "PrimaryFinanceKey": { "value": financeKeyID } }
+            };
+        } else if (financeKeyID.substring(2,4) === '00') {
+            mustFinanceKey = {
+                "prefix": { "SecondaryFinanceKey": { "value": financeKeyID } }
+            };
+        } else {
+            mustFinanceKey = {
+                "prefix": { "FinanceKey": { "value": financeKeyID } }
+            };
+        }
+    }
+
+    // Query the database for all incomes
 	elasticClient.search({
 		index: 'hfp',
 		body: {
+            // only income
 			"query": {
 				"filtered": {
-					"query": {
-						"bool": {
-							"must": [
-								{
-									"term": {
-										"Affair": {
-											"value": "Tekjur"
-										}
-									}
-								}
-							]
-						}
-					},
-					"filter": {
-						"range" : {
-							"Amount" : {
-								"lt" : 0
-							}
-						}
+                    "filter": {
+                        "range" : {
+                            "Amount" : {
+                                "lt" : 0
+                            }
+                        }
+                    },
+                    // Desired period
+                    "query": {
+                        "filtered": {
+                            "filter": {
+                                "range": {
+                                    "Date": {
+                                        "from": from,
+                                        "to": to
+                                    }
+                                }
+                            },
+                            "query": {
+                                "bool": {
+                                    "must": [
+                                        {
+                                            // only "Tekjur" Affair
+                                            "term": {
+                                                "Affair": {
+                                                    "value": "00-Tekjur"
+                                                }
+                                            }
+                                        },
+                                        // Drilldown
+                                        mustDepartment,
+                                        mustFinanceKey
+                                    ]
+                                }
+                            }
+                        }
 					}
 				}
 			},
@@ -306,7 +365,7 @@ api.get('/income/:period/:fieldToGet', (req, res) => {
 			"aggs" : {
 				"amounts" : {
 					"terms": {
-						"field": "Department",
+						"field": aggregator,
 						"order": { "sum_amount": "asc" },
 						"size": 0
 					},
@@ -324,7 +383,7 @@ api.get('/income/:period/:fieldToGet', (req, res) => {
 			return entry;
 		});
 		const totalDebit = Math.abs(doc.aggregations.total_amount.value);
-		// Query the database for all incomes
+		// Query the database for all expenses
 		elasticClient.search({
 			index: 'hfp',
 			body: {
@@ -336,7 +395,38 @@ api.get('/income/:period/:fieldToGet', (req, res) => {
 									"gt" : 0
 								}
 							}
-						}
+						},
+                        // Desired period
+                        "query": {
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Date": {
+                                            "from": from,
+                                            "to": to
+                                        }
+                                    }
+                                },
+                                // Only "Tekjur" Affair
+                                "query": {
+                                    "bool": {
+                                        "must" : [
+                                            {
+                                                // only "Tekjur" Affair
+                                                "term": {
+                                                    "Affair": {
+                                                        "value": "00-Tekjur"
+                                                    }
+                                                }
+                                            },
+                                            // Drilldown
+                                            mustDepartment,
+                                            mustFinanceKey
+                                        ]
+                                    }
+                                }
+                            }
+                        }
 					}
 				},
 				"size": 0,
@@ -347,7 +437,9 @@ api.get('/income/:period/:fieldToGet', (req, res) => {
 		}).then((docum) => {
 			// Store the response and convert to absolute value
 			const totalCredit = docum.aggregations.total_amount.value;
-			res.status(200).send({ slices, totalCredit, totalDebit });
+            const respObj = { slices, totalCredit, totalDebit };
+            console.log(respObj);
+			res.status(200).send(respObj);
 		}, (err) => {
 			console.log(err);
 			res.status(500).send('Server error\n');

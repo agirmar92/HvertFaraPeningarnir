@@ -29,7 +29,7 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
         newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
         // Change the path
-        $location.path(newPathPrefix, false, 'setPeriod', newPeriod);
+        $location.path(newPathPrefix, false);
     };
 
     $scope.setQuarter = function(quarter) {
@@ -54,6 +54,6 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
         newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
         // Change the path
-        $location.path(newPathPrefix, false, 'setPeriod', newPeriod);
+        $location.path(newPathPrefix, false);
     };
 });
