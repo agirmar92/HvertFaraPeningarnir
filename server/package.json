@@ -16,10 +16,27 @@
     "url": "https://github.com/agirmar92/HvertFaraPeningarnir/issues"
   },
   "homepage": "https://github.com/agirmar92/HvertFaraPeningarnir",
+  "keywords": [
+    "Unit",
+    "Testing",
+    "Chai",
+    "Rewire",
+    "Sinon",
+    "Supertest",
+    "Cheerio"
+  ],
   "dependencies": {
     "body-parser": "^1.14.2",
     "elasticsearch": "^10.1.2",
     "express": "^4.13.4",
     "nodemon": "^1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "cheerio": "^0.20.0",
+    "request": "*",
+    "rewire": "^2.5.1",
+    "sinon": "^1.17.3",
+    "supertest": "^1.2.0"
   }
 }
