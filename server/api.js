@@ -10,8 +10,7 @@ const api = express();
 const elasticClient = new elasticsearch.Client({
 	host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
-const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditor" ]
-
+const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditor" ];
 api.use(bodyParser.json());
 
 const timeProcessor = (period) => {
