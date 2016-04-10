@@ -68,7 +68,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     ];
 
     $scope.changeView = function(toExpenses) {
-        if (toExpenses != $rootScope.expenses) {
+        if (toExpenses !== $rootScope.expenses) {
             $rootScope.expenses = toExpenses;
             hfpResource.resetApp();
         }
