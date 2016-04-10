@@ -20,17 +20,26 @@ const timeProcessor = (period) => {
     if (period.length === 6) {
         if (period.charAt(5) === '0') {
             // whole year
-            from = year + '01'; to = year + '13';
+            from = year + '01';
+            to = year + '13';
         } else if (period.charAt(5) === '1') {
             // quarters
-            from = year + '01'; to = year + '04';
+            from = year + '01';
+            to = year + '04';
         } else if (period.charAt(5) === '2') {
-            from = year + '04'; to = year + '07';
+            from = year + '04';
+            to = year + '07';
         } else if (period.charAt(5) === '3') {
-            from = year + '07'; to = year + '10';
+            from = year + '07';
+            to = year + '10';
         } else if (period.charAt(5) === '4') {
-            from = year + '10'; to = year + '13';
+            from = year + '10';
+            to = year + '13';
+        } else {
+            return 'invalid input';
         }
+    } else if (period.length !== 7) {
+        return 'invalid input';
     } else {
         // months
         let month = parseInt(period.substring(5,7), 10);
@@ -40,6 +49,8 @@ const timeProcessor = (period) => {
         } else if (month === 9) {
             from = year + '0' + month;
             to = year + (month + 1);
+        } else if (month > 12) {
+            return "invalid input";
         } else {
             from = year + month;
             to = year + (month + 1);
@@ -686,4 +697,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     });
 });
 
-module.exports = api;
+module.exports = {
+    api: api,
+    timeProcessor: timeProcessor
+};
