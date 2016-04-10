@@ -278,7 +278,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
  totalDebit
  }
  */
-api.get('/income/:per/:lvl/:dep/:fin', (req, res) => {
+api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     const period              = req.params.per;
     const level               = req.params.lvl;
     const departmentID        = req.params.dep;
@@ -447,6 +447,14 @@ api.get('/income/:per/:lvl/:dep/:fin', (req, res) => {
 		console.log(err);
 		res.status(500).send('Server error\n');
 	});
+});
+
+api.get('/special-revenue/:per/:lvl/:dep/:fin', (req, res) => {
+    let slices = [];
+    let totalCredit = 0;
+    let totalDebit = 0;
+    const respObj = { slices, totalCredit, totalDebit };
+	res.status(200).send(respObj);
 });
 
 module.exports = api;

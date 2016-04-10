@@ -1,112 +1,120 @@
-var request = require("supertest");
+'use strict';
+
+const request = require("supertest");
 //var request    = require('request');
-var expect = require('chai').expect;
-var cheerio = require("cheerio");
-var rewire = require('rewire');
-var api = rewire('../api');
+const expect = require('chai').expect;
+const cheerio = require("cheerio");
+const rewire = require('rewire');
+const api = rewire('../api');
 
-var url ="http://hfp.northeurope.cloudapp.azure.com";
-var apiUrl = "http://localhost:4000";
+const url ="http://hfp.northeurope.cloudapp.azure.com";
+const apiUrl = "http://localhost:4000";
 
+describe('Tests for joint revenues default pie', function() {
 
-describe('Testing all of 2014', function() {
+    var terms = '';
 
-    it('GET amount in first slice (Layer 0)', function(done) {
-        //var results = request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all');
-        //console.log(results);
-        //expect(results.slices.totalCredit).to.equal(32321545934);
-        //expect(true).to.equal(true);
-
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            var check = terms.slices[0].sum_amount.value;
-            // var $ = cheerio.load(res.text);
-            // var sliver = $("");
-            expect(check).to.equal(15680879962);
+    before(function(done) {
+        request(apiUrl).get('/joint-revenue/2014-0/3/all/all/').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
             done();
         });
     });
 
-    it('GET amount in second slice (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            // Önnur mál
-            var check = terms.slices[1].sum_amount.value;
-            expect(check).to.equal(8734423653);
+    it('should give the correct amounts for the pie', function(done) {
+        expect(terms.slices[0].sum_amount.value).to.equal(14862934701);
+        expect(terms.slices[1].sum_amount.value).to.equal(2794596142);
+        expect(terms.slices[2].sum_amount.value).to.equal(485659631);
+        expect(terms.slices[3].sum_amount.value).to.equal(385935501);
+        done();
+    });
+
+    it('should give the correct amount for total debit', function(done) {
+        expect(terms.totalDebit).to.equal(18529125975);
+        done();
+    });
+
+    it('should give the correct amount for total credit', function(done) {
+        expect(terms.totalCredit).to.equal(469219433);
+        done();
+    });
+});
+
+/*
+*   These tests compares the results from calling the API to this SQL query for kop-lind:
+*   SELECT SUM([Upphæð]), [Yfirmálaflokkur]
+*   FROM [DW].[HvertFaraPeningarnir]
+*   WHERE [Yfirfjárhagslykill] = '0000-Tekjur'
+*   AND [Yfirmálaflokkur] != '4-Tekjur'
+*   AND [Upphæð] < 0
+*   GROUP BY [Yfirmálaflokkur]
+*/
+describe('Tests for special revenues default pie', function() {
+
+    var terms = '';
+
+    before(function(done) {
+        request(apiUrl).get('/special-revenue/2014-0/3/all/all/').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
             done();
         });
     });
 
-    it('GET amount in third slice (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            // Velferðarmál
-            var check = terms.slices[2].sum_amount.value;
-            expect(check).to.equal(3156000085);
+    it('should give the correct amounts for the pie', function(done) {
+        expect(terms.slices[0].sum_amount.value).to.equal(4597321188);
+        expect(terms.slices[1].sum_amount.value).to.equal(2735820712);
+        expect(terms.slices[2].sum_amount.value).to.equal(1965187278);
+        expect(terms.slices[3].sum_amount.value).to.equal(1326543110);
+        expect(terms.slices[3].sum_amount.value).to.equal(298774369);
+        expect(terms.slices[3].sum_amount.value).to.equal(165640878);
+        done();
+    });
+
+    it('should give the correct amount for total debit', function(done) {
+        expect(terms.totalDebit).to.equal(18529125975);
+        done();
+    });
+
+    it('should give the correct amount for total credit', function(done) {
+        expect(terms.totalCredit).to.equal(469219433);
+        done();
+    });
+});
+
+describe('Tests for expenses default pie', function() {
+
+    var terms = '';
+
+    before(function(done) {
+        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
             done();
         });
     });
 
-    it('GET amount in fourth slice (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            // Umhverfismál
-            var check = terms.slices[3].sum_amount.value;
-            expect(check).to.equal(2989462505);
-            done();
-        });
+    it('should give the correct amounts for the pie', function(done) {
+        expect(terms.slices[0].sum_amount.value).to.equal(15680879962);
+        expect(terms.slices[1].sum_amount.value).to.equal(8734423653);
+        expect(terms.slices[2].sum_amount.value).to.equal(3156000085);
+        expect(terms.slices[3].sum_amount.value).to.equal(2989462505);
+        expect(terms.slices[4].sum_amount.value).to.equal(648354559);
+        expect(terms.slices[5].sum_amount.value).to.equal(588394000);
+        expect(terms.slices[6].sum_amount.value).to.equal(524031170);
+        done()
     });
 
-    it('GET amount in fifth slice (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            // Menningarmál
-            var check = terms.slices[4].sum_amount.value;
-            expect(check).to.equal(648354559);
-            done();
-        });
+    it('should give the correct amount for total credit', function(done) {
+        expect(terms.totalCredit).to.equal(32321545934);
+        done();
     });
 
-    it('GET amount in sixth slice (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            // Lífeyrissjóðsmál
-            var check = terms.slices[5].sum_amount.value;
-            expect(check).to.equal(588394000);
-            done();
-        });
-    });
-
-    it('GET amount in seventh slice (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            // Öryggismál
-            var check = terms.slices[6].sum_amount.value;
-            expect(check).to.equal(524031170);
-            done();
-        });
-    });
-
-    it('GET totalCredit for the default home page (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            var check = terms.totalCredit;
-            expect(check).to.equal(32321545934);
-            done();
-        });
-    });
-
-    it('GET totalDebit for the default home page (Layer 0)', function(done) {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
-            var terms = JSON.parse(res.text);
-            var check = terms.totalDebit;
-            expect(check).to.equal(14922044086);
-            done();
-        });
+    it('should give the correct amount for total debit', function(done) {
+        expect(terms.totalDebit).to.equal(14922044086);
+        done();
     });
 
     // http://hfp.northeurope.cloudapp.azure.com/#/expenses/2014-0/1/3/n/n/n/n
-
+/*
     it('GET amount in first slice (LAYER 1 - Menntamál)', function(done) {
         request(apiUrl).get('/expenses/2014-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
             var terms = JSON.parse(res.text);
@@ -136,21 +144,21 @@ describe('Testing all of 2014', function() {
             done();
         });
     });
-
+*/
 });
 
 
 
-
+/*
 describe("Hvert fara  peningarnir", function() {
 
-    /*
+
     it("Test 1", function() {
         var results = request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all');
         console.log(results.slices[0]);
         expect(results.slices.length()).to.equal(7);
     });
-    */
+
     it("GETS Default page", function(done) {
 
         //var results = request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all');
@@ -227,5 +235,5 @@ describe("Hvert fara  peningarnir", function() {
     it('GETS 8.Layer', function(done) {
         request(url).get('#/expenses/2014-0/7/3/04/049/04-222/1141').expect(200).end(done);
     });
-    */
-});
+
+});*/
