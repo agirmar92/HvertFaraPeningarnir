@@ -19,21 +19,23 @@
     <div id="chartContainer" class="row hfp-chart">
         <div class="col-xs-12 hfp-div">
             <!-- login-panel -->
-            <div class="hfp-login-panel hfp-div">
+            <div class="hfp-login-panel hfp-div" ng-controller="loginController">
                 <div class="col-xs-12">
                     <h2 class="login-title">Innskráning</h2>
 
-                    <div class="input-group login-input-div">
-                        <input type="text" class="form-control login-input" placeholder="Tölvupóstur">
-                    </div>
+                    <form name="loginForm" onsubmit="return false;">
+                        <div class="input-group login-input-div">
+                            <p ng-class="{changed: loginForm.emailInput.$dirty}">Tölvupóstur</p>
+                            <input name="emailInput" ng-model="email" class="form-control login-input" placeholder="Tölvupóstur" required>
+                        </div>
 
-                    <div class="input-group login-input-div">
-                        <input type="text" class="form-control login-input" placeholder="Lykilorð">
-                    </div>
+                        <div class="input-group login-input-div">
+                            <p ng-class="{changed: loginForm.passInput.$dirty}">Lykilorð</p>
+                            <input type="password" name="passInput" ng-model="password" class="form-control login-input" placeholder="Lykilorð" required>
+                        </div>
 
-                    <div class="hfp-login-button">
-                        button
-                    </div>
+                        <input type="submit" class="hfp-login-button" value="Innskrá" ng-click="test()">
+                    </form>
                 </div>
             </div>
             <!-- /#login-panel -->

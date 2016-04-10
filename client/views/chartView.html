@@ -1,99 +1,146 @@
-<!-- header -->
-<div class="row hfp-header">
-
-    <!-- header-buttons -->
-    <div class="col-xs-4 hfp-headerbuttons hfp-div">
-
-        <button class="btn btn-default hfp-btn glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
-        <button class="btn btn-default hfp-btn glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
-        <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click=""></button>
-        <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click=""></button>
-
-        <!-- calendar-dropdown -->
-        <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
-
-            <div class="calendar-row row">
-                <div class="col-lg-12">
-                    <span>Ár: </span>
+<!-- sidebar-wrapper -->
+<div id="sidebar-wrapper" ng-controller="tabsController">
+    <uib-tabset active="activeJustified" justified="true">
+        <uib-tab index="0" heading="Síur">
+            <div role="tab" class="panel-heading">
+                <div class="panel-title">
+                    <span>Skoða</span>
                     <div class="btn-group" uib-dropdown>
-                        <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                            {{selectedYear}} <span class="caret"></span>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                            <span ng-if="expenses">Gjöld</span> <span ng-if="!expenses">Tekjur</span> <span class="caret"></span>
                         </button>
                         <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                            <li role="menuitem" ng-repeat="year in years">
-                                <a href="#" ng-click="setYear(year)">{{year}}</a>
+                            <li role="menuitem">
+                                <a href="javascript:void(0)" ng-click="changeView(true)">Gjöld</a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="javascript:void(0)" ng-click="changeView(false)">Tekjur</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="calendar-row row">
-                <div class="col-lg-12">
-                    <span>Mánuður: </span>
-                    <div class="btn-group" uib-dropdown>
-                        <button id="derka" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                            {{selectedMonth}} <span class="caret"></span>
-                        </button>
-                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
-                            <li role="menuitem" ng-repeat="month in months">
-                                <a href="javascript:void(0)" ng-click="setMonth($index)">{{month}}</a href="#">
-                            </li>
-                        </ul>
-                    </div>
+            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || expenses">
+                <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
+                    <span>{{option.label}}</span>
+                    <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
+                </div>
+
+                <div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
+                    <span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
+                    <span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>
                 </div>
             </div>
 
-            <div class="calendar-row row">
-                <div class="col-lg-12">
-                    <span>Ársfjórðungur: </span>
-                    <div class="btn-group" uib-dropdown>
-                        <button id="" type="button" class="btn btn-default" uib-dropdown-toggle>
-                            {{selectedQuarter}} <span class="caret"></span>
-                        </button>
-                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
-                            <li role="menuitem" ng-repeat="quarter in quarters">
-                                <a href="javascript:void(0)" ng-click="setQuarter(quarter)">{{quarter}}</a>
-                            </li>
-                        </ul>
+        </uib-tab>
+
+        <uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
+    </uib-tabset>
+</div>
+<!-- /#sidebar-wrapper -->
+
+<!-- page-content-wrapper -->
+<div id="page-content-wrapper" class="container-fluid hfp-content" ng-controller="chartController">
+    <!-- header -->
+    <div class="row hfp-header">
+
+        <!-- header-buttons -->
+        <div class="col-xs-4 hfp-headerbuttons hfp-div">
+
+            <button class="btn btn-default hfp-btn glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
+            <button class="btn btn-default hfp-btn glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
+            <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click=""></button>
+            <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click=""></button>
+
+            <!-- calendar-dropdown -->
+            <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
+
+                <div class="calendar-row row">
+                    <div class="col-lg-12">
+                        <span>Ár: </span>
+                        <div class="btn-group" uib-dropdown>
+                            <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                                {{selectedYear}} <span class="caret"></span>
+                            </button>
+                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem" ng-repeat="year in years">
+                                    <a href="#" ng-click="setYear(year)">{{year}}</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <div class="calendar-row row">
+                    <div class="col-lg-12">
+                        <span>Mánuður: </span>
+                        <div class="btn-group" uib-dropdown>
+                            <button id="derka" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                                {{selectedMonth}} <span class="caret"></span>
+                            </button>
+                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
+                                <li role="menuitem" ng-repeat="month in months">
+                                    <a href="javascript:void(0)" ng-click="setMonth($index)">{{month}}</a href="#">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-row row">
+                    <div class="col-lg-12">
+                        <span>Ársfjórðungur: </span>
+                        <div class="btn-group" uib-dropdown>
+                            <button id="" type="button" class="btn btn-default" uib-dropdown-toggle>
+                                {{selectedQuarter}} <span class="caret"></span>
+                            </button>
+                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
+                                <li role="menuitem" ng-repeat="quarter in quarters">
+                                    <a href="javascript:void(0)" ng-click="setQuarter(quarter)">{{quarter}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#calendar-dropdown -->
+        </div>
+        <!-- /#header-buttons -->
+
+        <!-- title -->
+        <div class="col-xs-4 hfp-div hfp-title hfp-title">
+            <div ng-click="resetApp()">
+                <a class="header-link" href="javascript: void(0)">
+                    <h2 id="main-title">Hvert fara peningarnir?</h2>
+                    <h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
+                </a>
             </div>
         </div>
-        <!-- /#calendar-dropdown -->
-    </div>
-    <!-- /#header-buttons -->
+        <!-- /#title -->
 
-    <!-- title -->
-    <div class="col-xs-4 hfp-div hfp-title hfp-title">
-        <div ng-click="resetApp()">
-            <a class="header-link" href="javascript: void(0)">
-                <h2 id="main-title">Hvert fara peningarnir?</h2>
-                <h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
-            </a>
+        <!-- progress-meter -->
+        <div class="col-xs-4 hfp-div hfp-meter">
+            <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
+            <p ng-if="expenses" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+            <p ng-if="!expenses" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
+        </div>
+        <!-- /#progress-meter -->
+
+    </div>
+    <!-- /#header -->
+
+    <!-- chart-area -->
+    <div id="chartContainer" class="row hfp-chart">
+        <div class="col-xs-12 hfp-div">
+            <div id="mypie"></div>
         </div>
     </div>
-    <!-- /#title -->
+    <!-- /#chart-area -->
 
-    <!-- progress-meter -->
-    <div class="col-xs-4 hfp-div hfp-meter">
-        <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-        <p ng-if="expenses" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
-        <p ng-if="!expenses" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
-    </div>
-    <!-- /#progress-meter -->
-
+    <!-- mini-chart-area -->
+    <div id="miniChartContainer" class="row hfp-minichart"></div>
+    <!-- /#mini-chart-area -->
 </div>
-<!-- /#header -->
+<!-- /#page-content-wrapper -->
 
-<!-- chart-area -->
-<div id="chartContainer" class="row hfp-chart">
-    <div class="col-xs-12 hfp-div">
-        <div id="mypie"></div>
-    </div>
-</div>
-<!-- /#chart-area -->
-
-<!-- mini-chart-area -->
-<div id="miniChartContainer" class="row hfp-minichart"></div>
-<!-- /#mini-chart-area -->

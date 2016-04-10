@@ -15,16 +15,13 @@ hfpApp.config(['$routeProvider',
 				templateUrl: 'views/adminLoginView.html'
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?', {
-				templateUrl: 'views/chartView.html',
-				controller: 'chartController'
+				templateUrl: 'views/chartView.html'
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
-				templateUrl: 'views/chartView.html',
-				controller: 'chartController'
+				templateUrl: 'views/chartView.html'
 			})
 			.when('/:income/:Period/:Level/:Department/:FinanceKey/', {
-				templateUrl: 'views/chartView.html',
-				controller: 'chartController'
+				templateUrl: 'views/chartView.html'
 			})
 			.otherwise( {
 				redirectTo: '/expenses/2014-0/0/n/n/n/n/n/'

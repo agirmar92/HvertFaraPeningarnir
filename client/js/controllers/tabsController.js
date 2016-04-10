@@ -97,6 +97,8 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         }
     };
 
+    // TODO: Fix client routing when higher level finance keys are unchecked while lower level finance keys are still checked
+
     /*
     *       Choice [choice] that belongs to the option [option] has been clicked.
     *       Either makes the choice chosen, or un-chosen (if it already is).
@@ -111,7 +113,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         if (!$rootScope.expenses) {
             paramPosition -= 3;
         }
-        
+
         var nextLevel = option + 1;
         var newFieldValue;
         var newPathPrefix = $location.path().split('/');

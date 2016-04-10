@@ -24,52 +24,8 @@
 <body ng-app="hvertfarapeningarnir">
 
 	<!-- hvertfarapeningarnir -->
-	<div id="wrapper" class="toggled hfp-wrapper">
-		<!-- sidebar-wrapper -->
-		<div id="sidebar-wrapper" ng-controller="tabsController">
-			<uib-tabset active="activeJustified" justified="true">
-				<uib-tab index="0" heading="Síur">
-					<div role="tab" class="panel-heading">
-						<div class="panel-title">
-							<span>Skoða</span>
-							<div class="btn-group" uib-dropdown>
-								<button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-									<span ng-if="expenses">Gjöld</span> <span ng-if="!expenses">Tekjur</span> <span class="caret"></span>
-								</button>
-								<ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-									<li role="menuitem">
-										<a href="javascript:void(0)" ng-click="changeView(true)">Gjöld</a>
-									</li>
-									<li role="menuitem">
-										<a href="javascript:void(0)" ng-click="changeView(false)">Tekjur</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
+	<div id="wrapper" class="toggled hfp-wrapper" ng-view>
 
-					<div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || expenses">
-						<div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
-							<span>{{option.label}}</span>
-							<span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
-						</div>
-
-						<div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
-							<span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
-							<span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>
-						</div>
-					</div>
-
-				</uib-tab>
-
-				<uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
-			</uib-tabset>
-		</div>
-		<!-- /#sidebar-wrapper -->
-
-		<!-- page-content-wrapper -->
-		<div id="page-content-wrapper" class="container-fluid hfp-content" ng-view></div>
-		<!-- /#page-content-wrapper -->
 	</div>
 	<!-- /#hvertfarapeningarnir -->
 
@@ -93,11 +49,23 @@
 	<script src="js/controllers/calendarController.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/chartController.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/controllers/tabsController.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/controllers/loginController.js" type="text/javascript" charset="utf-8"></script>
 	<!--[endif]-->
 
 	<!--[if production]-->
 	<!--TODO-->
 	<!--[endif]-->
+
+	<!-- We use client cookies to save the user credentials -->
+	<script src="//code.angularjs.org/1.2.16/angular-cookies.min.js"></script>
+
+	<!-- Auth0 Lock script and AngularJS module -->
+	<script src="//cdn.auth0.com/js/lock-9.0.min.js"></script>
+	<!-- angular-jwt and angular-storage -->
+	<script type="text/javascript" src="//cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
+	<script type="text/javascript" src="//cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+
+	<script src="//cdn.auth0.com/w2/auth0-angular-4.js"> </script>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
