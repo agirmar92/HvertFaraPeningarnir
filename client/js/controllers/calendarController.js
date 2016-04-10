@@ -10,7 +10,9 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.selectedQuarter = QUARTERS[0];
 
     $scope.setYear = function(year) {
-        $scope.selectedYear = year;
+        if (YEARS.indexOf(year) !== -1) {
+            $scope.selectedYear = year;
+        }
     };
 
     $scope.setMonth = function(i) {
