@@ -10,6 +10,14 @@ const api = rewire('../api');
 const url ="http://hfp.northeurope.cloudapp.azure.com";
 const apiUrl = "http://localhost:4000";
 
+/*
+ *   These tests compares the results from calling the API to this SQL query for kop-lind:
+ *   SELECT SUM([Upphæð]), [Málaflokkur-deild]
+ *   FROM [DW].[HvertFaraPeningarnir]
+ *   WHERE [Málaflokkur] = '00-Tekjur'
+ *   AND [Upphæð] < 0
+ *   GROUP BY [Málaflokkur-deild]
+ */
 describe('Tests for joint revenues default pie', function() {
 
     var terms = '';
@@ -71,16 +79,24 @@ describe('Tests for special revenues default pie', function() {
     });
 
     it('should give the correct amount for total debit', function(done) {
-        expect(terms.totalDebit).to.equal(18529125975);
+        expect(terms.totalDebit).to.equal(11089287535);
         done();
     });
 
     it('should give the correct amount for total credit', function(done) {
-        expect(terms.totalCredit).to.equal(469219433);
+        expect(terms.totalCredit).to.equal(28374242);
         done();
     });
 });
 
+/*
+ *   These tests compares the results from calling the API to this SQL query for kop-lind:
+ *   SELECT SUM([Upphæð]), [Yfirmálaflokkur]
+ *   FROM [DW].[HvertFaraPeningarnir]
+ *   WHERE [Yfirmálaflokkur] != '4-Tekjur'
+ *   AND [Upphæð] > 0
+ *   GROUP BY [Yfirmálaflokkur]
+ */
 describe('Tests for expenses default pie', function() {
 
     var terms = '';
