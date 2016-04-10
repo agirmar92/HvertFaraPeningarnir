@@ -68,8 +68,10 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     ];
 
     $scope.changeView = function(toExpenses) {
-        $rootScope.expenses = !$rootScope.expenses;
-        hfpResource.resetApp();
+        if (toExpenses != $rootScope.expenses) {
+            $rootScope.expenses = toExpenses;
+            hfpResource.resetApp();
+        }
     };
 
     /*
