@@ -429,28 +429,56 @@ h1, h2 {
     Login window syle below
 */
 .hfp-login-panel {
+    font-family: font3;
     max-width: 350px;
     width: 95%;
-    height: 50%;
+    max-height: 350px;
     margin: auto;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    background-color: rgb(75, 75, 75);
-    background-color: rgba(75, 75, 75, 0.8);
+    /*background-color: rgb(75, 75, 75);
+    background-color: rgba(75, 75, 75, 0.8);*/
 }
 
 .login-input-div {
     width: 80%;
     margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
 }
 
 .login-input {
+    color: #dadada;
+    -webkit-border-radius:0px;
+    -moz-border-radius:0px;
+    border-radius:0px;
     background: transparent;
+    text-align: center;
 }
 
 .hfp-login-button {
-    background: yellow;
-    width: 100px;
-    margin:auto;
+    background: #0a894a;
+    width: 150px;
+    padding: 10px 20px;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius: 4px;
+    margin: auto;
+    margin-top: 15px;
+}
+
+.login-input-div > p {
+    margin: 0 0 0 13px;
+    opacity: 0;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.login-input-div > p.changed {
+    opacity: 1;
 }
