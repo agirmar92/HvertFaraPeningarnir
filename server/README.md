@@ -9,3 +9,7 @@
 3. Run `./restartElastic.sh` to clear the ElasticSearch database.
 
 4. Run `./startServer.sh` to start up the server.
+
+### To test:
+
+1. Run `mocha`
