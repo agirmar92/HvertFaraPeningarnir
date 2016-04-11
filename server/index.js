@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use('/', api);
+app.use('/', api.api);
 
 app.listen(port, () => {
 	console.log('Server is on port', port);
