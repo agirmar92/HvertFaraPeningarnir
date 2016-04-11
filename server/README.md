@@ -12,4 +12,6 @@
 
 ### To test:
 
-1. Run `mocha`
+1. Run `npm test --coverage`
+
+2. Open `server/coverage/lcov-report/index.html` in your least favorite browser.

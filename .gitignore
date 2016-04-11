@@ -11,3 +11,4 @@
 client/build
 client/package.json~
 npm-debug.log
+/server/coverage
