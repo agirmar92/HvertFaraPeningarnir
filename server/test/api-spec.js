@@ -127,7 +127,7 @@ describe('Tests for expenses default pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -188,6 +188,98 @@ describe('Tests for expenses default pie', () => {
      */
 });
 
+describe('Tests for expenses, finance key pie', () => {
+
+    var terms = '';
+
+    before((done) => {
+        request(apinn.api).get('/expenses/2014-0/7/2/05/058/05-321/2511').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            done();
+        });
+    });
+
+    it('should give the correct amounts for the pie', (done) => {
+        expect(terms.slices[0].sum_amount.value).to.equal(42793);
+        expect(terms.slices[1].sum_amount.value).to.equal(36053);
+        expect(terms.slices[2].sum_amount.value).to.equal(7812);
+        done()
+    });
+
+    it('should give the correct amount for total credit', (done) => {
+        expect(terms.totalCredit).to.equal(86658);
+        done();
+    });
+
+    it('should give the correct amount for total debit', (done) => {
+        expect(terms.totalDebit).to.equal(86658);
+        done();
+    });
+});
+
+describe('Tests for expenses, secondary finance key pie', () => {
+
+    var terms = '';
+
+    before((done) => {
+        request(apinn.api).get('/expenses/2014-0/5/3/04/049/04-222/1000').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            done();
+        });
+    });
+
+    it('should give the correct amounts for the pie', (done) => {
+        expect(terms.slices[0].sum_amount.value).to.equal(628506423);
+        expect(terms.slices[1].sum_amount.value).to.equal(157719040);
+        expect(terms.slices[2].sum_amount.value).to.equal(2294266);
+        expect(terms.slices[3].sum_amount.value).to.equal(1063337);
+        done()
+    });
+
+    it('should give the correct amount for total credit', (done) => {
+        expect(terms.totalCredit).to.equal(789583066);
+        done();
+    });
+
+    it('should give the correct amount for total debit', (done) => {
+        expect(terms.totalDebit).to.equal(456000);
+        done();
+    });
+});
+
+describe('Tests for expenses, primary finance key pie', () => {
+
+    var terms = '';
+
+    before((done) => {
+        request(apinn.api).get('/expenses/2014-0/6/5/11/115/11-421/4900').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            done();
+        });
+    });
+
+    it('should give the correct amounts for the pie', (done) => {
+        expect(terms.slices[0].sum_amount.value).to.equal(58299123);
+        expect(terms.slices[1].sum_amount.value).to.equal(44206603);
+        expect(terms.slices[2].sum_amount.value).to.equal(11251475);
+        expect(terms.slices[3].sum_amount.value).to.equal(2016396);
+        expect(terms.slices[4].sum_amount.value).to.equal(1501537);
+        expect(terms.slices[5].sum_amount.value).to.equal(1335143);
+        expect(terms.slices[6].sum_amount.value).to.equal(526252);
+        done()
+    });
+
+    it('should give the correct amount for total credit', (done) => {
+        expect(terms.totalCredit).to.equal(119136529);
+        done();
+    });
+
+    it('should give the correct amount for total debit', (done) => {
+        expect(terms.totalDebit).to.equal(8825375);
+        done();
+    });
+});
+
 /*
  *   These tests compares the results from calling the API to this SQL query for kop-lind:
  *   SELECT SUM([Upphæð]), [Málaflokkur-deild]
@@ -201,7 +293,7 @@ describe('Tests for joint revenues default pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apiUrl).get('/joint-revenue/2014-0/3/all/all/').expect(200).end(function(err,res) {
+        request(apinn.api).get('/joint-revenue/2014-0/3/all/all/').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -240,7 +332,7 @@ describe('Tests for special revenues default pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apiUrl).get('/special-revenue/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
+        request(apinn.api).get('/special-revenue/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });

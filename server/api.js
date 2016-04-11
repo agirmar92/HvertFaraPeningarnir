@@ -448,7 +448,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
 			// Store the response and convert to absolute value
 			const totalCredit = docum.aggregations.total_amount.value;
             const respObj = { slices, totalCredit, totalDebit };
-            console.log(respObj);
+            //console.log(respObj);
 			res.status(200).send(respObj);
 		}, (err) => {
 			console.log(err);
