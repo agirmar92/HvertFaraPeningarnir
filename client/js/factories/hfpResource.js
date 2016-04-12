@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, tabResource, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, URL_PARAMS, $rootScope) {
+hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, tabResource, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, URL_PARAMS, MONTHS, QUARTERS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -22,6 +22,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var totalD = 18529125975;
     var dynamic = 100;
     var clickedSlice = "";
+    var clickedSliceLabel = "";
+    var deepest = "";
     var affairGroup = "all";
     var affair = "all";
     var departmentGroup = "all";
@@ -62,11 +64,20 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.getTotalD = function() {
         return totalD;
     };
+    factory.getTotalYearSpec = function() {
+        return 11089287535;
+    };
     factory.getDynamic = function() {
         return dynamic;
     };
     factory.getClickedSlice = function() {
         return clickedSlice;
+    };
+    factory.getClickedSliceLabel = function() {
+        return clickedSliceLabel;
+    };
+    factory.getDeepest = function() {
+        return deepest;
     };
     factory.getAffairGroup = function() {
         return affairGroup;
@@ -123,6 +134,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.setClickedSlice = function(newclickedSlice) {
         clickedSlice = newclickedSlice;
+    };
+    factory.setClickedSliceLabel = function(newclickedSliceLabel) {
+        clickedSliceLabel = newclickedSliceLabel;
+    };
+    factory.setDeepest = function(newDeepest) {
+        deepest = newDeepest;
     };
     factory.setAffairGroup = function(newAffairGroup) {
         affairGroup = newAffairGroup;
@@ -244,7 +261,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             } else {
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalDebit() - factory.getTotalCredit();
                 // Change the percentage number
-                factory.setDynamic((factory.getTotalDebit() / factory.getTotalD() * 100).toFixed(1));
+                if (factory.getType() === 'joint-revenue') {
+                    factory.setDynamic((factory.getTotalDebit() / factory.getTotalD() * 100).toFixed(1));
+                } else {
+                    factory.setDynamic((factory.getTotalDebit() / factory.getTotalYearSpec() * 100).toFixed(1));
+                }
+
 
                 // Change total debit to have dots every the digits
                 factory.setTotalDebit(factory.toNrWithDots(factory.getTotalDebit()));
@@ -357,7 +379,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         } else {
             $location.path('/special-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         }
-
     };
 
     /*
@@ -373,7 +394,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
         $rootScope.type = factory.getType();
-
+        factory.updateBreadcrumbs();
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
@@ -448,6 +469,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             callbacks: {
                 onClickSegment: function(a) {
                     factory.setClickedSlice(a.data.key);
+                    factory.setClickedSliceLabel(a.data.label);
                     var id = a.data.key;
                     var key;
                     var lvl = factory.getLevel();
@@ -459,6 +481,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     } else if (lvl === 2) {
                         key = 2;
                     } else if (lvl === 3) {
+                        factory.setDeepest(a.data.label);
                         key = 3;
                     } else if (lvl > 3 && lvl < 7) {
                         key = 4;
@@ -494,6 +517,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         $rootScope.$apply(function(){
                             $location.path(newPathPrefix, false, tabResource.choiceClicked, option, eqChoice.choiceId, nextLevel);
                         });
+                        
+                        factory.updateBreadcrumbs();
                     }
                 }
             },
@@ -523,6 +548,48 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 }
             }
         });
+    };
+    
+    factory.translate = function() {
+        var typo = factory.getType();
+        if (typo === 'expenses') {
+            return 'Gjöld';
+        } else if (typo === 'joint-revenue') {
+            return 'Sameiginlegar Tekjur';
+        } else if (typo === 'special-revenue') {
+            return 'Sértekjur';
+        }
+    };
+
+    factory.deepest = function(label) {
+        var lvl = parseInt(factory.getLevel());
+        if (lvl === 0) {
+            return 'Kópavogur';
+        } else if (lvl < 5) {
+            return factory.getClickedSliceLabel();
+        } else {
+            return factory.getDeepest() + ', ' + factory.getClickedSliceLabel();
+        }
+    };
+
+    factory.tDate = function () {
+        var perio = factory.getPeriod();
+        var year = perio.substring(0,4);
+        if (perio.length === 6) {
+            if (perio.charAt(5) === '0') {
+                return year;
+            } else {
+                var quarter = parseInt(perio.charAt(5));
+                return year + ' (' + QUARTERS[quarter] + ' ársfjórðungur)';
+            }
+        } else {
+            var month = parseInt(perio.substring(5,7), 10);
+            return year + ' (' + MONTHS[month] + ')';
+        }
+    };
+
+    factory.updateBreadcrumbs = function () {
+        $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.deepest();
     };
 
     return factory;

@@ -17,8 +17,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     type: "stackedColumn",
                     axisYType: "primary",
                     dataPoints: [
-                        {  y: 0, label: "Útgjöld" },
-                        {  y: 0, label: "Innkoma" },
+                        {  y: 0, label: "Út" },
+                        {  y: 0, label: "Inn" },
                         {  y: 0, label: "Nettó" }
                     ]
                 }
@@ -35,23 +35,23 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                 fontStyle: "normal",
                 fontFamily: "font4",
                 contentFormatter: function(e) {
-                    var pre = '';
-                    if (e.entries[0].dataPoint.label === 'Útgjöld') {
-                        if (hfpResource.getType() === 'income') {
-                            pre = ' (Gjöld)';
+                    var post = '';
+                    if (e.entries[0].dataPoint.label === 'Út') {
+                        if (hfpResource.getType() === 'expenses') {
+                            post = ' (Kakan)';
                         } else {
-                            pre = ' (Kakan)';
+                            post = ' (Kostnaðarliðir)';
                         }
-                    } else if (e.entries[0].dataPoint.label === 'Innkoma') {
-                        if (hfpResource.getType() === 'income') {
-                            pre = ' (Kakan)';
+                    } else if (e.entries[0].dataPoint.label === 'Inn') {
+                        if (hfpResource.getType() === 'expenses') {
+                            post = '<br>(Sértekjur, leiðréttingar og millifærslur)';
                         } else {
-                            pre = '<br>(Sértekjur, leiðréttingar og millifærslur)';
+                            post = ' (Kakan)';
                         }
                     } else {
-                        pre = ' (Mismunur)';
+                        post = ' (Mismunur)';
                     }
-                    return "kr. " + hfpResource.toNrWithDots(e.entries[0].dataPoint.y) + pre;
+                    return "kr. " + hfpResource.toNrWithDots(e.entries[0].dataPoint.y) + post;
                 }
             },
             culture: "is",
@@ -87,6 +87,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.totalCredit = '';
     $rootScope.totalDebit = 0;
     $rootScope.dynamic = 100;
+    $rootScope.breadcrumb = '';
 
     /*
     *       scope variables

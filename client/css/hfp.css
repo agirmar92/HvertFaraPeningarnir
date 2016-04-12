@@ -64,6 +64,18 @@ html, body {
     //opacity: 0.5;
 }
 
+#hfp-breadcrumb {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    height: 40px;
+    width: 800px;
+    margin-left: -400px;
+    font-family: font4;
+    font-size: 20px;
+    //border: 1px solid red;
+}
+
 .hfp-circle {
     border-radius: 50%;
     width: 100%;
