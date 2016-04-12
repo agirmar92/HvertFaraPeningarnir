@@ -563,8 +563,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
     factory.deepest = function(label) {
         var lvl = parseInt(factory.getLevel());
-        if (lvl === 0) {
-            return 'Kópavogur';
+        if (lvl === 0 || (lvl === 3 && factory.getType() === 'joint-revenue')) {
+            return 'Kópavogsbær';
         } else if (lvl < 5) {
             return factory.getClickedSliceLabel();
         } else {
