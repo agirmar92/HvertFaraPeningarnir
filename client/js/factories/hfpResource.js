@@ -470,7 +470,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
                         var typ = factory.getType();
-                        if (typ === 'join-revenue') {
+                        if (typ === 'joint-revenue') {
                             key -= 3;
                         }
 
