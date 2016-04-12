@@ -239,5 +239,89 @@ describe("TabsController > ", function() {
             expect(rootScope.expenses).toEqual(true);
             expect(location.path()).toEqual("/expenses/2014-0/1/n/n/n/n/n");
         });
+
+        // Predicate: (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) to true
+        it("should select the first choice when second option already has a selected choice", function() {
+            var optionId = 0;
+            var choiceId = 0;
+
+            // Assert before the change
+            scope.optionClicked(optionId + 1);
+            hfpResource.setLevel(optionId + 1);
+            scope.choiceClicked(optionId + 1, choiceId);
+            hfpResource.setLevel(optionId + 2)
+            scope.optionClicked(optionId);
+            hfpResource.setLevel(optionId)
+            rootScope.options[optionId + 1].currChoice = 0;
+            rootScope.options[optionId + 1].choices[choiceId].chosen = true;
+
+            expect(rootScope.options[optionId + 1].currChoice).toEqual(0);
+            expect(rootScope.options[optionId + 1].choices[choiceId].chosen).toBe(true);
+            expect(rootScope.expenses).toBe(true);
+            expect(location.path()).toEqual("/expenses/2014-0/0/n/0/n/n/n");
+
+            // Click the given choice
+            scope.choiceClicked(optionId, choiceId);
+            rootScope.options[optionId].currChoice = choiceId;
+            rootScope.options[optionId].choices[choiceId].chosen = true;
+
+            // Assert after the change
+            expect(rootScope.options[optionId].currChoice).toEqual(choiceId);
+            expect(rootScope.options[optionId + 1].currChoice).toEqual(choiceId);
+            expect(rootScope.options[optionId].choices[choiceId].chosen).toBe(true);
+            expect(rootScope.options[optionId + 1].choices[choiceId].chosen).toBe(true);
+            expect(rootScope.expenses).toEqual(true);
+            expect(location.path()).toEqual("/expenses/2014-0/2/0/0/n/n/n");
+        });
+
+        // Predicate: (option === 5) to true
+        it("should select a chosen secondary finance key", function() {
+            var optionId = 5;
+            var choiceId = 0;
+
+            // Assert before the change
+            scope.choiceClicked(optionId, choiceId);
+            hfpResource.setLevel(optionId + 1);
+            rootScope.options[optionId].currChoice = choiceId;
+            rootScope.options[optionId].choices[choiceId].chosen = true;
+
+            expect(location.path()).toEqual("/expenses/2014-0/6/n/n/n/n/0");
+
+            // Click the given choice
+            scope.choiceClicked(optionId, choiceId);
+            rootScope.options[optionId].currChoice = -1;
+            rootScope.options[optionId].choices[choiceId].chosen = false;
+
+            // Assert after the change
+            expect(rootScope.options[optionId].currChoice).toEqual(-1);
+            expect(rootScope.options[optionId].choices[choiceId].chosen).toBe(false);
+            expect(rootScope.expenses).toEqual(true);
+            expect(location.path()).toEqual("/expenses/2014-0/6/n/n/n/n/0000");
+        });
+
+        // Predicate: (option === 6) to true
+        it("should select a chosen finance key", function() {
+            var optionId = 6;
+            var choiceId = 0;
+
+            // Assert before the change
+            scope.choiceClicked(optionId, choiceId);
+            hfpResource.setLevel(optionId + 1);
+            rootScope.options[optionId].currChoice = choiceId;
+            rootScope.options[optionId].choices[choiceId].chosen = true;
+
+            expect(location.path()).toEqual("/expenses/2014-0/7/n/n/n/n/0");
+
+            // Click the given choice
+            scope.choiceClicked(optionId, choiceId);
+            rootScope.options[optionId].currChoice = -1;
+            rootScope.options[optionId].choices[choiceId].chosen = false;
+
+            // Assert after the change
+            expect(rootScope.options[optionId].currChoice).toEqual(-1);
+            expect(rootScope.options[optionId].choices[choiceId].chosen).toBe(false);
+            expect(rootScope.expenses).toEqual(true);
+            expect(location.path()).toEqual("/expenses/2014-0/7/n/n/n/n/000");
+        });
     });
 });
