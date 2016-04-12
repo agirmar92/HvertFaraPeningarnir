@@ -600,7 +600,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
                 "amounts" : {
                     "terms": {
                         "field": aggregator,
-                        "order": { "sum_amount": "desc" },
+                        "order": { "sum_amount": "asc" },
                         "size": 0
                     },
                     "aggs" : {
@@ -616,7 +616,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             entry.sum_amount.value = Math.abs(entry.sum_amount.value);
             return entry;
         });
-        const totalCredit = Math.abs(doc.aggregations.total_amount.value);
+        const totalDebit = Math.abs(doc.aggregations.total_amount.value);
         // Query the database for all revenue
         elasticClient.search({
             index: 'hfp',
@@ -683,7 +683,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             }
         }).then((docum) => {
             // Store the response and convert to absolute value
-            const totalDebit = Math.abs(docum.aggregations.total_amount.value);
+            const totalCredit = Math.abs(docum.aggregations.total_amount.value);
             const respObj = { slices, totalCredit, totalDebit };
             //console.log(respObj);
             res.status(200).send(respObj);

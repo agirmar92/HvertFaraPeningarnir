@@ -318,6 +318,36 @@ describe('Tests for joint revenues default pie', () => {
     });
 });
 
+describe('Tests for joint revenues, finance key pie', () => {
+
+    var terms = '';
+
+    before((done) => {
+        request(apinn.api).get('/joint-revenue/2014-0/3/all/all/').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            done();
+        });
+    });
+
+    it('should give the correct amounts for the pie', (done) => {
+        expect(terms.slices[0].sum_amount.value).to.equal(14862934701);
+        expect(terms.slices[1].sum_amount.value).to.equal(2794596142);
+        expect(terms.slices[2].sum_amount.value).to.equal(485659631);
+        expect(terms.slices[3].sum_amount.value).to.equal(385935501);
+        done();
+    });
+
+    it('should give the correct amount for total debit', (done) => {
+        expect(terms.totalDebit).to.equal(18529125975);
+        done();
+    });
+
+    it('should give the correct amount for total credit', (done) => {
+        expect(terms.totalCredit).to.equal(469219433);
+        done();
+    });
+});
+
 /*
 *   These tests compares the results from calling the API to this SQL query for kop-lind:
 *   SELECT SUM([Upphæð]), [Yfirmálaflokkur]
@@ -339,22 +369,22 @@ describe('Tests for special revenues default pie', () => {
     });
 
     it('should give the correct amounts for the pie', (done) => {
-        expect(terms.slices[5].sum_amount.value).to.equal(4597321188);
-        expect(terms.slices[4].sum_amount.value).to.equal(2735820712);
-        expect(terms.slices[3].sum_amount.value).to.equal(1965187278);
-        expect(terms.slices[2].sum_amount.value).to.equal(1326543110);
-        expect(terms.slices[1].sum_amount.value).to.equal(298774369);
-        expect(terms.slices[0].sum_amount.value).to.equal(165640878);
+        expect(terms.slices[0].sum_amount.value).to.equal(4597321188);
+        expect(terms.slices[1].sum_amount.value).to.equal(2735820712);
+        expect(terms.slices[2].sum_amount.value).to.equal(1965187278);
+        expect(terms.slices[3].sum_amount.value).to.equal(1326543110);
+        expect(terms.slices[4].sum_amount.value).to.equal(298774369);
+        expect(terms.slices[5].sum_amount.value).to.equal(165640878);
         done();
     });
 
     it('should give the correct amount for total debit', (done) => {
-        expect(terms.totalCredit).to.equal(11089287535);
+        expect(terms.totalCredit).to.equal(28374242);
         done();
     });
 
     it('should give the correct amount for total credit', (done) => {
-        expect(terms.totalDebit).to.equal(28374242);
+        expect(terms.totalDebit).to.equal(11089287535);
         done();
     });
 });

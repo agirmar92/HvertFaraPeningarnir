@@ -32,7 +32,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Getters
     * */
     factory.getLevel = function() {
-        if (factory.getType() === 'income') {
+        if (factory.getType() === 'joint-revenue') {
             return currLevelIn;
         } else {
             return currLevelEx;
@@ -88,7 +88,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Setters
     * */
     factory.setLevel = function(newLevel) {
-        if (factory.getType() === 'income') {
+        if (factory.getType() === 'joint-revenue') {
             currLevelIn = newLevel;
         } else {
             currLevelEx = newLevel;
@@ -151,7 +151,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.showMeTheMoney = function() {
         var deferred = $q.defer();
         var queryURL;
-        if (factory.getType() === 'expenses') {
+        if (factory.getType() !== 'joint-revenue') {
             queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
         } else {
             queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
@@ -350,10 +350,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.options[i].choices = [];
             $rootScope.options[i].currChoice = -1;
         }
-        if ($rootScope.expenses) {
+        if ($rootScope.type === 'expenses') {
             $location.path('/' + INITIAL_VALUES.TYPE + '/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+        } else if ($rootScope.type === 'joint-revenue') {
+            $location.path('/joint-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
         } else {
-            $location.path('/income/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
+            $location.path('/special-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         }
 
     };
@@ -370,7 +372,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalCredit = factory.getTotalCredit();
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
-        $rootScope.expenses = factory.getType() === 'expenses';
+        $rootScope.type = factory.getType();
+
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
@@ -466,7 +469,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
                         var typ = factory.getType();
-                        if (typ === 'income') {
+                        if (typ !== 'expenses') {
                             key -= 3;
                         }
 

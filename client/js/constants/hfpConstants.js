@@ -70,10 +70,20 @@ hfpApp.constant('URL_PARAMS', {
         'Department',
         'FinanceKey'
     ],
-    "income" : [
+    "joint-revenue" : [
         'Type',
         'Period',
         'Level',
+        'Department',
+        'FinanceKey'
+    ],
+    "special-revenue" : [
+        'Type',
+        'Period',
+        'Level',
+        'AffairGroup',
+        'Affair',
+        'DepartmentGroup',
         'Department',
         'FinanceKey'
     ]

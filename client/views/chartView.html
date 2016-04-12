@@ -7,21 +7,27 @@
                     <span>Skoða</span>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                            <span ng-if="expenses">Gjöld</span> <span ng-if="!expenses">Tekjur</span> <span class="caret"></span>
+                            <span ng-if="type === 'expenses'">Gjöld</span>
+                            <span ng-if="type === 'joint-revenue'">Sameiginlegar tekjur</span>
+                            <span ng-if="type === 'special-revenue'">Sértekjur</span>
+                            <span class="caret"></span>
                         </button>
                         <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
                             <li role="menuitem">
-                                <a href="javascript:void(0)" ng-click="changeView(true)">Gjöld</a>
+                                <a href="javascript:void(0)" ng-click="changeView('expenses')">Gjöld</a>
                             </li>
                             <li role="menuitem">
-                                <a href="javascript:void(0)" ng-click="changeView(false)">Tekjur</a>
+                                <a href="javascript:void(0)" ng-click="changeView('joint-revenue')">Sameiginlegar tekjur</a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="javascript:void(0)" ng-click="changeView('special-revenue')">Sértekjur</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || expenses">
+            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || type !== 'joint-revenue'">
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
                     <span>{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
@@ -122,8 +128,8 @@
         <!-- progress-meter -->
         <div class="col-xs-4 hfp-div hfp-meter">
             <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-            <p ng-if="expenses" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
-            <p ng-if="!expenses" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
+            <p ng-if="type === 'expenses'" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+            <p ng-if="type === 'joint-revenue' || type === 'special-revenue'" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
         </div>
         <!-- /#progress-meter -->
 

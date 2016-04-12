@@ -2,8 +2,7 @@
  * Created by agirmar on 20.3.2016.
  */
 hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, $location, hfpResource, tabResource, LEVELS, INITIAL_VALUES) {
-    // true = view expenses ; false = view income
-    $rootScope.expenses = true;
+    $rootScope.type = 'expenses';
     $rootScope.expandedOption = 0;
     $rootScope.options = [
         {
@@ -67,9 +66,9 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         }
     ];
 
-    $scope.changeView = function(toExpenses) {
-        if (toExpenses !== $rootScope.expenses) {
-            $rootScope.expenses = toExpenses;
+    $scope.changeView = function(toType) {
+        if (toType !== $rootScope.type) {
+            $rootScope.type = toType;
             hfpResource.resetApp();
         }
     };
@@ -80,7 +79,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     * */
     $scope.optionClicked = function(optionId) {
         var paramPosition = Math.min(4, optionId);
-        if (!$rootScope.expenses) {
+        if ($rootScope.type === 'joint-revenue') {
             paramPosition -= 3;
         }
 
@@ -112,7 +111,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         }
 
         var paramPosition = Math.min(4, option);
-        if (!$rootScope.expenses) {
+        if ($rootScope.type === 'joint-revenue') {
             paramPosition -= 3;
         }
 
