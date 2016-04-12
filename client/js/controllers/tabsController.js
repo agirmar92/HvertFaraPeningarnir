@@ -78,6 +78,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     *       Expand the option's choices if not already expanded.
     * */
     $scope.optionClicked = function(optionId) {
+        // Find the correct index of route parameter
         var paramPosition = Math.min(4, optionId);
         if ($rootScope.type === 'joint-revenue') {
             paramPosition -= 3;
