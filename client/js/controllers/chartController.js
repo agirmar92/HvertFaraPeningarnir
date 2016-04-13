@@ -95,10 +95,10 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.max = 100;
 
     // If there are any route params we should parse them
-    console.log(Object.keys($routeParams).length);
+    //console.log(Object.keys($routeParams).length);
     hfpResource.parseRouteParams($location.path().split('/'));
     hfpResource.showMeTheMoney().then(function() {
-        console.log("Initial data fetched");
+        //console.log("Initial data fetched");
     });
 
     /*

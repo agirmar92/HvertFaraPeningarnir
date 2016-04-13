@@ -108,7 +108,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     $scope.choiceClicked = function(option, choice) {
         //if (option === 7) {       TODO: put back in when creditors are allowed
         if (option >= 6) {
-            console.log("creditor selected, doing nothing.");
+            //console.log("creditor selected, doing nothing.");
             return;
         }
 

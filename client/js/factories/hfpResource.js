@@ -182,7 +182,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
-            console.log('currLvl: ' + currLvl);
+            //console.log('currLvl: ' + currLvl);
 
             var newSlices = [];
             var newChoices = [];
@@ -235,6 +235,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             factory.setSlices(newSlices);
             factory.setChoices(newChoices);
+            //console.log(factory.getSlices());
 
             // Change the total amounts
             factory.setTotalCredit(response.totalCredit);
@@ -312,7 +313,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     * */
     factory.parseRouteParams = function(params) {
 
-        console.log("parsing");
+        //console.log("parsing");
 
         for (var param in params) {
             var typ = factory.getType();
@@ -329,7 +330,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     tabResource.toggleOption(value);
                 }
             }
-            console.log(param + ": " + value);
+            //console.log(param + ": " + value);
             factory['set' + param](value);
         }
     };
@@ -473,7 +474,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     var id = a.data.key;
                     var key;
                     var lvl = factory.getLevel();
-                    console.log("lvl: " + lvl);
+                    //console.log("lvl: " + lvl);
                     if (parseInt(lvl) === 0) {
                         key = 0;
                     } else if (lvl === 1) {
@@ -486,7 +487,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     } else if (lvl > 3 && lvl < 7) {
                         key = 4;
                     } else if (lvl === 7) {
-                        console.log('Þú ert kominn niður á botninn.');
+                        //console.log('Þú ert kominn niður á botninn.');
                     }
                     //if (lvl < 7) {    TODO: put back in when creditors are allowed
                     if (lvl < 6) {

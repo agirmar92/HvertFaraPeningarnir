@@ -84,7 +84,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 	let mustDepartment        = {};
 	let mustFinanceKey        = {};
 	let aggregator            = aggs[level];
-	console.log(aggregator);
+	//console.log('aggregator: ' + aggregator);
 	/*	Checking if we need to change period
 		(user asking for whole year or quarter)
 		<year>-0: all year
@@ -121,7 +121,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 			mustFinanceKey = { 
 				"prefix": { "PrimaryFinanceKey": { "value": financeKeyID } } 
 			};
-		} else if (financeKeyID.substring(2,4) === '00') {
+		} else if (financeKeyID.substring(2,4) === '00' || financeKeyID.substring(1,3) == '00') {
 			mustFinanceKey = { 
 				"prefix": { "SecondaryFinanceKey": { "value": financeKeyID } } 
 			};
@@ -301,8 +301,8 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
-    console.log(departmentID);
-    console.log(financeKeyID);
+    //console.log('departmentID: ' + departmentID);
+    //console.log('financeKeyID: ' + financeKeyID);
 
     if (departmentID !== 'all') {
         mustDepartment = {
@@ -314,7 +314,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
             mustFinanceKey = {
                 "prefix": { "PrimaryFinanceKey": { "value": financeKeyID } }
             };
-        } else if (financeKeyID.substring(2,4) === '00') {
+        } else if (financeKeyID.substring(2,4) === '00' || financeKeyID.substring(1,3) === '00') {
             mustFinanceKey = {
                 "prefix": { "SecondaryFinanceKey": { "value": financeKeyID } }
             };
@@ -485,7 +485,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     let mustDepartment        = {};
     let mustFinanceKey        = {};
     let aggregator            = aggs[level];
-    console.log(aggregator);
+    //console.log('aggregator: ' + aggregator);
     /*	Checking if we need to change period
      (user asking for whole year or quarter)
      <year>-0: all year
@@ -522,7 +522,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             mustFinanceKey = {
                 "prefix": { "PrimaryFinanceKey": { "value": financeKeyID } }
             };
-        } else if (financeKeyID.substring(2,4) === '00') {
+        } else if (financeKeyID.substring(2,4) === '00' || financeKeyID.substring(1,3) === '00') {
             mustFinanceKey = {
                 "prefix": { "SecondaryFinanceKey": { "value": financeKeyID } }
             };
