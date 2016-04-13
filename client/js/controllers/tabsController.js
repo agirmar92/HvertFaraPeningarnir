@@ -147,4 +147,8 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         // Change the path
         $location.path(newPathPrefix, false, tabResource.choiceClicked, option, choice, nextLevel);
     };
+
+    $scope.resetApp = function () {
+        hfpResource.resetApp();
+    };
 });

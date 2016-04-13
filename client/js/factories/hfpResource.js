@@ -235,7 +235,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             factory.setSlices(newSlices);
             factory.setChoices(newChoices);
-            //console.log(factory.getSlices());
+            console.log(factory.getSlices());
 
             // Change the total amounts
             factory.setTotalCredit(response.totalCredit);

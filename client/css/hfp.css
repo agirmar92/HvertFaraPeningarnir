@@ -173,6 +173,17 @@ h1, h2 {
 
 }
 
+#clear-filters {
+    background-color: #4b4b4b;
+    position: relative;
+    width: 100%;
+    margin-top: 12px;
+}
+
+#clear-btn {
+    //width: 50%;
+}
+
 .hfp-curr-amount {
     position: absolute;
     display: inline;

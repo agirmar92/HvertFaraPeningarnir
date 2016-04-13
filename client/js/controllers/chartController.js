@@ -5,7 +5,6 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     /*
     *       rootScope variables
     * */
-    console.log('------------------' + hfpResource.getType());
 
     CanvasJS.addCultureInfo("is", {
             digitGroupSeparator: "."
