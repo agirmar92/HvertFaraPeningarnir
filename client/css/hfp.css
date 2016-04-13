@@ -57,7 +57,7 @@ html, body {
 .hfp-minichart {
     //background-color: #7a43b6;
     position: fixed;
-    bottom: 30px;
+    bottom: 50px;
     right: 40px;
     height: 250px;
     width: 250px;
@@ -69,11 +69,16 @@ html, body {
     bottom: 20px;
     left: 50%;
     height: 40px;
-    width: 1000px;
-    margin-left: -500px;
-    font-family: font4;
-    font-size: 20px;
+    width: 1200px;
+    margin-left: -600px;
+    font-family: font1;
+    font-size: 26px;
     //border: 1px solid red;
+}
+
+#hfp-label {
+    font-family: font1;
+    font-size: 16px;
 }
 
 .hfp-circle {
@@ -163,11 +168,17 @@ h1, h2 {
     font-family: font4;
 }
 
-#hfp-curr-amount {
+#hfp.percentage {
+    //font-family: font4;
+
+}
+
+.hfp-curr-amount {
     position: absolute;
     display: inline;
     right: 15px;
     top: 68px;
+    font-family: font4;
 }
 
 .hfp-btn {

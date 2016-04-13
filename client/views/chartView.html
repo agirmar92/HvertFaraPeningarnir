@@ -127,9 +127,9 @@
 
         <!-- progress-meter -->
         <div class="col-xs-4 hfp-div hfp-meter">
-            <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-            <p ng-if="type === 'expenses'" id="hfp-curr-amount">kr. {{totalCredit}}.-</p>
-            <p ng-if="type === 'joint-revenue' || type === 'special-revenue'" id="hfp-curr-amount">kr. {{totalDebit}}.-</p>
+            <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
+            <p ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+            <p ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
         </div>
         <!-- /#progress-meter -->
 
@@ -150,7 +150,7 @@
 
     <!-- breadcrumb-area -->
     <div id="hfp-breadcrumb">
-        Þú ert að skoða: {{breadcrumb}}
+        <!--span id="hfp-label">Þú ert að skoða:</span--> {{breadcrumb}}
     </div>
     <!-- /#breadcrumb-area -->
 </div>
