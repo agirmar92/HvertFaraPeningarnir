@@ -60,113 +60,6 @@ const timeProcessor = (period) => {
     return { "from": from, "to": to };
 };
 
-const getLabels = (drillPath) => {
-    return new Promise((resolve, reject) => {
-        let firstLabel;
-        let secondLabel;
-        let valueF;
-        let querying1 = false;
-        let querying2 = false;
-        for (let i = drillPath.length - 2; i >= 0; i--) {
-            valueF = drillPath[i];
-            if (valueF !== 'all') {
-                let field;
-                let sep;
-                querying1 = true;
-                if (i === 3) {
-                    field = "Department";
-                    sep = 7;
-                } else if (i === 2) {
-                    field = "DepartmentGroup";
-                    sep = 4;
-                } else if (i === 1) {
-                    field = "Affair";
-                    sep = 3;
-                } else {
-                    field = "AffairGroup";
-                    sep = 2;
-                }
-                console.log('HÉR!');
-                elasticClient.search({
-                    index: 'hfp',
-                    body: {
-                        "query": {
-                            "prefix": {
-                                [field]: {
-                                    "value": valueF
-                                }
-                            }
-                        },
-                        "size": 1
-                    }
-                }).then((doc) => {
-                    console.log('res: ' + res);
-                    firstLabel = doc.hits.hits[0]._source[field].substring(sep);
-                    querying1 = false;
-                    const last = drillPath.length - 1;
-                    const value = drillPath[last];
-                    if (value !== 'all') {
-                        const field = determineTypeOfFinanceKey(value) + "FinanceKey";
-                        elasticClient.search({
-                            index: 'hfp',
-                            body: {
-                                "query": {
-                                    "prefix": {
-                                        [field]: {
-                                            "value": value
-                                        }
-                                    }
-                                },
-                                "size": 1
-                            }
-                        }).then((doc) => {
-                            secondLabel = doc.hits.hits[0]._source[field].substring(5);
-                            resolve([ firstLabel, secondLabel ]);
-                        }, (err) => {
-                            console.log(err);
-                            reject('REJECTED!!');
-                        });
-                    } else {
-                        resolve([ firstLabel, secondLabel ]);
-                    }
-                }, (err) => {
-                    console.log('error');
-                    querying1 = false;
-                });
-                break;
-            } else if (i === 0) {
-                firstLabel = 'Kópavogsbær';
-                const last = drillPath.length - 1;
-                const value = drillPath[last];
-                if (value !== 'all') {
-                    const field = determineTypeOfFinanceKey(value) + "FinanceKey";
-                    elasticClient.search({
-                        index: 'hfp',
-                        body: {
-                            "query": {
-                                "prefix": {
-                                    [field]: {
-                                        "value": value
-                                    }
-                                }
-                            },
-                            "size": 1
-                        }
-                    }).then((doc) => {
-                        secondLabel = doc.hits.hits[0]._source[field].substring(5);
-                        resolve([ firstLabel, secondLabel ]);
-                    }, (err) => {
-                        console.log(err);
-                        reject('REJECTED!!');
-                    });
-                } else {
-                    resolve([ firstLabel, secondLabel ]);
-                }
-            }
-        }
-    })
-};
-
 const determineTypeOfFinanceKey = (key) => {
     if (key !== 'all') {
         if (key.substring(1,4) === '000') {
@@ -216,7 +109,27 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const from = foo.from;
     const to = foo.to;
 
-    //const deepestLabels = getLabels([affairGroupID, affairID, departmentGroupID, departmentID, financeKey]);
+    const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
+    let deepest = [];
+
+    // Find the index and keys for deepest drilled properties
+    for (let i = fieldValues.length - 2; i >= 0; i--) {
+        if (fieldValues[i] !== 'all') {
+            deepest.push({
+                fieldId: i,
+                key: fieldValues[i]
+            });
+            break;
+        } else if (i === 0) {
+            deepest.push(-1);
+        }
+    }
+    if (fieldValues[fieldValues.length - 1] !== 'all') {
+        deepest.push({
+            fieldId: fieldValues.length - 1,
+            key: fieldValues[fieldValues.length - 1]
+        });
+    }
 
 	// Generate database queries based on parameters
 	if (affairGroupID !== 'all') {
@@ -299,7 +212,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		            }
 		        }
 		    }, 
-		    "size": 0, 
+		    "size": 1,
 		    // Aggregate the total sums of Affairs and total expenses
 		    "aggs" : {
 		        "amounts" : {
@@ -316,6 +229,20 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		    }
 		}
 	}).then((doc) => {
+        // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
+        if (deepest[0] !== -1) {
+            let newValue = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
+            deepest[0] = newValue;
+        } else {
+            deepest[0] = 'Kópavogsbær';
+        }
+
+        if (deepest[1] !== undefined) {
+            let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
+            let newValue = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
+            deepest[1] = newValue;
+        }
+
 		// store the response from the database
 		const slices = doc.aggregations.amounts.buckets;
 		const totalCredit = doc.aggregations.total_amount.value;
@@ -379,8 +306,9 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		}).then((docum) => {
 			// Store the response and convert to absolute value
 			const totalDebit = Math.abs(docum.aggregations.total_amount.value);
-			const respObj = { slices, totalCredit, totalDebit };
+			const respObj = { slices, totalCredit, totalDebit, deepest };
 			//console.log(respObj);
+
 			res.status(200).send(respObj);
 		}, (err) => {
 			console.log(err);
@@ -814,6 +742,5 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
 module.exports = {
     api: api,
     timeProcessor: timeProcessor,
-    determineTypeOfFinanceKey: determineTypeOfFinanceKey,
-    getLabels: getLabels
+    determineTypeOfFinanceKey: determineTypeOfFinanceKey
 };

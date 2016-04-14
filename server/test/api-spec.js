@@ -165,28 +165,51 @@ describe('Tests for determineTypeOfFinanceKey function', () => {
     });
 });
 
-describe('Tests for getLabels function', () => {
+describe('Tests for breadcrumbs labels', () => {
 
-    it('should return default values', (done) => {
-        apinn.getLabels(['all', 'all', 'all', 'all', 'all']).then((res) => {
-            expect(res[0]).to.equal('Kópavogsbær');
-            expect(res[1]).to.equal(undefined);
+    var terms = '';
+
+    it('should return Menntamál and Laun og launatengd gjöld', (done) => {
+        request(apinn.api).get('/expenses/2014-0/1/3/all/all/all/1100').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            expect(terms.deepest[0]).to.equal('Menntamál');
+            expect(terms.deepest[1]).to.equal('Laun og launatengd gjöld');
             done();
         });
     });
 
     it('should return Kópavogsbær and Tekjur', (done) => {
-        apinn.getLabels(['all', 'all', 'all', 'all', '0000']).then((res) => {
-            expect(res[0]).to.equal('Kópavogsbær');
-            expect(res[1]).to.equal('Tekjur');
+        request(apinn.api).get('/expenses/2014-0/0/all/all/all/all/0000').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            expect(terms.deepest[0]).to.equal('Kópavogsbær');
+            expect(terms.deepest[1]).to.equal('Tekjur');
             done();
         });
     });
 
-    it('should return Menntamál and Laun og launatengd gjöld', (done) => {
-        apinn.getLabels(['3', 'all', 'all', 'all', '1100']).then((res) => {
-            expect(res[0]).to.equal('Menntamál');
-            expect(res[1]).to.equal('Laun og launatengd gjöld');
+    it('should return Velferðarmál and undefined', (done) => {
+        request(apinn.api).get('/expenses/2014-0/0/6/all/all/all/all').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            expect(terms.deepest[0]).to.equal('Velferðarmál');
+            expect(terms.deepest[1]).to.equal(undefined);
+            done();
+        });
+    });
+
+    it('should return Kópavogsbær and Leigubifreiðar', (done) => {
+        request(apinn.api).get('/expenses/2014-0/7/all/all/all/all/4111').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            expect(terms.deepest[0]).to.equal('Kópavogsbær');
+            expect(terms.deepest[1]).to.equal('Leigubifreiðar');
+            done();
+        });
+    });
+
+    it('should return Álfhólsskóli and Kennslulaun', (done) => {
+        request(apinn.api).get('/expenses/2014-0/7/3/04/042/04-222/1141').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            expect(terms.deepest[0]).to.equal('Álfhólsskóli');
+            expect(terms.deepest[1]).to.equal('Kennslulaun');
             done();
         });
     });
