@@ -241,6 +241,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             factory.setTotalCredit(response.totalCredit);
             factory.setTotalDebit(response.totalDebit);
 
+            // Change the deepest properties for breadcrumbs
+            factory.setDeepest(response.deepest);
+
 
             /* Check if totalYearAmount should be changed
             if (factory.getPeriod().substring(0,4) === factory.getPeriod().substring(0,4)) {
@@ -272,8 +275,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 // Change total debit to have dots every the digits
                 factory.setTotalDebit(factory.toNrWithDots(factory.getTotalDebit()));
             }
-
-            
 
             // Update the root variables
             changeRootVariables();
@@ -309,7 +310,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
 
     /*
-    *       Goes through the route parameters and sets the inital state of the app
+    *       Goes through the route parameters and sets the state of the app
     * */
     factory.parseRouteParams = function(params) {
 
@@ -395,7 +396,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
         $rootScope.type = factory.getType();
-        factory.updateBreadcrumbs();
+        $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.getDeepest()[0];
+        if (factory.getDeepest()[1]) {
+            $rootScope.breadcrumb += ', ' + factory.getDeepest()[1];
+        }
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();

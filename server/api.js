@@ -331,7 +331,8 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
  Example: {
  slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
  totalCredit,
- totalDebit
+ totalDebit,
+ deepest: [ <DeepestOne>, <DeepestTwo> ]
  }
  */
 api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
