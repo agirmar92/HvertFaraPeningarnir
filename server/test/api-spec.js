@@ -12,7 +12,7 @@ const apiUrl = "http://localhost:4000";
 
 /*  Predicate coverage  */
 
-describe('Tests for TimeProcessor function', () => {
+describe('Tests for timeProcessor function', () => {
 
     it('should return the whole year', (done) => {
         const res = apinn.timeProcessor('2014-0');
@@ -111,6 +111,84 @@ describe('Tests for TimeProcessor function', () => {
         const res = apinn.timeProcessor('aælskdjhfæjsdf lækjsdh \n lædkhjf');
         expect(res).to.equal('invalid input');
         done();
+    });
+});
+
+describe('Tests for determineTypeOfFinanceKey function', () => {
+
+    it('should return Primary', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('0000');
+        expect(res).to.equal("Primary");
+        done();
+    });
+
+    it('should also return Primary', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('4000');
+        expect(res).to.equal("Primary");
+        done();
+    });
+
+    it('should return Secondary', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('2100');
+        expect(res).to.equal("Secondary");
+        done();
+    });
+
+    it('should also return Secondary', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('5001');
+        expect(res).to.equal("Secondary");
+        done();
+    });
+
+    it('should return Secondary as well', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('0001');
+        expect(res).to.equal("Secondary");
+        done();
+    });
+
+    it('should return empty string', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('5011');
+        expect(res).to.equal("");
+        done();
+    });
+
+    it('should also return empty string', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('1310');
+        expect(res).to.equal("");
+        done();
+    });
+
+    it('should return empty string as well', (done) => {
+        const res = apinn.determineTypeOfFinanceKey('0010');
+        expect(res).to.equal("");
+        done();
+    });
+});
+
+describe('Tests for getLabels function', () => {
+
+    it('should return default values', (done) => {
+        apinn.getLabels(['all', 'all', 'all', 'all', 'all']).then((res) => {
+            expect(res[0]).to.equal('Kópavogsbær');
+            expect(res[1]).to.equal(undefined);
+            done();
+        });
+    });
+
+    it('should return Kópavogsbær and Tekjur', (done) => {
+        apinn.getLabels(['all', 'all', 'all', 'all', '0000']).then((res) => {
+            expect(res[0]).to.equal('Kópavogsbær');
+            expect(res[1]).to.equal('Tekjur');
+            done();
+        });
+    });
+
+    it('should return Menntamál and Laun og launatengd gjöld', (done) => {
+        apinn.getLabels(['3', 'all', 'all', 'all', '1100']).then((res) => {
+            expect(res[0]).to.equal('Menntamál');
+            expect(res[1]).to.equal('Laun og launatengd gjöld');
+            done();
+        });
     });
 });
 

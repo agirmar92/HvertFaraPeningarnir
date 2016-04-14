@@ -4,6 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const elasticsearch = require('elasticsearch');
+const Promise = require('promise');
 
 // Globals
 const api = express();
@@ -57,7 +58,127 @@ const timeProcessor = (period) => {
         }
     }
     return { "from": from, "to": to };
-}
+};
+
+const getLabels = (drillPath) => {
+    return new Promise((resolve, reject) => {
+        let firstLabel;
+        let secondLabel;
+        let valueF;
+        let querying1 = false;
+        let querying2 = false;
+        for (let i = drillPath.length - 2; i >= 0; i--) {
+            valueF = drillPath[i];
+            if (valueF !== 'all') {
+                let field;
+                let sep;
+                querying1 = true;
+                if (i === 3) {
+                    field = "Department";
+                    sep = 7;
+                } else if (i === 2) {
+                    field = "DepartmentGroup";
+                    sep = 4;
+                } else if (i === 1) {
+                    field = "Affair";
+                    sep = 3;
+                } else {
+                    field = "AffairGroup";
+                    sep = 2;
+                }
+                console.log('HÉR!');
+                elasticClient.search({
+                    index: 'hfp',
+                    body: {
+                        "query": {
+                            "prefix": {
+                                [field]: {
+                                    "value": valueF
+                                }
+                            }
+                        },
+                        "size": 1
+                    }
+                }).then((doc) => {
+                    console.log('res: ' + res);
+                    firstLabel = doc.hits.hits[0]._source[field].substring(sep);
+                    querying1 = false;
+                    const last = drillPath.length - 1;
+                    const value = drillPath[last];
+                    if (value !== 'all') {
+                        const field = determineTypeOfFinanceKey(value) + "FinanceKey";
+                        elasticClient.search({
+                            index: 'hfp',
+                            body: {
+                                "query": {
+                                    "prefix": {
+                                        [field]: {
+                                            "value": value
+                                        }
+                                    }
+                                },
+                                "size": 1
+                            }
+                        }).then((doc) => {
+                            secondLabel = doc.hits.hits[0]._source[field].substring(5);
+                            resolve([ firstLabel, secondLabel ]);
+                        }, (err) => {
+                            console.log(err);
+                            reject('REJECTED!!');
+                        });
+                    } else {
+                        resolve([ firstLabel, secondLabel ]);
+                    }
+                }, (err) => {
+                    console.log('error');
+                    querying1 = false;
+                });
+                break;
+            } else if (i === 0) {
+                firstLabel = 'Kópavogsbær';
+                const last = drillPath.length - 1;
+                const value = drillPath[last];
+                if (value !== 'all') {
+                    const field = determineTypeOfFinanceKey(value) + "FinanceKey";
+                    elasticClient.search({
+                        index: 'hfp',
+                        body: {
+                            "query": {
+                                "prefix": {
+                                    [field]: {
+                                        "value": value
+                                    }
+                                }
+                            },
+                            "size": 1
+                        }
+                    }).then((doc) => {
+                        secondLabel = doc.hits.hits[0]._source[field].substring(5);
+                        resolve([ firstLabel, secondLabel ]);
+                    }, (err) => {
+                        console.log(err);
+                        reject('REJECTED!!');
+                    });
+                } else {
+                    resolve([ firstLabel, secondLabel ]);
+                }
+            }
+        }
+    })
+};
+
+const determineTypeOfFinanceKey = (key) => {
+    if (key !== 'all') {
+        if (key.substring(1,4) === '000') {
+            return "Primary";
+        } else if (key.substring(2,4) === '00' || key.substring(1,3) == '00') {
+            return "Secondary";
+        } else {
+            return "";
+        }
+    }
+    return "Invalid Input";
+};
 
 /* 
 	This route will return an object containing 3 things:
@@ -95,6 +216,8 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const from = foo.from;
     const to = foo.to;
 
+    //const deepestLabels = getLabels([affairGroupID, affairID, departmentGroupID, departmentID, financeKey]);
+
 	// Generate database queries based on parameters
 	if (affairGroupID !== 'all') {
 		mustAffairGroup = { 
@@ -117,19 +240,10 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 		};
 	}
 	if (financeKeyID !== 'all') {
-		if (financeKeyID.substring(1,4) === '000') {
-			mustFinanceKey = { 
-				"prefix": { "PrimaryFinanceKey": { "value": financeKeyID } } 
-			};
-		} else if (financeKeyID.substring(2,4) === '00' || financeKeyID.substring(1,3) == '00') {
-			mustFinanceKey = { 
-				"prefix": { "SecondaryFinanceKey": { "value": financeKeyID } } 
-			};
-		} else {
-			mustFinanceKey = { 
-				"prefix": { "FinanceKey": { "value": financeKeyID } } 
-			};
-		}
+        const field = determineTypeOfFinanceKey(financeKeyID) + "FinanceKey";
+        mustFinanceKey = {
+            "prefix": { [field]: { "value": financeKeyID } }
+        }
 	}	
 
 	// Query the database for all expenses
@@ -699,5 +813,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
 
 module.exports = {
     api: api,
-    timeProcessor: timeProcessor
+    timeProcessor: timeProcessor,
+    determineTypeOfFinanceKey: determineTypeOfFinanceKey,
+    getLabels: getLabels
 };
