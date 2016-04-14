@@ -174,6 +174,7 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Menntamál');
             expect(terms.deepest[1]).to.equal('Laun og launatengd gjöld');
+            expect(terms.deepest[2]).to.equal('Menntamál');
             done();
         });
     });
@@ -183,15 +184,17 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Kópavogsbær');
             expect(terms.deepest[1]).to.equal('Tekjur');
+            expect(terms.deepest[2]).to.be.a('null');
             done();
         });
     });
 
     it('should return Velferðarmál and undefined', (done) => {
-        request(apinn.api).get('/expenses/2014-0/0/6/all/all/all/all').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/2014-0/1/6/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Velferðarmál');
-            expect(terms.deepest[1]).to.equal(undefined);
+            expect(terms.deepest[1]).to.be.a('null');
+            expect(terms.deepest[2]).to.equal('Velferðarmál');
             done();
         });
     });
@@ -201,6 +204,7 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Kópavogsbær');
             expect(terms.deepest[1]).to.equal('Leigubifreiðar');
+            expect(terms.deepest[2]).to.be.a('null');
             done();
         });
     });
@@ -210,6 +214,7 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Álfhólsskóli');
             expect(terms.deepest[1]).to.equal('Kennslulaun');
+            expect(terms.deepest[2]).to.equal('Menntamál');
             done();
         });
     });

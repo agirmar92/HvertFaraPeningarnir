@@ -110,25 +110,26 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const to = foo.to;
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
-    let deepest = [];
+    let undef;
+    let deepest = [ undef, undef, undef ];
 
     // Find the index and keys for deepest drilled properties
     for (let i = fieldValues.length - 2; i >= 0; i--) {
         if (fieldValues[i] !== 'all') {
-            deepest.push({
+            deepest[0] = {
                 fieldId: i,
                 key: fieldValues[i]
-            });
+            };
             break;
         } else if (i === 0) {
-            deepest.push(-1);
+            deepest[0] = -1;
         }
     }
     if (fieldValues[fieldValues.length - 1] !== 'all') {
-        deepest.push({
+        deepest[1] = {
             fieldId: fieldValues.length - 1,
             key: fieldValues[fieldValues.length - 1]
-        });
+        };
     }
 
 	// Generate database queries based on parameters
@@ -233,6 +234,8 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         if (deepest[0] !== -1) {
             let newValue = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
             deepest[0] = newValue;
+            const Uber = doc.hits.hits[0]._source.AffairGroup.substring(2);
+            deepest[2] = Uber;
         } else {
             deepest[0] = 'Kópavogsbær';
         }
