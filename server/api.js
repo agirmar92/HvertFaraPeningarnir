@@ -111,16 +111,23 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
     let undef;
-    let deepest = [ undef, undef, undef ];
+    let deepest = [ undef, undef ];
+    let labels = [];
 
     // Find the index and keys for deepest drilled properties
     for (let i = fieldValues.length - 2; i >= 0; i--) {
         if (fieldValues[i] !== 'all') {
-            deepest[0] = {
-                fieldId: i,
-                key: fieldValues[i]
-            };
-            break;
+            if (!deepest[0]) {
+                deepest[0] = {
+                    fieldId: i,
+                    key: fieldValues[i]
+                };
+            }
+            labels.push({
+                key: fieldValues[i],
+                level: i,
+                label: aggs[i]
+            });
         } else if (i === 0) {
             deepest[0] = -1;
         }
@@ -130,140 +137,138 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
             fieldId: fieldValues.length - 1,
             key: fieldValues[fieldValues.length - 1]
         };
+        const typeFin = determineTypeOfFinanceKey(financeKeyID);
+        let it;
+        if (typeFin === 'Primary') {
+            it = 4;
+        } else if (typeFin === 'Secondary') {
+            it = 5;
+        } else {
+            it = 6;
+        }
+        for (let i = 4; i <= it; i++) {
+            labels.push({
+                key: 'atli', // pun intended, doesn't matter the value, only the length ;)
+                level: i,
+                label: aggs[i]
+            });
+        }
     }
 
 	// Generate database queries based on parameters
-	if (affairGroupID !== 'all') {
-		mustAffairGroup = { 
-			"prefix": { "AffairGroup": { "value": affairGroupID } } 
-		};
-	}
-	if (affairID !== 'all') {
-		mustAffair = { 
-			"prefix": { "Affair": { "value": affairID } } 
-		};
-	}
-	if (departmentGroupID !== 'all') {
-		mustDepartmentGroup = { 
-			"prefix": { "DepartmentGroup": { "value": departmentGroupID } } 
-		};
-	}
-	if (departmentID !== 'all') {
-		mustDepartment = {
-			"prefix": { "Department": { "value": departmentID } } 
-		};
-	}
-	if (financeKeyID !== 'all') {
+    if (affairGroupID !== 'all') {
+        mustAffairGroup = { "prefix": { "AffairGroup": { "value": affairGroupID } } };
+    }
+    if (affairID !== 'all') {
+        mustAffair = { "prefix": { "Affair": { "value": affairID } } };
+    }
+    if (departmentGroupID !== 'all') {
+        mustDepartmentGroup = { "prefix": { "DepartmentGroup": { "value": departmentGroupID } } };
+    }
+    if (departmentID !== 'all') {
+        mustDepartment = { "prefix": { "Department": { "value": departmentID } } };
+    }
+    if (financeKeyID !== 'all') {
         const field = determineTypeOfFinanceKey(financeKeyID) + "FinanceKey";
-        mustFinanceKey = {
-            "prefix": { [field]: { "value": financeKeyID } }
-        }
-	}	
+        mustFinanceKey = { "prefix": { [field]: { "value": financeKeyID } } };
+    }
 
-	// Query the database for all expenses
-	elasticClient.search({
-		index: 'hfp',
-		body: {
-			"query": {
-		        "filtered": {
-		        	// Only expenses
-		            "filter": {
-		                "range" : {
-		                    "Amount" : {
-		                        "gt" : 0
-		                    }
-		                }
-		            },
-		            // Desired period
-		            "query": {
-		                "filtered": {
-		                    "filter": {
-		                        "range": {
-		                            "Date": {
-		                                "from": from,
-		                                "to": to
-		                            }
-		                        }
-		                    },
-		                    // Exclude "Tekjur" Affair
-		                    "query": {
-		                    	"filtered": {
-		                    		"filter": {
-		                    			"range": {
-		                    				"AffairID": {
-		                    					"gt": "01"
-		                    				}
-		                    			}
-		                    		},
-		                    		// Drilldown
-		                    		"query": {
-		                    			"bool": {
-		                    				"must" : [
-		                    					mustAffairGroup,
-		                    					mustAffair,
-		                    					mustDepartmentGroup,
-		                    					mustDepartment,
-		                    					mustFinanceKey
-		                    				]
-		                    			}
-		                    		}
-		                    	}
-		                    }
-		                }
-		            }
-		        }
-		    }, 
-		    "size": 1,
-		    // Aggregate the total sums of Affairs and total expenses
-		    "aggs" : {
-		        "amounts" : {
-		            "terms": {
-		                "field": aggregator,
-		                "order": { "sum_amount": "desc" },
-		                "size": 0
-		            },
-		            "aggs" : {
-		                "sum_amount": { "sum": { "field": "Amount" } }
-		            }
-		        },
-		        "total_amount": { "sum": { "field": "Amount" }}
-		    }
-		}
-	}).then((doc) => {
+    // Query the database for all expenses
+    elasticClient.search({
+        index: 'hfp',
+        body: {
+            "query": {
+                "filtered": {
+                    // Only expenses
+                    "filter": {
+                        "range" : {
+                            "Amount" : { "gt" : 0 }
+                        }
+                    },
+                    // Desired period
+                    "query": {
+                        "filtered": {
+                            "filter": {
+                                "range": {
+                                    "Date": {
+                                        "from": from,
+                                        "to": to
+                                    }
+                                }
+                            },
+                            // Exclude "Tekjur" Affair
+                            "query": {
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "AffairID": { "gt": "01" }
+                                        }
+                                    },
+                                    // Drilldown
+                                    "query": {
+                                        "bool": {
+                                            "must" : [
+                                                mustAffairGroup,
+                                                mustAffair,
+                                                mustDepartmentGroup,
+                                                mustDepartment,
+                                                mustFinanceKey
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "size": 1,
+            // Aggregate the total sums of Affairs and total expenses
+            "aggs" : {
+                "amounts" : {
+                    "terms": {
+                        "field": aggregator,
+                        "order": { "sum_amount": "desc" },
+                        "size": 0
+                    },
+                    "aggs" : {
+                        "sum_amount": { "sum": { "field": "Amount" } }
+                    }
+                },
+                "total_amount": { "sum": { "field": "Amount" }}
+            }
+        }
+    }).then((doc) => {
         // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
         if (deepest[0] !== -1) {
-            let newValue = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
-            deepest[0] = newValue;
-            const Uber = doc.hits.hits[0]._source.AffairGroup.substring(2);
-            deepest[2] = Uber;
+            deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
         } else {
             deepest[0] = 'Kópavogsbær';
         }
-
         if (deepest[1] !== undefined) {
             let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
-            let newValue = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
-            deepest[1] = newValue;
+            deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
+        }
+        for (let i = 0; i < labels.length; i++) {
+            labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
         }
 
-		// store the response from the database
-		const slices = doc.aggregations.amounts.buckets;
-		const totalCredit = doc.aggregations.total_amount.value;
-		// Query the database for all incomes
-		elasticClient.search({
-			index: 'hfp',
-			body: {
-				"query": {
-			        "filtered": {
-			            "filter": {
-			                "range" : {
-			                    "Amount" : {
-			                        "lt" : 0
-			                    }
-			                }
-			            },
-			            // Desired period
-			            "query": {
+        // store the response from the database
+        const slices = doc.aggregations.amounts.buckets;
+        const totalCredit = doc.aggregations.total_amount.value;
+        // Query the database for all incomes
+        elasticClient.search({
+            index: 'hfp',
+            body: {
+                "query": {
+                    "filtered": {
+                        "filter": {
+                            "range" : {
+                                "Amount" : { "lt" : 0 }
+                            }
+                        },
+                        // Desired period
+                        "query": {
                             "filtered": {
                                 "filter": {
                                     "range": {
@@ -278,9 +283,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                                     "filtered": {
                                         "filter": {
                                             "range": {
-                                                "AffairID": {
-                                                    "gt": "01"
-                                                }
+                                                "AffairID": {"gt": "01"}
                                             }
                                         },
                                         // Drilldown
@@ -298,29 +301,27 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                                     }
                                 }
                             }
-			            }
-			        }
-			    }, 
-			    "size": 0, 
-			    "aggs" : {
-			        "total_amount": { "sum": { "field": "Amount" }}
-			    }
-			}
-		}).then((docum) => {
-			// Store the response and convert to absolute value
-			const totalDebit = Math.abs(docum.aggregations.total_amount.value);
-			const respObj = { slices, totalCredit, totalDebit, deepest };
-			//console.log(respObj);
-
-			res.status(200).send(respObj);
-		}, (err) => {
-			console.log(err);
-			res.status(500).send('Server error\n');
-		});
-	}, (err) => {
-		console.log(err);
-		res.status(500).send('Server error\n');
-	});
+                        }
+                    }
+                },
+                "size": 0,
+                "aggs" : {
+                    "total_amount": { "sum": { "field": "Amount" } }
+                }
+            }
+        }).then((docum) => {
+            // Store the response and convert to absolute value
+            const totalDebit = Math.abs(docum.aggregations.total_amount.value);
+            const respObj = { slices, totalCredit, totalDebit, deepest, labels };
+            res.status(200).send(respObj);
+        }, (err) => {
+            console.log(err);
+            res.status(500).send('Server error\n');
+        });
+    }, (err) => {
+        console.log(err);
+        res.status(500).send('Server error\n');
+    });
 });
 
 /*
@@ -349,6 +350,48 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     const to = foo.to;
     //console.log('departmentID: ' + departmentID);
     //console.log('financeKeyID: ' + financeKeyID);
+
+    const fieldValues = [departmentID, financeKeyID];
+    let undef;
+    let deepest = [ undef, undef ];
+    let labels = [];
+
+    // Find the index and keys for deepest drilled properties
+    if (fieldValues[0] !== 'all') {
+        deepest[0] = {
+            fieldId: 3,
+            key: fieldValues[0]
+        };
+        labels.push({
+            key: fieldValues[0],
+            level: 3,
+            label: aggs[3]
+        });
+    } else {
+        deepest[0] = -1;
+    }
+    if (fieldValues[fieldValues.length - 1] !== 'all') {
+        deepest[1] = {
+            fieldId: fieldValues.length + 2,
+            key: fieldValues[fieldValues.length - 1]
+        };
+        const typeFin = determineTypeOfFinanceKey(financeKeyID);
+        let it;
+        if (typeFin === 'Primary') {
+            it = 4;
+        } else if (typeFin === 'Secondary') {
+            it = 5;
+        } else {
+            it = 6;
+        }
+        for (let i = 4; i <= it; i++) {
+            labels.push({
+                key: 'atli', // pun intended, doesn't matter the value, only the length ;)
+                level: i,
+                label: aggs[i]
+            });
+        }
+    }
 
     if (departmentID !== 'all') {
         mustDepartment = {
@@ -417,7 +460,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
 					}
 				}
 			},
-			"size": 0,
+			"size": 1,
 			"aggs" : {
 				"amounts" : {
 					"terms": {
@@ -433,6 +476,20 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
 			}
 		}
 	}).then((doc) => {
+        // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
+        if (deepest[0] !== -1) {
+            deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
+        } else {
+            deepest[0] = 'Kópavogsbær';
+        }
+        if (deepest[1] !== undefined) {
+            let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
+            deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
+        }
+        for (let i = 0; i < labels.length; i++) {
+            labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+        }
+
 		// store the response from the database
 		const slices = doc.aggregations.amounts.buckets.map(entry => {
 			entry.sum_amount.value = Math.abs(entry.sum_amount.value);
@@ -493,7 +550,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
 		}).then((docum) => {
 			// Store the response and convert to absolute value
 			const totalCredit = docum.aggregations.total_amount.value;
-            const respObj = { slices, totalCredit, totalDebit };
+            const respObj = { slices, totalCredit, totalDebit, deepest, labels };
             //console.log(respObj);
 			res.status(200).send(respObj);
 		}, (err) => {
@@ -541,6 +598,52 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
+
+    const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
+    let undef;
+    let deepest = [ undef, undef ];
+    let labels = [];
+
+    // Find the index and keys for deepest drilled properties
+    for (let i = fieldValues.length - 2; i >= 0; i--) {
+        if (fieldValues[i] !== 'all') {
+            if (!deepest[0]) {
+                deepest[0] = {
+                    fieldId: i,
+                    key: fieldValues[i]
+                };
+            }
+            labels.push({
+                key: fieldValues[i],
+                level: i,
+                label: aggs[i]
+            });
+        } else if (i === 0) {
+            deepest[0] = -1;
+        }
+    }
+    if (fieldValues[fieldValues.length - 1] !== 'all') {
+        deepest[1] = {
+            fieldId: fieldValues.length - 1,
+            key: fieldValues[fieldValues.length - 1]
+        };
+        const typeFin = determineTypeOfFinanceKey(financeKeyID);
+        let it;
+        if (typeFin === 'Primary') {
+            it = 4;
+        } else if (typeFin === 'Secondary') {
+            it = 5;
+        } else {
+            it = 6;
+        }
+        for (let i = 4; i <= it; i++) {
+            labels.push({
+                key: 'atli', // pun intended, doesn't matter the value, only the length ;)
+                level: i,
+                label: aggs[i]
+            });
+        }
+    }
 
     // Generate database queries based on parameters
     if (affairGroupID !== 'all') {
@@ -640,7 +743,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
                     }
                 }
             },
-            "size": 0,
+            "size": 1,
             // Aggregate the total sums of Affairs and total revenue
             "aggs" : {
                 "amounts" : {
@@ -657,6 +760,20 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             }
         }
     }).then((doc) => {
+        // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
+        if (deepest[0] !== -1) {
+            deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
+        } else {
+            deepest[0] = 'Kópavogsbær';
+        }
+        if (deepest[1] !== undefined) {
+            let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
+            deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
+        }
+        for (let i = 0; i < labels.length; i++) {
+            labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+        }
+
         // store the response from the database
         const slices = doc.aggregations.amounts.buckets.map(entry => {
             entry.sum_amount.value = Math.abs(entry.sum_amount.value);
@@ -730,7 +847,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalCredit = Math.abs(docum.aggregations.total_amount.value);
-            const respObj = { slices, totalCredit, totalDebit };
+            const respObj = { slices, totalCredit, totalDebit, deepest, labels };
             //console.log(respObj);
             res.status(200).send(respObj);
         }, (err) => {

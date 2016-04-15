@@ -174,7 +174,10 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Menntamál');
             expect(terms.deepest[1]).to.equal('Laun og launatengd gjöld');
-            expect(terms.deepest[2]).to.equal('Menntamál');
+            expect(terms.labels[0].label).to.equal('Menntamál');
+            expect(terms.labels[1].label).to.equal('Starfsmannakostnaður');
+            expect(terms.labels[2].label).to.equal('Laun og launatengd gjöld');
+            expect(terms.labels[3]).to.be.an('undefined');
             done();
         });
     });
@@ -184,7 +187,8 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Kópavogsbær');
             expect(terms.deepest[1]).to.equal('Tekjur');
-            expect(terms.deepest[2]).to.be.a('null');
+            expect(terms.labels[0].label).to.equal('Tekjur');
+            expect(terms.labels[1]).to.be.an('undefined');
             done();
         });
     });
@@ -193,8 +197,9 @@ describe('Tests for breadcrumbs labels', () => {
         request(apinn.api).get('/expenses/2014-0/1/6/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Velferðarmál');
-            expect(terms.deepest[1]).to.be.a('null');
-            expect(terms.deepest[2]).to.equal('Velferðarmál');
+            expect(terms.deepest[1]).to.be.an('null');
+            expect(terms.labels[0].label).to.equal('Velferðarmál');
+            expect(terms.labels[1]).to.be.an('undefined');
             done();
         });
     });
@@ -204,7 +209,9 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Kópavogsbær');
             expect(terms.deepest[1]).to.equal('Leigubifreiðar');
-            expect(terms.deepest[2]).to.be.a('null');
+            expect(terms.labels[0].label).to.equal('Þjónustukaup');
+            expect(terms.labels[1].label).to.equal('Akstur');
+            expect(terms.labels[2].label).to.equal('Leigubifreiðar');
             done();
         });
     });
@@ -214,7 +221,13 @@ describe('Tests for breadcrumbs labels', () => {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Álfhólsskóli');
             expect(terms.deepest[1]).to.equal('Kennslulaun');
-            expect(terms.deepest[2]).to.equal('Menntamál');
+            expect(terms.labels[3].label).to.equal('Menntamál');
+            expect(terms.labels[2].label).to.equal('Fræðslumál');
+            expect(terms.labels[1].label).to.equal('Grunnskólar');
+            expect(terms.labels[0].label).to.equal('Álfhólsskóli');
+            expect(terms.labels[4].label).to.equal('Starfsmannakostnaður');
+            expect(terms.labels[5].label).to.equal('Laun og launatengd gjöld');
+            expect(terms.labels[6].label).to.equal('Kennslulaun');
             done();
         });
     });
@@ -257,6 +270,17 @@ describe('Tests for expenses default pie', () => {
 
     it('should give the correct amount for total debit', (done) => {
         expect(terms.totalDebit).to.equal(14922044086);
+        done();
+    });
+
+    it('should return Kópavogsbær and undefined for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Kópavogsbær');
+        expect(terms.deepest[1]).to.be.a('null');
+        done();
+    });
+
+    it('should return an empty array for labels', (done) => {
+        expect(terms.labels[0]).to.be.an('undefined');
         done();
     });
 
@@ -321,6 +345,23 @@ describe('Tests for expenses, finance key pie', () => {
         expect(terms.totalDebit).to.equal(12950574);
         done();
     });
+
+    it('should return Lista og menningarráð and Aðrir styrkir og framlög for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Lista og menningarráð');
+        expect(terms.deepest[1]).to.equal('Aðrir styrkir og framlög');
+        done();
+    });
+
+    it('should return an empty array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Lista og menningarráð');
+        expect(terms.labels[1].label).to.equal('Ýmsir styrkir og framlög');
+        expect(terms.labels[2].label).to.equal('Menningarmál');
+        expect(terms.labels[3].label).to.equal('Menningarmál');
+        expect(terms.labels[4].label).to.equal('Styrkir og framlög');
+        expect(terms.labels[5].label).to.equal('Aðrir styrkir og framlög');
+        expect(terms.labels[6]).to.be.an('undefined');
+        done();
+    });
 });
 
 describe('Tests for expenses, secondary finance key pie', () => {
@@ -352,6 +393,23 @@ describe('Tests for expenses, secondary finance key pie', () => {
         expect(terms.totalDebit).to.equal(31980);
         done();
     });
+
+    it('should return Sambýli heilab. Roðasölum 1 and Önnur vörukaup for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Sambýli heilab. Roðasölum 1');
+        expect(terms.deepest[1]).to.equal('Önnur vörukaup');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Sambýli heilab. Roðasölum 1');
+        expect(terms.labels[1].label).to.equal('Þjónusta við aldraða');
+        expect(terms.labels[2].label).to.equal('Félagsþjónusta');
+        expect(terms.labels[3].label).to.equal('Velferðarmál');
+        expect(terms.labels[4].label).to.equal('Vörukaup');
+        expect(terms.labels[5].label).to.equal('Önnur vörukaup');
+        expect(terms.labels[6]).to.be.an('undefined');
+        done();
+    });
 });
 
 describe('Tests for expenses, primary finance key pie', () => {
@@ -381,6 +439,22 @@ describe('Tests for expenses, primary finance key pie', () => {
 
     it('should give the correct amount for total debit', (done) => {
         expect(terms.totalDebit).to.equal(1388895);
+        done();
+    });
+
+    it('should return Álfhólsskóli and Vörukaup for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Álfhólsskóli');
+        expect(terms.deepest[1]).to.equal('Vörukaup');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Álfhólsskóli');
+        expect(terms.labels[1].label).to.equal('Grunnskólar');
+        expect(terms.labels[2].label).to.equal('Fræðslumál');
+        expect(terms.labels[3].label).to.equal('Menntamál');
+        expect(terms.labels[4].label).to.equal('Vörukaup');
+        expect(terms.labels[6]).to.be.an('undefined');
         done();
     });
 });
@@ -421,6 +495,17 @@ describe('Tests for joint revenues default pie', () => {
         expect(terms.totalCredit).to.equal(469219433);
         done();
     });
+
+    it('should return Kópavogbær and undefined for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Kópavogsbær');
+        expect(terms.deepest[1]).to.be.a('null');
+        done();
+    });
+
+    it('should return an empty array for labels', (done) => {
+        expect(terms.labels[0]).to.be.an('undefined');
+        done();
+    });
 });
 
 describe('Tests for joint revenues, primary finance key pie', () => {
@@ -448,6 +533,19 @@ describe('Tests for joint revenues, primary finance key pie', () => {
         expect(terms.totalCredit).to.equal(395892638);
         done();
     });
+
+    it('should return Útsvar and Tekjur for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Útsvar');
+        expect(terms.deepest[1]).to.equal('Tekjur');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Útsvar');
+        expect(terms.labels[1].label).to.equal('Tekjur');
+        expect(terms.labels[2]).to.be.an('undefined');
+        done();
+    });
 });
 
 describe('Tests for joint revenues, secondary finance key pie', () => {
@@ -473,6 +571,20 @@ describe('Tests for joint revenues, secondary finance key pie', () => {
 
     it('should give the correct amount for total credit', (done) => {
         expect(terms.totalCredit).to.equal(0);
+        done();
+    });
+
+    it('should return Lóðarleiga and Arður af eignum for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Lóðarleiga');
+        expect(terms.deepest[1]).to.equal('Arður af eignum');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Lóðarleiga');
+        expect(terms.labels[1].label).to.equal('Tekjur');
+        expect(terms.labels[2].label).to.equal('Arður af eignum');
+        expect(terms.labels[3]).to.be.an('undefined');
         done();
     });
 });
@@ -516,6 +628,17 @@ describe('Tests for special revenues default pie', () => {
         expect(terms.totalDebit).to.equal(11089287535);
         done();
     });
+
+    it('should return Kópavogsbær and null for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Kópavogsbær');
+        expect(terms.deepest[1]).to.be.a('null');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0]).to.be.an('undefined');
+        done();
+    });
 });
 
 describe('Tests for special revenues, primary finance key pie', () => {
@@ -543,6 +666,22 @@ describe('Tests for special revenues, primary finance key pie', () => {
         expect(terms.totalDebit).to.equal(34376055);
         done();
     });
+
+    it('should return Kópavogsbær and null for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Leikskólinn Núpur');
+        expect(terms.deepest[1]).to.equal('Tekjur');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Leikskólinn Núpur');
+        expect(terms.labels[1].label).to.equal('Leikskólar og dagvistun');
+        expect(terms.labels[2].label).to.equal('Fræðslumál');
+        expect(terms.labels[3].label).to.equal('Menntamál');
+        expect(terms.labels[4].label).to.equal('Tekjur');
+        expect(terms.labels[5]).to.be.an('undefined');
+        done();
+    });
 });
 
 describe('Tests for special revenues, secondary finance key pie', () => {
@@ -568,6 +707,23 @@ describe('Tests for special revenues, secondary finance key pie', () => {
 
     it('should give the correct amount for total credit', (done) => {
         expect(terms.totalDebit).to.equal(244222440);
+        done();
+    });
+
+    it('should return Tölvudeild and Vörur og þjónusta til eigin nota for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Tölvudeild');
+        expect(terms.deepest[1]).to.equal('Vörur og þjónusta til eigin nota');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Tölvudeild');
+        expect(terms.labels[1].label).to.equal('Skrifstofur sveitarfélagsins');
+        expect(terms.labels[2].label).to.equal('Sameiginlegur kostnaður');
+        expect(terms.labels[3].label).to.equal('Önnur mál');
+        expect(terms.labels[4].label).to.equal('Tekjur');
+        expect(terms.labels[5].label).to.equal('Vörur og þjónusta til eigin nota');
+        expect(terms.labels[6]).to.be.an('undefined');
         done();
     });
 });
