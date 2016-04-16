@@ -408,67 +408,59 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     }
 
     // Query the database for all incomes
-	elasticClient.search({
-		index: 'hfp',
-		body: {
-            // only income
-			"query": {
-				"filtered": {
-                    "filter": {
-                        "range" : {
-                            "Amount" : {
-                                "lt" : 0
-                            }
-                        }
-                    },
-                    // Desired period
-                    "query": {
-                        "filtered": {
-                            "filter": {
-                                "range": {
-                                    "Date": {
-                                        "from": from,
-                                        "to": to
+    elasticClient.search({
+        index: 'hfp',
+        body: {
+            "query": {
+                "bool": {
+                    "must": [
+                        {   // only income
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Amount": { "lt": 0 }
                                     }
                                 }
-                            },
-                            "query": {
-                                "bool": {
-                                    "must": [
-                                        {
-                                            // only "Tekjur" Affair
-                                            "term": {
-                                                "Affair": {
-                                                    "value": "00-Tekjur"
-                                                }
-                                            }
-                                        },
-                                        // Drilldown
-                                        mustDepartment,
-                                        mustFinanceKey
-                                    ]
+                            }
+                        },
+                        {   // Desired period
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Date": {
+                                            "from": from,
+                                            "to": to
+                                        }
+                                    }
                                 }
                             }
-                        }
-					}
-				}
-			},
-			"size": 1,
-			"aggs" : {
-				"amounts" : {
-					"terms": {
-						"field": aggregator,
-						"order": { "sum_amount": "asc" },
-						"size": 0
-					},
-					"aggs" : {
-						"sum_amount": { "sum": { "field": "Amount" } }
-					}
-				},
-				"total_amount": { "sum": { "field": "Amount" }}
-			}
-		}
-	}).then((doc) => {
+                        },
+                        {   // only "Tekjur" Affair
+                            "term": {
+                                "Affair": { "value": "00-Tekjur" }
+                            }
+                        },  // Drilldown
+                        mustDepartment,
+                        mustFinanceKey
+                    ]
+                }
+            },
+            "size": 1,
+            "aggs" : {
+                "amounts" : {
+                    "terms": {
+                        "field": aggregator,
+                        "order": { "sum_amount": "asc" },
+                        "size": 0
+                    },
+                    "aggs" : {
+                        "sum_amount": { "sum": { "field": "Amount" } }
+                    }
+                },
+                "total_amount": { "sum": { "field": "Amount" }}
+            }
+        }
+    }).then((doc) => {
         // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
         if (deepest[0] !== -1) {
             deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
@@ -483,77 +475,70 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
             labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
         }
 
-		// store the response from the database
-		const slices = doc.aggregations.amounts.buckets.map(entry => {
-			entry.sum_amount.value = Math.abs(entry.sum_amount.value);
-			return entry;
-		});
-		const totalDebit = Math.abs(doc.aggregations.total_amount.value);
-		// Query the database for all expenses
-		elasticClient.search({
-			index: 'hfp',
-			body: {
-				"query": {
-					"filtered": {
-						"filter": {
-							"range" : {
-								"Amount" : {
-									"gt" : 0
-								}
-							}
-						},
-                        // Desired period
-                        "query": {
-                            "filtered": {
-                                "filter": {
-                                    "range": {
-                                        "Date": {
-                                            "from": from,
-                                            "to": to
+        // store the response from the database
+        const slices = doc.aggregations.amounts.buckets.map(entry => {
+            entry.sum_amount.value = Math.abs(entry.sum_amount.value);
+            return entry;
+        });
+        const totalDebit = Math.abs(doc.aggregations.total_amount.value);
+        // Query the database for all expenses
+        elasticClient.search({
+            index: 'hfp',
+            body: {
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "Amount": { "gt": 0 }
                                         }
                                     }
-                                },
-                                // Only "Tekjur" Affair
-                                "query": {
-                                    "bool": {
-                                        "must" : [
-                                            {
-                                                // only "Tekjur" Affair
-                                                "term": {
-                                                    "Affair": {
-                                                        "value": "00-Tekjur"
-                                                    }
-                                                }
-                                            },
-                                            // Drilldown
-                                            mustDepartment,
-                                            mustFinanceKey
-                                        ]
+                                }
+                            },
+                            {   // Desired period
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "Date": {
+                                                "from": from,
+                                                "to": to
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
-					}
-				},
-				"size": 0,
-				"aggs" : {
-					"total_amount": { "sum": { "field": "Amount" }}
-				}
-			}
-		}).then((docum) => {
-			// Store the response and convert to absolute value
-			const totalCredit = docum.aggregations.total_amount.value;
+                            },
+                            {   // only "Tekjur" Affair
+                                "term": {
+                                    "Affair": { "value": "00-Tekjur" }
+                                }
+                            },
+                            // Drilldown
+                            mustDepartment,
+                            mustFinanceKey
+                        ]
+                    }
+                },
+                "size": 0,
+                "aggs" : {
+                    "total_amount": { "sum": { "field": "Amount" }}
+                }
+            }
+        }).then((docum) => {
+            // Store the response and convert to absolute value
+            const totalCredit = docum.aggregations.total_amount.value;
             const respObj = { slices, totalCredit, totalDebit, deepest, labels };
             //console.log(respObj);
-			res.status(200).send(respObj);
-		}, (err) => {
-			console.log(err);
-			res.status(500).send('Server error\n');
-		});
-	}, (err) => {
-		console.log(err);
-		res.status(500).send('Server error\n');
-	});
+            res.status(200).send(respObj);
+        }, (err) => {
+            console.log(err);
+            res.status(500).send('Server error\n');
+        });
+    }, (err) => {
+        console.log(err);
+        res.status(500).send('Server error\n');
+    });
 });
 
 /*
@@ -640,38 +625,24 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
 
     // Generate database queries based on parameters
     if (affairGroupID !== 'all') {
-        mustAffairGroup = {
-            "prefix": { "AffairGroup": { "value": affairGroupID } }
-        };
+        mustAffairGroup = { "prefix": { "AffairGroup": { "value": affairGroupID } } };
     }
     if (affairID !== 'all') {
-        mustAffair = {
-            "prefix": { "Affair": { "value": affairID } }
-        };
+        mustAffair = { "prefix": { "Affair": { "value": affairID } } };
     }
     if (departmentGroupID !== 'all') {
-        mustDepartmentGroup = {
-            "prefix": { "DepartmentGroup": { "value": departmentGroupID } }
-        };
+        mustDepartmentGroup = { "prefix": { "DepartmentGroup": { "value": departmentGroupID } } };
     }
     if (departmentID !== 'all') {
-        mustDepartment = {
-            "prefix": { "Department": { "value": departmentID } }
-        };
+        mustDepartment = { "prefix": { "Department": { "value": departmentID } } };
     }
     if (financeKeyID !== 'all') {
         if (financeKeyID.substring(1,4) === '000') {
-            mustFinanceKey = {
-                "prefix": { "PrimaryFinanceKey": { "value": financeKeyID } }
-            };
+            mustFinanceKey = { "prefix": { "PrimaryFinanceKey": { "value": financeKeyID } } };
         } else if (financeKeyID.substring(2,4) === '00' || financeKeyID.substring(1,3) === '00') {
-            mustFinanceKey = {
-                "prefix": { "SecondaryFinanceKey": { "value": financeKeyID } }
-            };
+            mustFinanceKey = { "prefix": { "SecondaryFinanceKey": { "value": financeKeyID } } };
         } else {
-            mustFinanceKey = {
-                "prefix": { "FinanceKey": { "value": financeKeyID } }
-            };
+            mustFinanceKey = { "prefix": { "FinanceKey": { "value": financeKeyID } } };
         }
     }
 
@@ -680,60 +651,50 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         index: 'hfp',
         body: {
             "query": {
-                "filtered": {
-                    // Only revenues
-                    "filter": {
-                        "range" : {
-                            "Amount" : {
-                                "lt" : 0
-                            }
-                        }
-                    },
-                    // Desired period
-                    "query": {
-                        "filtered": {
-                            "filter": {
-                                "range": {
-                                    "Date": {
-                                        "from": from,
-                                        "to": to
+                "bool": {
+                    "must": [
+                        {   // Only revenues
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Amount": { "lt": 0 }
                                     }
                                 }
-                            },
-                            // Exclude "Tekjur" Affair
-                            "query": {
-                                "filtered": {
-                                    "filter": {
-                                        "range": {
-                                            "AffairID": {
-                                                "gt": "01"
-                                            }
-                                        }
-                                    },
-                                    "query": {
-                                        "bool": {
-                                            "must" : [
-                                                // Drilldown
-                                                mustAffairGroup,
-                                                mustAffair,
-                                                mustDepartmentGroup,
-                                                mustDepartment,
-                                                mustFinanceKey,
-                                                // Only "Tekjur" PrimaryFinanceKey
-                                                {
-                                                    "prefix": {
-                                                        "PrimaryFinanceKey": {
-                                                            "value": "0"
-                                                        }
-                                                    }
-                                                }
-                                            ]
+                            }
+                        },
+                        {   // Desired period
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Date": {
+                                            "from": from,
+                                            "to": to
                                         }
                                     }
                                 }
                             }
+                        },
+                        {   // Exclude Tekjur
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "AffairID": { "gt": "01" }
+                                    }
+                                }
+                            }
+                        },  // Drilldown
+                        mustAffairGroup,
+                        mustAffair,
+                        mustDepartmentGroup,
+                        mustDepartment,
+                        mustFinanceKey,
+                        {   // Only "Tekjur" PrimaryFinanceKey
+                            "prefix": {
+                                "PrimaryFinanceKey": { "value": "0" }
+                            }
                         }
-                    }
+
+                    ]
                 }
             },
             "size": 1,
@@ -778,58 +739,51 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             index: 'hfp',
             body: {
                 "query": {
-                    "filtered": {
-                        "filter": {
-                            "range" : {
-                                "Amount" : {
-                                    "gt" : 0
-                                }
-                            }
-                        },
-                        // Desired period
-                        "query": {
-                            "filtered": {
-                                "filter": {
-                                    "range": {
-                                        "Date": {
-                                            "from": from,
-                                            "to": to
+                    "bool": {
+                        "must": [
+                            {
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "Amount": { "gt": 0 }
                                         }
                                     }
-                                },
-                                // Exclude "Tekjur" Affair
-                                "query": {
-                                    "filtered": {
-                                        "filter": {
-                                            "range": {
-                                                "AffairID": {
-                                                    "gt": "01"
-                                                }
-                                            }
-                                        },
-                                        // Drilldown
-                                        "query": {
-                                            "bool": {
-                                                "must" : [
-                                                    mustAffairGroup,
-                                                    mustAffair,
-                                                    mustDepartmentGroup,
-                                                    mustDepartment,
-                                                    mustFinanceKey,
-                                                    {
-                                                        "prefix": {
-                                                            "PrimaryFinanceKey": {
-                                                                "value": "0"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
+                                }
+                            },
+                            {   // Desired period
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "Date": {
+                                                "from": from,
+                                                "to": to
                                             }
                                         }
                                     }
                                 }
+                            },
+                            {   // Exclude "Tekjur" Affair
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "AffairID": { "gt": "01" }
+                                        }
+                                    }
+                                }
+                            },  // Drilldown
+                            mustAffairGroup,
+                            mustAffair,
+                            mustDepartmentGroup,
+                            mustDepartment,
+                            mustFinanceKey,
+                            {
+                                "prefix": {
+                                    "PrimaryFinanceKey": {
+                                        "value": "0"
+                                    }
+                                }
                             }
-                        }
+                        ]
                     }
                 },
                 "size": 0,
