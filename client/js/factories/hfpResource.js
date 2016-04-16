@@ -164,8 +164,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Method that takes the current state of the app (filters and variables), fetches the appropriate data
     *       and recreates that charts to show the newly fetched data.
+    *       If parameter 'firstTime' is true, then this is the app initialization.
     * */
-    factory.showMeTheMoney = function() {
+    factory.showMeTheMoney = function(firstTime) {
         var deferred = $q.defer();
         var queryURL;
         if (factory.getType() !== 'joint-revenue') {
@@ -179,6 +180,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             method: 'GET',
             url: queryURL
         }).success(function (response) {
+            // If this is the first fetching money, set the filters like they should be
+            if (firstTime) {
+                console.log("First time: filling filters");
+                setFilters(response.labels);
+            }
+
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
@@ -367,10 +374,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
 
     /*
-    *       Method that resets the app to it's inital state
+    *       Method that resets the app to it's initial state
     * */
     factory.resetApp = function() {
-        for (var i = 0; i < 8;  i++) {
+        // Clear all filter choices, expect for the base level
+        for (var i = 1; i < 8;  i++) {
             $rootScope.options[i].choices = [];
             $rootScope.options[i].currChoice = -1;
         }
@@ -381,6 +389,48 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         } else {
             $location.path('/special-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         }
+    };
+
+    factory.translate = function() {
+        var typo = factory.getType();
+        if (typo === 'expenses') {
+            return 'Gjöld';
+        } else if (typo === 'joint-revenue') {
+            return 'Sameiginlegar Tekjur';
+        } else if (typo === 'special-revenue') {
+            return 'Sértekjur';
+        }
+    };
+
+    factory.deepest = function(label) {
+        var lvl = parseInt(factory.getLevel());
+        if (lvl === 0 || (lvl === 3 && factory.getType() === 'joint-revenue')) {
+            return 'Kópavogsbær';
+        } else if (lvl < 5) {
+            return factory.getClickedSliceLabel();
+        } else {
+            return factory.getDeepest() + ', ' + factory.getClickedSliceLabel();
+        }
+    };
+
+    factory.tDate = function () {
+        var perio = factory.getPeriod();
+        var year = perio.substring(0,4);
+        if (perio.length === 6) {
+            if (perio.charAt(5) === '0') {
+                return year;
+            } else {
+                var quarter = parseInt(perio.charAt(5));
+                return year + ' (' + QUARTERS[quarter] + ' ársfjórðungur)';
+            }
+        } else {
+            var month = parseInt(perio.substring(5,7), 10);
+            return year + ' (' + MONTHS[month] + ')';
+        }
+    };
+
+    factory.updateBreadcrumbs = function () {
+        $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.deepest();
     };
 
     /*
@@ -522,7 +572,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         $rootScope.$apply(function(){
                             $location.path(newPathPrefix, false, tabResource.choiceClicked, option, eqChoice.choiceId, nextLevel);
                         });
-                        
+
                         factory.updateBreadcrumbs();
                     }
                 }
@@ -554,49 +604,23 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
         });
     };
-    
-    factory.translate = function() {
-        var typo = factory.getType();
-        if (typo === 'expenses') {
-            return 'Gjöld';
-        } else if (typo === 'joint-revenue') {
-            return 'Sameiginlegar Tekjur';
-        } else if (typo === 'special-revenue') {
-            return 'Sértekjur';
-        }
-    };
 
-    factory.deepest = function(label) {
-        var lvl = parseInt(factory.getLevel());
-        if (lvl === 0 || (lvl === 3 && factory.getType() === 'joint-revenue')) {
-            return 'Kópavogsbær';
-        } else if (lvl < 5) {
-            return factory.getClickedSliceLabel();
-        } else {
-            return factory.getDeepest() + ', ' + factory.getClickedSliceLabel();
-        }
-    };
+    var setFilters = function(labels) {
+        for (var i = 0; i < labels.length; i++) {
+            var filterLevel = labels[i].level;
+            var filterLabel = labels[i].label;
+            var filterKey = labels[i].key;
 
-    factory.tDate = function () {
-        var perio = factory.getPeriod();
-        var year = perio.substring(0,4);
-        if (perio.length === 6) {
-            if (perio.charAt(5) === '0') {
-                return year;
-            } else {
-                var quarter = parseInt(perio.charAt(5));
-                return year + ' (' + QUARTERS[quarter] + ' ársfjórðungur)';
-            }
-        } else {
-            var month = parseInt(perio.substring(5,7), 10);
-            return year + ' (' + MONTHS[month] + ')';
+            console.log(filterLevel + ": " + filterLabel + " - " + filterKey);
+            $rootScope.options[filterLevel].choices.push({
+                choiceId: 0,
+                content: filterLabel,
+                chosen: true,
+                key: ''             // Unnecessary to set
+            });
+            $rootScope.options[filterLevel].currChoice = 0;
         }
-    };
-
-    factory.updateBreadcrumbs = function () {
-        $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.deepest();
     };
 
     return factory;
-
 });
