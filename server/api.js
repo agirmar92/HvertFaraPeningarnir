@@ -9,7 +9,7 @@ const Promise = require('promise');
 // Globals
 const api = express();
 const elasticClient = new elasticsearch.Client({
-	host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
+    host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
 const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditor" ];
 api.use(bodyParser.json());
@@ -85,27 +85,27 @@ const determineTypeOfFinanceKey = (key) => {
 	}
 */
 api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
-	const period              = req.params.per;
+    const period              = req.params.per;
     const level               = req.params.lvl;
-	const affairGroupID       = req.params.agroup;
-	const affairID            = req.params.aff;
-	const departmentGroupID   = req.params.dgroup;
-	const departmentID        = req.params.dep;
-	const financeKeyID        = req.params.fin;
-	let mustAffairGroup       = {};
-	let mustAffair            = {};
-	let mustDepartmentGroup   = {};
-	let mustDepartment        = {};
-	let mustFinanceKey        = {};
-	let aggregator            = aggs[level];
-	//console.log('aggregator: ' + aggregator);
-	/*	Checking if we need to change period
-		(user asking for whole year or quarter)
-		<year>-0: all year
-		<year>-1 ... <year>-4: quarter of year
-		<year>-01 ... <year>-12: month of year
-	*/
-	const foo = timeProcessor(period);
+    const affairGroupID       = req.params.agroup;
+    const affairID            = req.params.aff;
+    const departmentGroupID   = req.params.dgroup;
+    const departmentID        = req.params.dep;
+    const financeKeyID        = req.params.fin;
+    let mustAffairGroup       = {};
+    let mustAffair            = {};
+    let mustDepartmentGroup   = {};
+    let mustDepartment        = {};
+    let mustFinanceKey        = {};
+    let aggregator            = aggs[level];
+    //console.log('aggregator: ' + aggregator);
+    /*	Checking if we need to change period
+        (user asking for whole year or quarter)
+        <year>-0: all year
+        <year>-1 ... <year>-4: quarter of year
+        <year>-01 ... <year>-12: month of year
+    */
+    const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
 
@@ -178,48 +178,44 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         index: 'hfp',
         body: {
             "query": {
-                "filtered": {
-                    // Only expenses
-                    "filter": {
-                        "range" : {
-                            "Amount" : { "gt" : 0 }
-                        }
-                    },
-                    // Desired period
-                    "query": {
-                        "filtered": {
-                            "filter": {
-                                "range": {
-                                    "Date": {
-                                        "from": from,
-                                        "to": to
+                "bool": {
+                    "must": [
+                        {   // Only expenses
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Amount": {"gt": 0}
                                     }
                                 }
-                            },
-                            // Exclude "Tekjur" Affair
-                            "query": {
-                                "filtered": {
-                                    "filter": {
-                                        "range": {
-                                            "AffairID": { "gt": "01" }
-                                        }
-                                    },
-                                    // Drilldown
-                                    "query": {
-                                        "bool": {
-                                            "must" : [
-                                                mustAffairGroup,
-                                                mustAffair,
-                                                mustDepartmentGroup,
-                                                mustDepartment,
-                                                mustFinanceKey
-                                            ]
+                            }
+                        },
+                        {   // Desired period
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "Date": {
+                                            "from": from,
+                                            "to": to
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
+                        },
+                        {   // Exclude "Tekjur" Affair
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "AffairID": {"gt": "01"}
+                                    }
+                                }
+                            }
+                        },  // Drilldown
+                        mustAffairGroup,
+                        mustAffair,
+                        mustDepartmentGroup,
+                        mustDepartment,
+                        mustFinanceKey
+                    ]
                 }
             },
             "size": 1,
@@ -261,47 +257,44 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
             index: 'hfp',
             body: {
                 "query": {
-                    "filtered": {
-                        "filter": {
-                            "range" : {
-                                "Amount" : { "lt" : 0 }
-                            }
-                        },
-                        // Desired period
-                        "query": {
-                            "filtered": {
-                                "filter": {
-                                    "range": {
-                                        "Date": {
-                                            "from": from,
-                                            "to": to
+                    "bool": {
+                        "must": [
+                            {
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "Amount": {"lt": 0}
                                         }
                                     }
-                                },
-                                // Exclude "Tekjur" Affair
-                                "query": {
-                                    "filtered": {
-                                        "filter": {
-                                            "range": {
-                                                "AffairID": {"gt": "01"}
-                                            }
-                                        },
-                                        // Drilldown
-                                        "query": {
-                                            "bool": {
-                                                "must" : [
-                                                    mustAffairGroup,
-                                                    mustAffair,
-                                                    mustDepartmentGroup,
-                                                    mustDepartment,
-                                                    mustFinanceKey
-                                                ]
+                                }
+                            },
+                            {   // Desired period
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "Date": {
+                                                "from": from,
+                                                "to": to
                                             }
                                         }
                                     }
                                 }
-                            }
-                        }
+                            },
+                            {   // Exclude "Tekjur" Affair
+                                "filtered": {
+                                    "filter": {
+                                        "range": {
+                                            "AffairID": {"gt": "01"}
+                                        }
+                                    }
+                                }
+                            },  // Drilldown
+                            mustAffairGroup,
+                            mustAffair,
+                            mustDepartmentGroup,
+                            mustDepartment,
+                            mustFinanceKey
+                        ]
                     }
                 },
                 "size": 0,
