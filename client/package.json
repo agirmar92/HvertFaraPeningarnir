@@ -4,7 +4,8 @@
   "description": "hvert fara peningarnir - client",
   "main": "js/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-headless": "xvfb-run -a ./node_modules/karma/bin/karma start -l chrome",
+    "test": "karma start"
   },
   "author": "",
   "license": "ISC",
