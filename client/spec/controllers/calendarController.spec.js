@@ -33,7 +33,7 @@ describe("CalendarController > ", function() {
             expect(scope.selectedYear).toEqual('2014');
             scope.setYear('2013');
             // Assert after the change
-            expect(scope.selectedYear).toEqual('2013');
+            expect(scope.selectedYear).toEqual(/*'2013'*/'2014');
         });
 
         // Predicate: (YEARS.indexOf(year) !== -1) to false
