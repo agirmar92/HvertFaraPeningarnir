@@ -459,6 +459,47 @@ describe('Tests for expenses, primary finance key pie', () => {
     });
 });
 
+describe('Tests for expenses, division selected but nothing above pie', () => {
+
+    var terms = '';
+
+    before((done) => {
+        request(apinn.api).get('/expenses/2014-0/6/all/all/all/06-591/4400').expect(200).end(function(err,res) {
+            terms = JSON.parse(res.text);
+            done();
+        });
+    });
+
+    it('should give the correct amounts for the pie', (done) => {
+        expect(terms.slices[0].sum_amount.value).to.equal(237003768);
+        done()
+    });
+
+    it('should give the correct amount for total credit', (done) => {
+        expect(terms.totalCredit).to.equal(237003768);
+        done();
+    });
+
+    it('should give the correct amount for total debit', (done) => {
+        expect(terms.totalDebit).to.equal(0);
+        done();
+    });
+
+    it('should return Álfhólsskóli and Vörukaup for deepest', (done) => {
+        expect(terms.deepest[0]).to.equal('Kórinn knatthús');
+        expect(terms.deepest[1]).to.equal('Leigugreiðslur');
+        done();
+    });
+
+    it('should return the correct array for labels', (done) => {
+        expect(terms.labels[0].label).to.equal('Kórinn knatthús');
+        expect(terms.labels[1].label).to.equal('Þjónustukaup');
+        expect(terms.labels[2].label).to.equal('Leigugreiðslur');
+        expect(terms.labels[3]).to.be.an('undefined');
+        done();
+    });
+});
+
 /*
  *   These tests compares the results from calling the API to this SQL query for kop-lind:
  *   SELECT SUM([Upphæð]), [Málaflokkur-deild]
