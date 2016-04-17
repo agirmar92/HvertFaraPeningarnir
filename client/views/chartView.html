@@ -34,7 +34,7 @@
 
             <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || type !== 'joint-revenue'">
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
-                    <span>{{option.label}}</span>
+                    <span id="option-text">{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
                 </div>
 

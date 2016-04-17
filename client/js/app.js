@@ -11,6 +11,9 @@ hfpApp.config(['$routeProvider',
 		$routeProvider
 			// Configuring optional routing parameters. Type, period and all of the levels.
 		// TODO: try to find classier solution
+            .when('/instructions', {
+                templateUrl: 'views/instructionsView.html'
+            })
 			.when('/admin', {
 				templateUrl: 'views/adminLoginView.html'
 			})
