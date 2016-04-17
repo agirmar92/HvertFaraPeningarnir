@@ -447,7 +447,7 @@ h1, h2 {
         height: calc(100% - 122px);
     }
 
-    #hfp-curr-amount {
+    .hfp-curr-amount {
         top: 85px;
         font-family: "font4";
     }

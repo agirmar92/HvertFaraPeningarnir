@@ -96,7 +96,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     // If there are any route params we should parse them
     //console.log(Object.keys($routeParams).length);
     hfpResource.parseRouteParams($location.path().split('/'));
-    hfpResource.showMeTheMoney().then(function() {
+    hfpResource.showMeTheMoney(true).then(function() {
         //console.log("Initial data fetched");
     });
 
