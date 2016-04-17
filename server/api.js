@@ -128,7 +128,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                 level: i,
                 label: aggs[i]
             });
-        } else if (i === 0) {
+        } else if (i === 0 && !deepest[0]) {
             deepest[0] = -1;
         }
     }
