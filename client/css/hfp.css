@@ -758,3 +758,30 @@ h1, h2 {
     left: -40px;
     transform: rotate(140deg) scaleX(-1);
 }
+
+.modal-content {
+    color: black;
+    font-family: font3;
+}
+
+.hfp-from-to {
+    text-align: left;
+    margin-bottom: 0;
+    margin-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.hfp-label {
+    font-weight: normal;
+    margin: 15px 0 0 0;
+}
+
+.hfp-alert {
+    position: fixed;
+    bottom: 10px;
+    z-index: 100;
+    width: 75%;
+    left: 50%;
+    margin-left: -37.5%;
+}
