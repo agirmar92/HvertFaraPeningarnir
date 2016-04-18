@@ -1,7 +1,6 @@
 hfpApp.controller('iController', function ($scope) {
 
     var classes = [ "#none", "#menu-toggle", "#calendar-toggle", "#download-toggle", "#instructions-toggle", "#panel-filters", "#hmm", "#type-button", "#hmm", "#hmm", "#mypie", "#hfp-breadcrumb", "#miniChartContainer", "#hfp-progress" ];
-
     var i = 0;
     var s = '#instr0';
 
@@ -50,6 +49,5 @@ hfpApp.controller('iController', function ($scope) {
             e.preventDefault();
         }
     };
-
-    document.onkeydown = checkKey();
+    document.onkeydown = checkKey;
 });
