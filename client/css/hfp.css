@@ -758,3 +758,44 @@ h1, h2 {
     left: -40px;
     transform: rotate(140deg) scaleX(-1);
 }
+
+/*
+    Table
+*/
+
+header {
+    font-family: font5;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#table {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 50%;
+    top: 55%;
+    margin-left: -300px;
+    margin-top: -200px;
+    overflow: scroll;
+}
+
+.col1 {
+    text-align: left;
+}
+
+.col2 {
+    text-align: left;
+}
+
+.col3 {
+    text-align: right;
+}
+
+.col4 {
+    text-align: right;
+}
+
+.head {
+    background-color: #2b2b2b;
+}

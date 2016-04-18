@@ -126,4 +126,45 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $("#hfp-instructions").toggleClass("hfp-hidden");
         $("#instructions-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-question-sign");
     };
+
+    $scope.slices = [];
+    $scope.divider = 0;
+    $scope.netto = 0;
+    $scope.nettoPerc = 0;
+    $scope.type = '';
+    $rootScope.pieView = true;
+
+    /*
+    *   Changes the view from pie to table or table to pie. 
+    */
+    $rootScope.changeView = function () {
+        $rootScope.pieView = !$rootScope.pieView;
+        $("#mypie").toggleClass("hfp-hidden");
+        $("#table").toggleClass("hfp-hidden");
+    };
+    
+    /*
+    *   Updates the table view. 
+    */
+    $rootScope.updateTable = function () {
+        $scope.slices = hfpResource.getSlices();
+        $scope.type = hfpResource.getType();
+        var net;
+        if ($scope.type === 'expenses') {
+            $scope.divider = hfpResource.getTotalCredit();
+            net = hfpResource.toNr($scope.divider) - hfpResource.getTotalDebit();
+            $scope.netto = hfpResource.toNrWithDots(net);
+            $scope.nettoPerc = (net / hfpResource.toNr($scope.divider) * 100).toFixed(1);
+        } else {
+            $scope.divider = hfpResource.getTotalDebit();
+            net = hfpResource.toNr($scope.divider) - hfpResource.getTotalCredit();
+            console.log(net);
+            $scope.netto = hfpResource.toNrWithDots(net);
+            $scope.nettoPerc = (net / hfpResource.toNr($scope.divider) * 100).toFixed(1);
+        }
+        $scope.slices.map(function(slice) {
+            slice.percentage = (slice.value / hfpResource.toNr($scope.divider) * 100).toFixed(1);
+            slice.value = hfpResource.toNrWithDots(slice.value);
+        });
+    };
 });
