@@ -14,8 +14,11 @@ hfpApp.config(['$routeProvider',
             .when('/instructions', {
                 templateUrl: 'views/instructionsView.html'
             })
-			.when('/admin', {
+			.when('/login', {
 				templateUrl: 'views/adminLoginView.html'
+			})
+			.when('/admin', {
+				templateUrl: 'views/adminPanelView.html'
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?', {
 				templateUrl: 'views/chartView.html'
