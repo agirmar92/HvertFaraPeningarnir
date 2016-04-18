@@ -1,9 +1,11 @@
 hfpApp.controller('iController', function ($scope) {
 
+
     var classes = [ "#none", "#menu-toggle", "#calendar-toggle", "#download-toggle", "#instructions-toggle", "#panel-filters", "#hmm", "#type-button", "#hmm", "#hmm", "#mypie", "#hfp-breadcrumb", "#miniChartContainer", "#hfp-progress" ];
 
     var i = 0;
     var s = '#instr0';
+
 
     $scope.prevInstr = function() {
         $(s).toggleClass("hfp-hidden");
@@ -39,17 +41,22 @@ hfpApp.controller('iController', function ($scope) {
         }
     };
 
-    var checkKey = function (e) {
+    var checkKey = function(e) {
         e = e || window.event;
-        if (e.keyCode === 37) {
+        if (e.keyCode === 37) {         // Left arrow
             $scope.prevInstr();
             e.preventDefault();
         }
-        else if (e.keyCode === 39) {
+        else if (e.keyCode === 39) {    // Right arrow
             $scope.nextInstr();
+            e.preventDefault();
+        } else if (e.keyCode === 27) {  // Escape button
+            if (!$("#hfp-instructions").hasClass("hfp-hidden")) {
+                $scope.toggleInstructions();
+            }
             e.preventDefault();
         }
     };
 
-    document.onkeydown = checkKey();
+    document.onkeydown = checkKey;
 });
