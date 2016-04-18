@@ -185,7 +185,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 console.log("First time: filling filters");
                 setFilters(response.labels);
             }
-
+            
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
@@ -242,7 +242,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             factory.setSlices(newSlices);
             factory.setChoices(newChoices);
-            console.log(factory.getSlices());
+
+            // Change view if required
+            if (($rootScope.pieView && factory.getSlices().length >= 30) ||
+               (!$rootScope.pieView && factory.getSlices().length < 30)) {
+                $rootScope.changeView();
+            }
 
             // Change the total amounts
             factory.setTotalCredit(response.totalCredit);
@@ -261,7 +266,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
             $rootScope.chart.options.data[0].dataPoints[1].y = factory.getTotalDebit();
 
-            
+            // Update percentage bar
             if (factory.getType() === 'expenses') {
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
                 // Change the percentage number
@@ -279,7 +284,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 }
 
 
-                // Change total debit to have dots every the digits
+                // Change total debit to have dots every three digits
                 factory.setTotalDebit(factory.toNrWithDots(factory.getTotalDebit()));
             }
 
@@ -314,6 +319,19 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             j++;
         }
         return newStr;
+    };
+
+    /*
+    *   Method that takes a numberstring with dots and converts to number without dots
+    */
+    factory.toNr = function (s) {
+        var newS = '';
+        for (var i = 0; i < s.length; i++) {
+            if (s[i] !== '.') {
+                newS += s[i];
+            }
+        }
+        return newS;
     };
 
     /*
@@ -391,6 +409,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
     };
 
+    /*
+        Translate english to icelandic
+     */
     factory.translate = function() {
         var typo = factory.getType();
         if (typo === 'expenses') {
@@ -402,6 +423,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
     };
 
+    /*
+        Returns deepest labels for breadcrumbs
+     */
     factory.deepest = function(label) {
         var lvl = parseInt(factory.getLevel());
         if (lvl === 0 || (lvl === 3 && factory.getType() === 'joint-revenue')) {
@@ -413,6 +437,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
     };
 
+    /*
+        Returns a time period in human form
+     */
     factory.tDate = function () {
         var perio = factory.getPeriod();
         var year = perio.substring(0,4);
@@ -429,6 +456,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
     };
 
+    /*
+        Updates the breadcrumbs
+     */
     factory.updateBreadcrumbs = function () {
         $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.deepest();
     };
@@ -603,6 +633,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 }
             }
         });
+        $rootScope.updateTable();
+        
     };
 
     /*

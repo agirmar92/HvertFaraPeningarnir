@@ -11,15 +11,15 @@ hfpApp.config(['$routeProvider',
 		$routeProvider
 			// Configuring optional routing parameters. Type, period and all of the levels.
 		// TODO: try to find classier solution
-			.when('/admin2', {
-				templateUrl: 'views/adminPanelView.html',
-				controller: 'adminPanelController'
-			})
             .when('/instructions', {
                 templateUrl: 'views/instructionsView.html'
             })
-			.when('/admin', {
+			.when('/login', {
 				templateUrl: 'views/adminLoginView.html'
+			})
+			.when('/admin', {
+				templateUrl: 'views/adminPanelView.html',
+				controller: 'adminPanelController'
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?', {
 				templateUrl: 'views/chartView.html'
