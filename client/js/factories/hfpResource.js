@@ -605,13 +605,17 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         });
     };
 
+    /*
+    *       Method called when initializing the app from and URL with set filters.
+    *       Iterates through the given labels array and sets the corresponding filters.
+    * */
     var setFilters = function(labels) {
         for (var i = 0; i < labels.length; i++) {
             var filterLevel = labels[i].level;
             var filterLabel = labels[i].label;
-            var filterKey = labels[i].key;
+            //var filterKey = labels[i].key;
 
-            console.log(filterLevel + ": " + filterLabel + " - " + filterKey);
+            //console.log(filterLevel + ": " + filterLabel + " - " + filterKey);
             $rootScope.options[filterLevel].choices.push({
                 choiceId: 0,
                 content: filterLabel,
