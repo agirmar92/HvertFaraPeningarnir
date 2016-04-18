@@ -584,30 +584,35 @@ h1, h2 {
     position: absolute;
     top: 130px;
     left: 60px;
+    width: 60%;
 }
 
 #instr2 {
     position: relative;
     top: 130px;
     left: 60px;
+    width: 60%;
 }
 
 #instr4 {
     position: relative;
     top: 130px;
     left: 60px;
+    width: 60%;
 }
 
 #instr3 {
     position: relative;
     top: 130px;
     left: 60px;
+    width: 60%;
 }
 
 #instr5 {
     position: relative;
     top: 200px;
     left: 60px;
+    width: 60%;
 }
 
 #instr6 {
@@ -658,8 +663,8 @@ h1, h2 {
 #instr12 {
     position: absolute;
     bottom: 320px;
-    right: -250px;
-    width: 80%;
+    right: 120px;
+    width: auto;
 }
 
 #instr13 {
