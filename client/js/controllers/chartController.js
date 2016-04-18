@@ -119,7 +119,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-calendar");
     };
 
-    $scope.toggleInstructions = function () {
+    $rootScope.toggleInstructions = function () {
         if (!$scope.drawerToggled) {
             $scope.toggleDrawer();
         }
