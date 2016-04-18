@@ -41,11 +41,11 @@ hfpApp.controller('iController', function ($scope) {
 
     var checkKey = function (e) {
         e = e || window.event;
-        if (e.keyCode === '37') {
+        if (e.keyCode === 37) {
             $scope.prevInstr();
             e.preventDefault();
         }
-        else if (e.keyCode === '39') {
+        else if (e.keyCode === 39) {
             $scope.nextInstr();
             e.preventDefault();
         }

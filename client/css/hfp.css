@@ -24,6 +24,11 @@ body {
     src: url(../fonts/Optima-Regular.ttf);
 }
 
+@font-face {
+    font-family: font5;
+    src: url(../fonts/handwriting-dakota.ttf)
+}
+
 html, body {
     height: 100%;
     text-align: center;
@@ -570,7 +575,7 @@ h1, h2 {
     left: 0px;
     height: 100%;
     width: 100%;
-    font-family: "Handwriting - Dakota";
+    font-family: font5;
     font-size: 24px;
     background: rgba(43, 43, 43, .8);
 }
