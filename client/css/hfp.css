@@ -520,3 +520,231 @@ h1, h2 {
 .login-input-div > p.changed {
     opacity: 1;
 }
+
+/*
+    Instructions style
+*/
+
+.bring-to-front {
+    z-index: 2000;
+}
+
+#instr0 {
+    z-index: 2500;
+    position: absolute;
+    top: 45%;
+    left: 22%;
+    font-size: 24px;
+}
+
+#arrow-big-left {
+    z-index: 2500;
+    position: absolute;
+    top: 45%;
+    left: 20px;
+    width: 60px;
+}
+
+#arrow-big-right {
+    z-index: 2500;
+    position: absolute;
+    top: 45%;
+    right: 20px;
+    width: 60px;
+}
+
+#next-instr {
+    z-index: 2500;
+    position: relative;
+    top: 37px;
+    left: 250px;
+    height: 36px;
+    width: 100px;
+}
+
+#hfp-instructions {
+    z-index: 1500;
+    position: relative;
+    text-align: left;
+    bottom: 100%;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    font-family: "Handwriting - Dakota";
+    font-size: 24px;
+    background: rgba(43, 43, 43, .8);
+}
+
+#instr1 {
+    position: absolute;
+    top: 130px;
+    left: 60px;
+}
+
+#instr2 {
+    position: relative;
+    top: 130px;
+    left: 60px;
+}
+
+#instr4 {
+    position: relative;
+    top: 130px;
+    left: 60px;
+}
+
+#instr3 {
+    position: relative;
+    top: 130px;
+    left: 60px;
+}
+
+#instr5 {
+    position: relative;
+    top: 200px;
+    left: 60px;
+}
+
+#instr6 {
+    position: relative;
+    top: 200px;
+    left: 60px;
+    width: 60%;
+    text-align: center;
+}
+
+#instr7 {
+    position: absolute;
+    top: 100px;
+    left: 300px;
+    width: 60%;
+    //border: 1px solid red;
+}
+
+#instr8 {
+    position: absolute;
+    top: 150px;
+    left: 300px;
+    width: 60%;
+}
+
+#instr9 {
+    position: absolute;
+    top: 200px;
+    left: 300px;
+    width: 60%;
+}
+
+#instr10 {
+    z-index: 3500;
+    position: absolute;
+    bottom: 20px;
+    left: 200px;
+    width: 80%;
+}
+
+#instr11 {
+    position: absolute;
+    bottom: 120px;
+    left: 200px;
+    width: 80%;
+}
+
+#instr12 {
+    position: absolute;
+    bottom: 320px;
+    right: -250px;
+    width: 80%;
+}
+
+#instr13 {
+    position: absolute;
+    top: 70px;
+    right: 50px;
+    width: 70%;
+}
+
+#instr14 {
+    position: absolute;
+    top: -20px;
+    left: 350px;
+    width: 50%;
+}
+
+.arrow1 {
+    position: relative;
+    top: -30px;
+    left: -15px;
+    transform: rotate(340deg) scaleY(-1);
+}
+
+.arrow2 {
+    position: relative;
+    top: -40px;
+    left: 10px;
+    transform: rotate(175deg);
+}
+
+.arrow3 {
+    position: relative;
+    top: -40px;
+    left: 150px;
+    transform: scaleY(-1) rotate(325deg);
+}
+
+.arrow4 {
+    position: relative;
+    top: -40px;
+    left: 100px;
+    transform: rotate(200deg);
+}
+
+.arrow5 {
+    position: relative;
+    top: 30px;
+    left: -50px;
+    transform: rotate(80deg);
+    //border: 1px solid red;
+}
+
+.arrow6 {
+    position: relative;
+    top: 30px;
+    left: -50px;
+    transform: rotate(80deg) scaleX(-1);
+}
+
+.arrow7 {
+    position: relative;
+    top: 10px;
+    left: 380px;
+    transform: rotate(220deg);
+}
+
+.arrow8 {
+    position: relative;
+    top: 125px;
+    left: 380px;
+    transform: rotate(20deg);
+}
+
+.arrow9 {
+    position: relative;
+    top: 95px;
+    left: 480px;
+    transform: rotate(330deg);
+}
+
+.arrow10 {
+    position: relative;
+    top: -10px;
+    left: 620px;
+    transform: rotate(210deg) scaleX(-1);
+}
+
+.arrow11 {
+    position: relative;
+    top: 30px;
+    left: -40px;
+    transform: rotate(140deg) scaleX(-1);
+}

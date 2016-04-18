@@ -1,12 +1,12 @@
 <!-- sidebar-wrapper -->
 <div id="sidebar-wrapper" ng-controller="tabsController">
     <uib-tabset active="activeJustified" justified="true">
-        <uib-tab index="0" heading="Síur">
+        <uib-tab index="0" heading="Síur" id="panel-filters">
             <div role="tab" class="panel-heading">
                 <div class="panel-title">
                     <span>Skoða</span>
                     <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                        <button id="type-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
                             <span ng-if="type === 'expenses'">Gjöld</span>
                             <span ng-if="type === 'joint-revenue'">Sameiginlegar tekjur</span>
                             <span ng-if="type === 'special-revenue'">Sértekjur</span>
@@ -61,8 +61,8 @@
 
             <button class="btn btn-default hfp-btn glyphicon glyphicon-filter" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
             <button class="btn btn-default hfp-btn glyphicon glyphicon-calendar"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
-            <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click=""></button>
-            <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign" ng-click=""></button>
+            <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt"  ng-click="" id="download-toggle"></button>
+            <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front" ng-click="toggleInstructions()" id="instructions-toggle"></button>
 
             <!-- calendar-dropdown -->
             <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
@@ -131,7 +131,7 @@
         <!-- /#title -->
 
         <!-- progress-meter -->
-        <div class="col-xs-4 hfp-div hfp-meter">
+        <div class="col-xs-4 hfp-div hfp-meter" id="hfp-progress">
             <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
             <p ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-</p>
             <p ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
@@ -158,6 +158,7 @@
         <!--span id="hfp-label">Þú ert að skoða:</span--> <span>{{breadcrumb}}</span>
     </div>
     <!-- /#breadcrumb-area -->
+
 </div>
 <!-- /#page-content-wrapper -->
 
