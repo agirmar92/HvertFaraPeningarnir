@@ -1,0 +1,113 @@
+<div id="page-content-wrapper" class="container-fluid hfp-content">
+
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Uppfæra gagnagrunn</h3>
+        </div>
+
+        <!-- modal-body -->
+        <div class="modal-body">
+            <span>Vinsamlegast veldu tímabil þeirra gagna sem þú vilt uppfæra. Hægt er að uppfæra ákveðin ár eða velja um að uppfæra öll gögnin.</span>
+            <div class="row">
+                <p class="hfp-from-to">Frá: </p>
+
+                <div class="col-xs-6">
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
+                            {{updateObject.selectedMonthFrom}} <span class="caret"></span>
+                        </button>
+                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <li role="menuitem" ng-repeat="month in months">
+                                <a href="javascript:void(0)" ng-click="selectMonthFrom(month)">{{month}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
+                            {{updateObject.selectedYearFrom}} <span class="caret"></span>
+                        </button>
+                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <li role="menuitem" ng-repeat="year in years">
+                                <a href="javascript:void(0)" ng-click="selectYearFrom(year)">{{year}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <p class="hfp-from-to">Til: </p>
+
+                <div class="col-xs-6">
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
+                            {{updateObject.selectedMonthTo}} <span class="caret"></span>
+                        </button>
+                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <li role="menuitem" ng-repeat="month in months">
+                                <a href="javascript:void(0)" ng-click="selectMonthTo(month)">{{month}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
+                            {{updateObject.selectedYearTo}} <span class="caret"></span>
+                        </button>
+                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <li role="menuitem" ng-repeat="year in years">
+                                <a href="javascript:void(0)" ng-click="selectYearTo(year)">{{year}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="hfp-label col-xs-12">
+                    <input type="checkbox" ng-model="updateObject.updateAllData"> Uppfæra öll gögn
+                </label>
+            </div>
+        </div>
+        <!-- /#modal-body -->
+
+        <div class="modal-footer">
+            <button class="btn btn-success" type="button" ng-click="ok()">Uppfæra</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Hætta</button>
+        </div>
+    </script>
+    <uib-alert class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
+
+    <!-- header -->
+    <div class="row hfp-header">
+
+        <!-- title -->
+        <div class="col-xs-12 hfp-div hfp-title hfp-title">
+            <div>
+                <h2 id="main-title">Hvert fara peningarnir?</h2>
+                <h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
+            </div>
+        </div>
+        <!-- /#title -->
+
+    </div>
+    <!-- /#header -->
+
+    <!-- content-wrapper -->
+    <div id="chartContainer" class="row hfp-chart">
+        <div class="col-xs-12 hfp-div">
+            <!-- admin-panel -->
+            <button type="button" class="btn btn-default" ng-click="open('md')">Open me!</button>
+            <!-- /#admin-panel -->
+        </div>
+    </div>
+    <!-- /#content-wrapper -->
+
+
+
+</div>
