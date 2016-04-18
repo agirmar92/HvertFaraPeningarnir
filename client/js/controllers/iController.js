@@ -2,8 +2,6 @@ hfpApp.controller('iController', function ($scope) {
 
     var classes = [ "#none", "#menu-toggle", "#calendar-toggle", "#download-toggle", "#instructions-toggle", "#panel-filters", "#hmm", "#type-button", "#hmm", "#hmm", "#mypie", "#hfp-breadcrumb", "#miniChartContainer", "#hfp-progress" ];
 
-    document.onkeydown = checkKey;
-
     var i = 0;
     var s = '#instr0';
 
@@ -41,7 +39,7 @@ hfpApp.controller('iController', function ($scope) {
         }
     };
 
-    function checkKey(e) {
+    var checkKey = function (e) {
         e = e || window.event;
         if (e.keyCode === '37') {
             $scope.prevInstr();
@@ -51,5 +49,7 @@ hfpApp.controller('iController', function ($scope) {
             $scope.nextInstr();
             e.preventDefault();
         }
-    }
+    };
+
+    document.onkeydown = checkKey();
 });
