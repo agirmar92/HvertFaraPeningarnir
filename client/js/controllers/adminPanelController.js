@@ -1,13 +1,4 @@
-hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http) {
-
-    $scope.items = ['item1', 'item2', 'item3'];
-
-
-    $scope.alerts = [];
-
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-    };
+hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http, $location, authenticationResource, $rootScope) {
 
     $scope.open = function (size) {
 
@@ -31,18 +22,18 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
                 // Fetch the data
                 method: 'GET',
                 // TODO: Create a route in API for this
-                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&token=fetch'
+                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?userEmail='+$rootScope.currentUser.password.email+'&yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&updateAll=' + updateObj.updateAllData + '&token=fetch'
             }).success(function (response) {
                 console.log(response);
                 // Show success alert
-                $scope.alerts.push({
+                $rootScope.alerts.push({
                     type: 'success',
                     msg: 'Uppfærsla hefur verið sett af stað. Ferlið getur tekið nokkrar mínútur. Kerfið sendir þér tölvupóst að ferli loknu.'
                 });
             }).error(function(err) {
                 console.log(err);
                 // Show error alert
-                $scope.alerts.push({
+                $rootScope.alerts.push({
                     type: 'success',
                     msg: 'Uppfærsla hefur verið sett af stað. Ferlið getur tekið nokkrar mínútur. Kerfið sendir þér tölvupóst að ferli loknu.'
                 });
@@ -52,6 +43,10 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
+    };
+
+    $scope.logout = function() {
+        authenticationResource.logout();
     };
 
 });
@@ -78,7 +73,9 @@ hfpApp.controller('modalInstanceController', function ($scope, $uibModalInstance
         /*
         *       TODO: Validate the updateObject before returning it
         * */
-        $uibModalInstance.close($scope.updateObject);
+        if ($scope.updateObject.selectedYearFrom !== "Ár" && $scope.updateObject.selectedYearFrom <= $scope.updateObject.selectedYearTo || $scope.updateObject.updateAllData) {
+            $uibModalInstance.close($scope.updateObject);
+        }
     };
 
     $scope.cancel = function () {
@@ -87,6 +84,10 @@ hfpApp.controller('modalInstanceController', function ($scope, $uibModalInstance
 
     $scope.selectYearFrom = function(year) {
         $scope.updateObject.selectedYearFrom = year;
+        // Set the year TO as well if it hasn't been set to anything before
+        if ($scope.updateObject.selectedYearTo === 'Ár') {
+            $scope.updateObject.selectedYearTo = year;
+        }
     };
 
     $scope.selectYearTo = function(year) {

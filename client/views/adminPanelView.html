@@ -9,22 +9,10 @@
         <div class="modal-body">
             <span>Vinsamlegast veldu tímabil þeirra gagna sem þú vilt uppfæra. Hægt er að uppfæra ákveðin ár eða velja um að uppfæra öll gögnin.</span>
             <div class="row">
-                <p class="hfp-from-to">Frá: </p>
 
                 <div class="col-xs-6">
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
-                            {{updateObject.selectedMonthFrom}} <span class="caret"></span>
-                        </button>
-                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                            <li role="menuitem" ng-repeat="month in months">
-                                <a href="javascript:void(0)" ng-click="selectMonthFrom(month)">{{month}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                    <p class="hfp-from-to">Frá: </p>
 
-                <div class="col-xs-6">
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
                             {{updateObject.selectedYearFrom}} <span class="caret"></span>
@@ -37,8 +25,24 @@
                     </div>
                 </div>
 
+                <div class="col-xs-6">
+                    <p class="hfp-from-to">Til: </p>
+
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="updateObject.updateAllData">
+                            {{updateObject.selectedYearTo}} <span class="caret"></span>
+                        </button>
+                        <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                            <li role="menuitem" ng-repeat="year in years">
+                                <a href="javascript:void(0)" ng-click="selectYearTo(year)">{{year}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
-            <div class="row">
+            <!--TODO: Remove below if we end up with only having years updated at a time-->
+            <!--<div class="row">
                 <p class="hfp-from-to">Til: </p>
 
                 <div class="col-xs-6">
@@ -66,7 +70,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <div class="row">
                 <label class="hfp-label col-xs-12">
@@ -81,7 +85,6 @@
             <button class="btn btn-warning" type="button" ng-click="cancel()">Hætta</button>
         </div>
     </script>
-    <uib-alert class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
 
     <!-- header -->
     <div class="row hfp-header">
@@ -102,7 +105,28 @@
     <div id="chartContainer" class="row hfp-chart">
         <div class="col-xs-12 hfp-div">
             <!-- admin-panel -->
-            <button type="button" class="btn btn-default" ng-click="open('md')">Open me!</button>
+            <div class="hfp-login-panel hfp-div">
+
+                <div class="col-xs-12">
+
+                    <div class="row admin-panel-row top-row">
+                        <div class="col-xs-12"><h2>Hæ, {{currentUser.password.email}}</h2></div>
+                    </div>
+
+                    <div class="row admin-panel-row">
+                        <div class="col-xs-12"><p>Hvað má bjóða þér að gera?</p></div>
+                    </div>
+
+                    <div class="row admin-panel-row">
+                        <button type="button" class="btn btn-success btn-lg btn-block" ng-click="open('md')">Uppfæra gagnagrunn</button>
+                    </div>
+
+                    <div class="row admin-panel-row">
+                        <button type="button" class="btn btn-danger btn-lg btn-block" ng-click="logout()">Útskrá</button>
+                    </div>
+
+                </div>
+            </div>
             <!-- /#admin-panel -->
         </div>
     </div>

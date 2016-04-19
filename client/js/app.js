@@ -1,5 +1,5 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
-	['ngRoute', 'angular-loading-bar', 'ui.bootstrap']);
+	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'firebase']);
 
 
 /*
@@ -19,7 +19,12 @@ hfpApp.config(['$routeProvider',
 			})
 			.when('/admin', {
 				templateUrl: 'views/adminPanelView.html',
-				controller: 'adminPanelController'
+				controller: 'adminPanelController',
+				resolve: {
+					currentAuth: function(authenticationResource) {
+						return authenticationResource.requireAuth();
+					}
+				}
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?', {
 				templateUrl: 'views/chartView.html'

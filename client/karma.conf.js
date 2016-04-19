@@ -21,6 +21,8 @@ module.exports = function(config) {
         'node_modules/angular-route/angular-route.js',
         'node_modules/angular-loading-bar/src/loading-bar.js',
         'http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js',
+        'https://cdn.firebase.com/js/client/2.2.4/firebase.js',
+        'https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js',
         'js/**/*.js',
         'spec/**/*.spec.js'
     ],

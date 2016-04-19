@@ -502,13 +502,13 @@ h1, h2 {
 }
 
 .hfp-login-button {
-    background: #0a894a;
+    /*background: #0a894a;*/
     width: 150px;
-    padding: 10px 20px;
-    -webkit-border-radius:4px;
-    -moz-border-radius:4px;
-    border-radius: 4px;
-    margin: auto;
+    /*padding: 10px 20px;*/
+    /*-webkit-border-radius:4px;*/
+    /*-moz-border-radius:4px;*/
+    /*border-radius: 4px;*/
+    /*margin: auto;*/
     margin-top: 15px;
 }
 
@@ -825,4 +825,12 @@ header {
 
 .head {
     background-color: #2b2b2b;
+}
+
+.admin-panel-row {
+    margin-bottom: 20px;
+}
+
+.admin-panel-row.top-row {
+    margin-bottom: 10px;
 }
