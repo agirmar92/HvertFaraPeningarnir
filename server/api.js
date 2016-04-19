@@ -8,7 +8,7 @@ const elasticsearch = require('elasticsearch');
 //const Promise = require('promise');
 
 const Firebase = require("firebase");
-const hfpFirebaseRef = new Firebase("https://hfp-test.firebaseio.com/");
+const hfpFirebaseRef = new Firebase("https://hfp.firebaseio.com/");
 const jenkinsUpdateJob = "http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?";
 
 // Globals
