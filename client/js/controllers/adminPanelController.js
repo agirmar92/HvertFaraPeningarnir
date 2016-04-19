@@ -1,8 +1,9 @@
-hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http) {
+hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http, $location) {
 
-    $scope.items = ['item1', 'item2', 'item3'];
-
-
+    $scope.user = {
+        firstName: "Ægir Már",
+        lastName: "Jónsson"
+    };
     $scope.alerts = [];
 
     $scope.closeAlert = function(index) {
@@ -31,7 +32,7 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
                 // Fetch the data
                 method: 'GET',
                 // TODO: Create a route in API for this
-                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&token=fetch'
+                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&updateAll=' + updateObj.updateAllData + '&token=fetch'
             }).success(function (response) {
                 console.log(response);
                 // Show success alert
@@ -52,6 +53,10 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
+    };
+
+    $scope.logout = function() {
+        $location.path('login');
     };
 
 });
@@ -78,7 +83,9 @@ hfpApp.controller('modalInstanceController', function ($scope, $uibModalInstance
         /*
         *       TODO: Validate the updateObject before returning it
         * */
-        $uibModalInstance.close($scope.updateObject);
+        if ($scope.updateObject.selectedYearFrom !== "Ár" && $scope.updateObject.selectedYearFrom <= $scope.updateObject.selectedYearTo || $scope.updateObject.updateAllData) {
+            $uibModalInstance.close($scope.updateObject);
+        }
     };
 
     $scope.cancel = function () {
@@ -87,6 +94,10 @@ hfpApp.controller('modalInstanceController', function ($scope, $uibModalInstance
 
     $scope.selectYearFrom = function(year) {
         $scope.updateObject.selectedYearFrom = year;
+        // Set the year TO as well if it hasn't been set to anything before
+        if ($scope.updateObject.selectedYearTo === 'Ár') {
+            $scope.updateObject.selectedYearTo = year;
+        }
     };
 
     $scope.selectYearTo = function(year) {

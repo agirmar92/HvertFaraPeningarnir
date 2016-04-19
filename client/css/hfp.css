@@ -826,3 +826,11 @@ header {
 .head {
     background-color: #2b2b2b;
 }
+
+.admin-panel-row {
+    margin-bottom: 20px;
+}
+
+.admin-panel-row.top-row {
+    margin-bottom: 10px;
+}
