@@ -8,7 +8,7 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
     /*
     *       Animates the choice clicked in the sidebar
     * */
-    factory.choiceClicked = function(option, choice, nextLevel) {
+        factory.choiceClicked = function(option, choice, nextLevel) {
         // If another choice is already chosen, un-choose it
         if ($rootScope.options[option].currChoice !== choice && $rootScope.options[option].currChoice !== -1) {
             $rootScope.options[option].choices[$rootScope.options[option].currChoice].chosen = false;

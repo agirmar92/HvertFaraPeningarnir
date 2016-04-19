@@ -4,18 +4,41 @@
 hfpApp.factory('authenticationResource', function($rootScope, $firebaseAuth, $firebaseObject, $location, FIREBASE_URL) {
     var factory = {};
     $rootScope.alerts = [];
+    $rootScope.currentUser = {
+        email: '',
+        token: ''
+    };
+
     var ref = new Firebase(FIREBASE_URL);
     var auth = $firebaseAuth(ref);
 
     auth.$onAuth(function(authUser) {
         if (authUser) {
-            $rootScope.currentUser = authUser;
+            factory.setToken(authUser.token);
+            factory.setEmail(authUser.password.email);
             $location.path('admin');
         } else {
-            $rootScope.currentUser = '';
+            factory.setToken('');
+            factory.setEmail('');
             $location.path('login');
         }
     });
+
+    factory.setToken = function(token) {
+        $rootScope.currentUser.token = token;
+    };
+
+    factory.setEmail = function(email) {
+        $rootScope.currentUser.email = email;
+    };
+
+    factory.getToken = function() {
+        return $rootScope.currentUser.token;
+    };
+
+    factory.getEmail = function() {
+        return $rootScope.currentUser.email;
+    };
 
     factory.login = function(user) {
         auth.$authWithPassword({
