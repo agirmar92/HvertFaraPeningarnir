@@ -85,7 +85,6 @@
             <button class="btn btn-warning" type="button" ng-click="cancel()">Hætta</button>
         </div>
     </script>
-    <uib-alert class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
 
     <!-- header -->
     <div class="row hfp-header">
@@ -111,7 +110,7 @@
                 <div class="col-xs-12">
 
                     <div class="row admin-panel-row top-row">
-                        <div class="col-xs-12"><h2>Hæ, {{user.firstName}}</h2></div>
+                        <div class="col-xs-12"><h2>Hæ, {{currentUser.password.email}}</h2></div>
                     </div>
 
                     <div class="row admin-panel-row">
