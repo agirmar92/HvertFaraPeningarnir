@@ -407,6 +407,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         } else {
             $location.path('/special-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         }
+        $rootScope.resetPeriod();
     };
 
     /*
@@ -634,7 +635,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
         });
         $rootScope.updateTable();
-        
     };
 
     /*
