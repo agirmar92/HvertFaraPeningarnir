@@ -4,7 +4,12 @@
         <uib-tab index="0" heading="Síur" id="panel-filters">
             <div role="tab" class="panel-heading">
                 <div class="panel-title">
-                    <span>Skoða</span>
+                    <div id="clear-btn" class="btn-group">
+                        <button type="button" id="clear-filters" class="btn" ng-click="resetApp()" href="javascript: void(0)">
+                            Upphafsstilla
+                        </button>
+                    </div>
+                    <!--span>Skoða</span-->
                     <div class="btn-group" uib-dropdown>
                         <button id="type-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
                             <span ng-if="type === 'expenses'">Gjöld</span>
@@ -23,11 +28,6 @@
                                 <a href="javascript:void(0)" ng-click="changeView('special-revenue')">Sértekjur</a>
                             </li>
                         </ul>
-                    </div>
-                    <div id="clear-btn" class="btn-group">
-                        <button type="button" id="clear-filters" class="btn" ng-click="resetApp()" href="javascript: void(0)">
-                            Hreinsa síur
-                        </button>
                     </div>
                 </div>
             </div>

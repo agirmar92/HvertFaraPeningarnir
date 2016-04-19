@@ -179,10 +179,11 @@ h1, h2 {
 }
 
 #clear-filters {
-    background-color: #4b4b4b;
+    background-color: rgb(194, 70, 66);
     position: relative;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 2px;
+    margin-bottom: 12px;
 }
 
 #clear-btn {
