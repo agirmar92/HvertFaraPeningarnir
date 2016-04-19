@@ -88,4 +88,4 @@ hfpApp.constant('URL_PARAMS', {
         'FinanceKey'
     ]
 });
-
+hfpApp.constant('FIREBASE_URL', 'https://hfp.firebaseIO.com/');

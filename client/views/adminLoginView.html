@@ -26,12 +26,12 @@
                     <form name="loginForm" onsubmit="return false;">
                         <div class="input-group login-input-div">
                             <p ng-class="{changed: loginForm.emailInput.$dirty}">Tölvupóstur</p>
-                            <input name="emailInput" ng-model="email" class="form-control login-input" placeholder="Tölvupóstur" required>
+                            <input name="emailInput" ng-model="user.email" class="form-control login-input" placeholder="Tölvupóstur" required>
                         </div>
 
                         <div class="input-group login-input-div">
                             <p ng-class="{changed: loginForm.passInput.$dirty}">Lykilorð</p>
-                            <input type="password" name="passInput" ng-model="password" class="form-control login-input" placeholder="Lykilorð" required>
+                            <input type="password" name="passInput" ng-model="user.password" class="form-control login-input" placeholder="Lykilorð" required>
                         </div>
 
                         <input type="submit" class="hfp-login-button" value="Innskrá" ng-click="login(loginForm)">

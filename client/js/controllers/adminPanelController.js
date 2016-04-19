@@ -1,14 +1,4 @@
-hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http, $location) {
-
-    $scope.user = {
-        firstName: "Ægir Már",
-        lastName: "Jónsson"
-    };
-    $scope.alerts = [];
-
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-    };
+hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http, $location, authenticationResource, $rootScope) {
 
     $scope.open = function (size) {
 
@@ -32,18 +22,18 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
                 // Fetch the data
                 method: 'GET',
                 // TODO: Create a route in API for this
-                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&updateAll=' + updateObj.updateAllData + '&token=fetch'
+                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?userEmail='+$rootScope.currentUser.password.email+'&yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&updateAll=' + updateObj.updateAllData + '&token=fetch'
             }).success(function (response) {
                 console.log(response);
                 // Show success alert
-                $scope.alerts.push({
+                $rootScope.alerts.push({
                     type: 'success',
                     msg: 'Uppfærsla hefur verið sett af stað. Ferlið getur tekið nokkrar mínútur. Kerfið sendir þér tölvupóst að ferli loknu.'
                 });
             }).error(function(err) {
                 console.log(err);
                 // Show error alert
-                $scope.alerts.push({
+                $rootScope.alerts.push({
                     type: 'success',
                     msg: 'Uppfærsla hefur verið sett af stað. Ferlið getur tekið nokkrar mínútur. Kerfið sendir þér tölvupóst að ferli loknu.'
                 });
@@ -56,7 +46,7 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
     };
 
     $scope.logout = function() {
-        $location.path('login');
+        authenticationResource.logout();
     };
 
 });
