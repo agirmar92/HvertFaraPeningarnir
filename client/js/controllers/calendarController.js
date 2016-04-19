@@ -9,6 +9,12 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.selectedMonth = MONTHS[0];
     $scope.selectedQuarter = QUARTERS[0];
 
+    $rootScope.resetPeriod = function() {
+        $scope.selectedYear = YEARS[4];
+        $scope.selectedMonth = MONTHS[0];
+        $scope.selectedQuarter = QUARTERS[0];
+    };
+
     $scope.setYear = function(year) {
         if (YEARS.indexOf(year) !== -1) {
             $scope.selectedYear = year;
