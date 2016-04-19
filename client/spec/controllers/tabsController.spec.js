@@ -24,6 +24,15 @@ describe("TabsController > ", function() {
      *       Setting up the app
      * */
     beforeEach(module('hvertfarapeningarnir'));
+    beforeEach(inject(function (_$controller_, _$rootScope_, _$location_) {
+        scope = _$rootScope_.$new();
+
+        _$controller_('calendarController', {
+            $scope: scope,
+            $controller: _$controller_,
+            $location: _$location_
+        });
+    }));
     beforeEach(inject(function (_$controller_, _$rootScope_, _$location_, _hfpResource_, _tabResource_) {
         scope = _$rootScope_.$new();
 
