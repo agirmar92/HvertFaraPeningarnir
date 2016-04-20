@@ -80,9 +80,9 @@ const determineTypeOfFinanceKey = (key) => {
 
 /*
 *       POST route that authenticates the user with a token.
-*       If authenticated a response will be sent to Jenkins to update data for the given period.
+*       If authenticated, a response will be sent to Jenkins to update data for the given period.
 *
-*       The route expects three parameters from request payload = {
+*       The route expects five parameters from request payload = {
 *           from: Marks the beginning of the period to be updated <Year>,
 *           to: Marks the end of the period to be updated <Year>,
 *           token: Token used to authenticate the user <String>,
@@ -113,7 +113,7 @@ api.post('/updateDatabase', (req, res) => {
     };
 
     // Authenticate the user with the given token
-    hfpFirebaseRef.authWithCustomToken(token, function(error, authData) {
+    hfpFirebaseRef.authWithCustomToken(token, (error, authData) => {
         if (error) {
             // Authentication failed, cancel update
             responseObject.msg = "Authentication failed";
@@ -124,7 +124,7 @@ api.post('/updateDatabase', (req, res) => {
 
             request.get(
                 requestURL,
-                function (error, response) {
+                (error, response) => {
                     // TODO: Maybe check whether jenkins agreed? Fix the allow-origin jenkins stuff
                     responseObject.updateUnderway = true;
                     responseObject.msg = "All good";

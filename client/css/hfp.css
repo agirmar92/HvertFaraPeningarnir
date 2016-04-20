@@ -186,6 +186,16 @@ h1, h2 {
     margin-bottom: 12px;
 }
 
+#clear-filters:focus {
+    color: inherit;
+    outline: none;
+}
+
+#clear-filters:hover {
+    color: inherit;
+    background-color: rgba(194, 70, 66, 0.87);
+}
+
 #clear-btn {
     //width: 50%;
 }
