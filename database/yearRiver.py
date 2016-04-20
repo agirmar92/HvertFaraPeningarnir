@@ -22,8 +22,6 @@ year = args.year
 createIndex = "/bin/bash updateYear.sh " + year
 os.system(createIndex)
 
-# p = subprocess.Popen(["./updateYear.sh", year])
-# print(p.pid)
 
 es = Elasticsearch(
 	['http://hfp.northeurope.cloudapp.azure.com:9200'],
