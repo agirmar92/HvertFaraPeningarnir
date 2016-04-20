@@ -411,6 +411,62 @@ h1, h2 {
     transform: translate(-50%, -50%) rotate(45deg);
 }
 
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.one, .two {
+    position: absolute;
+    border-radius: 3px;
+    background: #fff;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 400ms all ease-out;
+    transition: 400ms all ease-out;
+}
+
+.one.minus-sign {
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+    background-color: #c04541;
+ }
+
+.two.minus-sign {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    background-color: #c04541;
+}
+
+.one {
+    top: 5px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #0a894a;
+}
+
+.two {
+    top: 0;
+    left: 5px;
+    bottom: 0;
+    width: 4px;
+    background-color: #0a894a;
+}
+
+.plus-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    float: right;
+    right: 7%;
+    top: 10.5px;
+}
+.option:hover, .option-choices:hover {
+    cursor: pointer;
+}
+
 .option span.choice-remove {
     color: #c04541;
 }

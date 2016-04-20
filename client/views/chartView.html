@@ -40,7 +40,12 @@
 
                 <div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
                     <span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
-                    <span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>
+                        <!-- PLUS SIGN -->
+                    <div class="plus-icon">
+                        <div class="one" ng-class="{'minus-sign': choice.chosen}"></div>
+                        <div class="two" ng-class="{'minus-sign': choice.chosen}"></div>
+                    </div>
+                    <!--<span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>-->
                 </div>
             </div>
 
