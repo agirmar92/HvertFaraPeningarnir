@@ -20,8 +20,8 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
                 method: 'POST',
                 url: API_URL + 'updateDatabase',
                 data: {
-                    from: updateObj.selectedMonthFrom,
-                    to: updateObj.selectedMonthTo,
+                    from: updateObj.selectedYearFrom,
+                    to: updateObj.selectedYearTo,
                     token: authenticationResource.getToken(),
                     email: authenticationResource.getEmail(),
                     updateAll: updateObj.updateAllData
