@@ -32,7 +32,24 @@
                 </div>
             </div>
 
-            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="$index > 2 || type !== 'joint-revenue'">
+            <div class="tree-header">
+                <span class="tree-header-span">1. Málaflokkar/deildir</span>
+            </div>
+            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index < 4">
+                <div class="option-header header{{option.optionId}}">
+                    <span id="option-text" ng-click="optionClicked(option.optionId)">{{option.label}}</span>
+                    <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true" ng-click="optionClicked(option.optionId)"></span>
+                </div>
+
+                <div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
+                    <span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
+                    <span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="tree-header">
+                <span class="tree-header-span">2. Fjárhagslyklar</span>
+            </div>
+            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index > 3 && $index < 7">
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
                     <span id="option-text">{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
@@ -48,6 +65,20 @@
                     <!--<span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>-->
                 </div>
             </div>
+            <!--div class="tree-header">
+                <span class="tree-header-span">3. Lánadrottnar</span>
+            </div>
+            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index > 6">
+                <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
+                    <span id="option-text">{{option.label}}</span>
+                    <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
+                </div>
+
+                <div class="option-choices choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
+                    <span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
+                    <span class="glyphicon glyphicon glyphicon-remove choice-remove" ng-class="{'add-choice': !choice.chosen}" aria-hidden="true"></span>
+                </div>
+            </div-->
 
         </uib-tab>
 

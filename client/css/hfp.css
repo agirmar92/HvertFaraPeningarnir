@@ -200,6 +200,18 @@ h1, h2 {
     //width: 50%;
 }
 
+.tree-header {
+    text-align: left;
+    font-size: 16px;
+    padding: 12px;
+    background-color: #3b3b3b;
+}
+
+.tree-header-span {
+    font-family: font4;
+    letter-spacing: 1px;
+}
+
 .hfp-curr-amount {
     position: absolute;
     display: inline;
