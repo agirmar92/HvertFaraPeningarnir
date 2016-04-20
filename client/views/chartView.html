@@ -159,25 +159,25 @@
             <header>Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.</header>
             <table class="table">
                 <tr class="head">
-                    <th class="col1">Kóti</th>
+                    <th class="col1" ng-class="{'hfp-hidden':level===7}">Kóti</th>
                     <th class="col2">Heiti</th>
                     <th class="col3">Upphæð</th>
                     <th class="col4">Hlutfall</th>
                 </tr>
                 <tr ng-repeat="s in slices">
-                    <td class="col1">{{s.key}}</td>
+                    <td class="col1" ng-class="{'hfp-hidden':level===7}">{{s.key}}</td>
                     <td class="col2">{{s.label}}</td>
                     <td class="col3">{{s.value + ' kr.'}}</td>
                     <td class="col4">{{s.percentage + '%'}}</td>
                 </tr>
                 <tr class="head">
-                    <th class="col1"></th>
+                    <th class="col1" ng-class="{'hfp-hidden':level===7}"></th>
                     <th class="col2">Samtals</th>
                     <th class="col3">{{divider + ' kr.'}}</th>
                     <th class="col4">100%</th>
                 </tr>
                 <tr class="head">
-                    <th class="col1"></th>
+                    <th class="col1" ng-class="{'hfp-hidden':level===7}"></th>
                     <th class="col2">Nettó</th>
                     <th class="col3">{{netto + ' kr.'}}</th>
                     <th class="col4">{{nettoPerc + '%'}}</th>
