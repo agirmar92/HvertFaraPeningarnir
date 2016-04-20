@@ -1,4 +1,4 @@
-hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http, $location, authenticationResource, $rootScope) {
+hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $http, $location, API_URL, authenticationResource, $rootScope) {
 
     $scope.open = function (size) {
 
@@ -15,14 +15,17 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
         });
 
         modalInstance.result.then(function (updateObj) {
-            /*
-            *       TODO: Create POST request to the API with the given updateObj
-            * */
             $http({
                 // Fetch the data
-                method: 'GET',
-                // TODO: Create a route in API for this
-                url: 'http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?userEmail='+$rootScope.currentUser.password.email+'&yearFrom=' + updateObj.selectedYearFrom + '&yearTo=' + updateObj.selectedYearTo + '&updateAll=' + updateObj.updateAllData + '&token=fetch'
+                method: 'POST',
+                url: API_URL + 'updateDatabase',
+                data: {
+                    from: updateObj.selectedYearFrom,
+                    to: updateObj.selectedYearTo,
+                    token: authenticationResource.getToken(),
+                    email: authenticationResource.getEmail(),
+                    updateAll: updateObj.updateAllData
+                }
             }).success(function (response) {
                 console.log(response);
                 // Show success alert
@@ -34,8 +37,8 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
                 console.log(err);
                 // Show error alert
                 $rootScope.alerts.push({
-                    type: 'success',
-                    msg: 'Uppfærsla hefur verið sett af stað. Ferlið getur tekið nokkrar mínútur. Kerfið sendir þér tölvupóst að ferli loknu.'
+                    type: 'danger',
+                    msg: 'Eitthvað fór úrskeiðis'
                 });
             });
             console.log(updateObj);

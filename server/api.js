@@ -2,9 +2,14 @@
 
 // Modules
 const express = require('express');
+const request = require('request');
 const bodyParser = require('body-parser');
 const elasticsearch = require('elasticsearch');
-const Promise = require('promise');
+//const Promise = require('promise');
+
+const Firebase = require("firebase");
+const hfpFirebaseRef = new Firebase("https://hfp.firebaseio.com/");
+const jenkinsUpdateJob = "http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?";
 
 // Globals
 const api = express();
@@ -72,6 +77,63 @@ const determineTypeOfFinanceKey = (key) => {
     }
     return "Invalid Input";
 };
+
+/*
+*       POST route that authenticates the user with a token.
+*       If authenticated a response will be sent to Jenkins to update data for the given period.
+*
+*       The route expects three parameters from request payload = {
+*           from: Marks the beginning of the period to be updated <Year>,
+*           to: Marks the end of the period to be updated <Year>,
+*           token: Token used to authenticate the user <String>,
+*           email: The user's email address <String>,
+*           updateAll: Indicates whether everything should be updated <Bool>
+*       }
+*
+*       Returns an object = {
+*           updateUnderway: Indicates whether the update is underway <Bool>,
+*           authSuccess: Indicates whether the authentication was successful or not <Bool>,
+*           msg: Text explaining the results <String>
+*       }
+* */
+api.post('/updateDatabase', (req, res) => {
+    const from      = req.body.from;
+    const to        = req.body.to;
+    const token     = req.body.token;
+    const email     = req.body.email;
+    const updateAll = req.body.updateAll;
+
+    const requestURL = jenkinsUpdateJob + 'userEmail=' + email + '&yearFrom=' + from + '&yearTo=' + to + '&updateAll=' + updateAll + '&token=fetch';
+
+    // Initializing the object returned
+    let responseObject = {
+        updateUnderway: false,
+        authSuccess: false,
+        msg: ""
+    };
+
+    // Authenticate the user with the given token
+    hfpFirebaseRef.authWithCustomToken(token, function(error, authData) {
+        if (error) {
+            // Authentication failed, cancel update
+            responseObject.msg = "Authentication failed";
+            res.status(500).send(responseObject);
+        } else {
+            // Authentication succeeded
+            responseObject.authSuccess = true;
+
+            request.get(
+                requestURL,
+                function (error, response) {
+                    // TODO: Maybe check whether jenkins agreed? Fix the allow-origin jenkins stuff
+                    responseObject.updateUnderway = true;
+                    responseObject.msg = "All good";
+                    res.status(202).send(responseObject);
+                }
+            );
+        }
+    });
+});
 
 /* 
 	This route will return an object containing 3 things:
