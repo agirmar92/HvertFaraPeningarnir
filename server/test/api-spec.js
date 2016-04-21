@@ -15,88 +15,88 @@ const apiUrl = "http://localhost:4000";
 describe('Tests for timeProcessor function', () => {
 
     it('should return the whole year', (done) => {
-        const res = apinn.timeProcessor('2014-0');
-        expect(res.from).to.equal('2014-01');
-        expect(res.to).to.equal('2014-13');
+        const res = apinn.timeProcessor('test-0');
+        expect(res.from).to.equal('test-01');
+        expect(res.to).to.equal('test-13');
         done();
     });
 
     it('should return the first quarter', (done) => {
-        const res = apinn.timeProcessor('2014-1');
-        expect(res.from).to.equal('2014-01');
-        expect(res.to).to.equal('2014-04');
+        const res = apinn.timeProcessor('test-1');
+        expect(res.from).to.equal('test-01');
+        expect(res.to).to.equal('test-04');
         done();
     });
 
     it('should return the second quarter', (done) => {
-        const res = apinn.timeProcessor('2014-2');
-        expect(res.from).to.equal('2014-04');
-        expect(res.to).to.equal('2014-07');
+        const res = apinn.timeProcessor('test-2');
+        expect(res.from).to.equal('test-04');
+        expect(res.to).to.equal('test-07');
         done();
     });
 
     it('should return the third quarter', (done) => {
-        const res = apinn.timeProcessor('2014-3');
-        expect(res.from).to.equal('2014-07');
-        expect(res.to).to.equal('2014-10');
+        const res = apinn.timeProcessor('test-3');
+        expect(res.from).to.equal('test-07');
+        expect(res.to).to.equal('test-10');
         done();
     });
 
     it('should return the fourth quarter', (done) => {
-        const res = apinn.timeProcessor('2014-4');
-        expect(res.from).to.equal('2014-10');
-        expect(res.to).to.equal('2014-13');
+        const res = apinn.timeProcessor('test-4');
+        expect(res.from).to.equal('test-10');
+        expect(res.to).to.equal('test-13');
         done();
     });
 
     it('should return invalid input quarter', (done) => {
-        const res = apinn.timeProcessor('2014-5');
+        const res = apinn.timeProcessor('test-5');
         expect(res).to.equal('invalid input');
         done();
     });
 
     it('should return january', (done) => {
-        const res = apinn.timeProcessor('2014-01');
-        expect(res.from).to.equal('2014-01');
-        expect(res.to).to.equal('2014-02');
+        const res = apinn.timeProcessor('test-01');
+        expect(res.from).to.equal('test-01');
+        expect(res.to).to.equal('test-02');
         done();
     });
 
     it('should return july', (done) => {
-        const res = apinn.timeProcessor('2014-07');
-        expect(res.from).to.equal('2014-07');
-        expect(res.to).to.equal('2014-08');
+        const res = apinn.timeProcessor('test-07');
+        expect(res.from).to.equal('test-07');
+        expect(res.to).to.equal('test-08');
         done();
     });
 
     it('should return december', (done) => {
-        const res = apinn.timeProcessor('2014-12');
-        expect(res.from).to.equal('2014-12');
-        expect(res.to).to.equal('2014-13');
+        const res = apinn.timeProcessor('test-12');
+        expect(res.from).to.equal('test-12');
+        expect(res.to).to.equal('test-13');
         done();
     });
 
     it('should return september', (done) => {
-        const res = apinn.timeProcessor('2014-09');
-        expect(res.from).to.equal('2014-09');
-        expect(res.to).to.equal('2014-10');
+        const res = apinn.timeProcessor('test-09');
+        expect(res.from).to.equal('test-09');
+        expect(res.to).to.equal('test-10');
         done();
     });
 
     it('should return invalid input, month', (done) => {
-        const res = apinn.timeProcessor('2014-13');
+        const res = apinn.timeProcessor('test-13');
         expect(res).to.equal('invalid input');
         done();
     });
 
     it('should return invalid input, too long', (done) => {
-        const res = apinn.timeProcessor('2014-134');
+        const res = apinn.timeProcessor('test-134');
         expect(res).to.equal('invalid input');
         done();
     });
 
     it('should return invalid input, too short', (done) => {
-        const res = apinn.timeProcessor('2014-');
+        const res = apinn.timeProcessor('test-');
         expect(res).to.equal('invalid input');
         done();
     });
@@ -170,7 +170,7 @@ describe('Tests for breadcrumbs labels', () => {
     var terms = '';
 
     it('should return Menntamál and Laun og launatengd gjöld', (done) => {
-        request(apinn.api).get('/expenses/2014-0/1/3/all/all/all/1100').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/1/3/all/all/all/1100').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Menntamál');
             expect(terms.deepest[1]).to.equal('Laun og launatengd gjöld');
@@ -183,7 +183,7 @@ describe('Tests for breadcrumbs labels', () => {
     });
 
     it('should return Kópavogsbær and Tekjur', (done) => {
-        request(apinn.api).get('/expenses/2014-0/0/all/all/all/all/0000').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/0/all/all/all/all/0000').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Kópavogsbær');
             expect(terms.deepest[1]).to.equal('Tekjur');
@@ -194,7 +194,7 @@ describe('Tests for breadcrumbs labels', () => {
     });
 
     it('should return Velferðarmál and undefined', (done) => {
-        request(apinn.api).get('/expenses/2014-0/1/6/all/all/all/all').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/1/6/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Velferðarmál');
             expect(terms.deepest[1]).to.be.an('null');
@@ -205,7 +205,7 @@ describe('Tests for breadcrumbs labels', () => {
     });
 
     it('should return Kópavogsbær and Leigubifreiðar', (done) => {
-        request(apinn.api).get('/expenses/2014-0/7/all/all/all/all/4111').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/7/all/all/all/all/4111').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Kópavogsbær');
             expect(terms.deepest[1]).to.equal('Leigubifreiðar');
@@ -217,7 +217,7 @@ describe('Tests for breadcrumbs labels', () => {
     });
 
     it('should return Álfhólsskóli and Kennslulaun', (done) => {
-        request(apinn.api).get('/expenses/2014-0/7/3/04/042/04-222/1141').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/7/3/04/042/04-222/1141').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             expect(terms.deepest[0]).to.equal('Álfhólsskóli');
             expect(terms.deepest[1]).to.equal('Kennslulaun');
@@ -246,7 +246,7 @@ describe('Tests for expenses default pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -284,10 +284,10 @@ describe('Tests for expenses default pie', () => {
         done();
     });
 
-    // http://hfp.northeurope.cloudapp.azure.com/#/expenses/2014-0/1/3/n/n/n/n
+    // http://hfp.northeurope.cloudapp.azure.com/#/expenses/test-0/1/3/n/n/n/n
     /*
      it('GET amount in first slice (LAYER 1 - Menntamál)', (done) => {
-     request(apiUrl).get('/expenses/2014-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
+     request(apiUrl).get('/expenses/test-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
      var terms = JSON.parse(res.text);
      // Fræðslumál
      var check = terms.slices[0].sum_amount.value;
@@ -297,7 +297,7 @@ describe('Tests for expenses default pie', () => {
      });
 
      it('GET amount in second slice (LAYER 1 - Menntamál)', (done) => {
-     request(apiUrl).get('/expenses/2014-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
+     request(apiUrl).get('/expenses/test-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
      var terms = JSON.parse(res.text);
      // Æskulýðs- og íþróttamál
      var check = terms.slices[1].sum_amount.value;
@@ -307,7 +307,7 @@ describe('Tests for expenses default pie', () => {
      });
 
      it('GET amount in third slice (LAYER 1 - Menntamál)', (done) => {
-     request(apiUrl).get('/expenses/2014-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
+     request(apiUrl).get('/expenses/test-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
      var terms = JSON.parse(res.text);
      // Byggingarsjóður MK
      var check = terms.slices[2].sum_amount.value;
@@ -323,7 +323,7 @@ describe('Tests for expenses, finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/expenses/2014-0/6/2/05/058/05-812/9900').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/6/2/05/058/05-812/9900').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -369,7 +369,7 @@ describe('Tests for expenses, secondary finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/expenses/2014-0/6/6/02/024/02-426/2900').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/6/6/02/024/02-426/2900').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -417,7 +417,7 @@ describe('Tests for expenses, primary finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/expenses/2014-0/5/3/04/042/04-222/2000').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/5/3/04/042/04-222/2000').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -464,7 +464,7 @@ describe('Tests for expenses, division selected but nothing above pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/expenses/2014-0/6/all/all/all/06-591/4400').expect(200).end(function(err,res) {
+        request(apinn.api).get('/expenses/test-0/6/all/all/all/06-591/4400').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -513,7 +513,7 @@ describe('Tests for joint revenues default pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/joint-revenue/2014-0/3/all/all/').expect(200).end(function(err,res) {
+        request(apinn.api).get('/joint-revenue/test-0/3/all/all/').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -554,7 +554,7 @@ describe('Tests for joint revenues, primary finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/joint-revenue/2014-0/5/00-011/0000/').expect(200).end(function(err,res) {
+        request(apinn.api).get('/joint-revenue/test-0/5/00-011/0000/').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -594,7 +594,7 @@ describe('Tests for joint revenues, secondary finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/joint-revenue/2014-0/6/00-335/0300/').expect(200).end(function(err,res) {
+        request(apinn.api).get('/joint-revenue/test-0/6/00-335/0300/').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -644,7 +644,7 @@ describe('Tests for special revenues default pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/special-revenue/2014-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
+        request(apinn.api).get('/special-revenue/test-0/0/all/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -687,7 +687,7 @@ describe('Tests for special revenues, primary finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/special-revenue/2014-0/5/3/04/041/04-115/0000').expect(200).end(function(err,res) {
+        request(apinn.api).get('/special-revenue/test-0/5/3/04/041/04-115/0000').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -730,7 +730,7 @@ describe('Tests for special revenues, secondary finance key pie', () => {
     var terms = '';
 
     before((done) => {
-        request(apinn.api).get('/special-revenue/2014-0/6/7/21/214/21-420/0700').expect(200).end(function(err,res) {
+        request(apinn.api).get('/special-revenue/test-0/6/7/21/214/21-420/0700').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
             done();
         });
@@ -778,15 +778,15 @@ describe("Hvert fara  peningarnir", () => {
 
 
     it("Test 1", () => {
-        var results = request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all');
+        var results = request(apiUrl).get('/expenses/test-0/0/all/all/all/all/all');
         console.log(results.slices[0]);
         expect(results.slices.length()).to.equal(7);
     });
 
     it("GETS Default page", (done) => {
 
-        //var results = request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all');
-        request(apiUrl).get('/expenses/2014-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
+        //var results = request(apiUrl).get('/expenses/test-0/0/all/all/all/all/all');
+        request(apiUrl).get('/expenses/test-0/0/all/all/all/all/all').expect(200).end(function(err, res) {
             var terms = JSON.parse(res.text);
             console.log("Length of slices: ", terms.slices.length);
             var check = terms.slices[6].sum_amount.value;
@@ -799,17 +799,17 @@ describe("Hvert fara  peningarnir", () => {
     // These are just basic tests for client with its current definition of the URL - 27.03.2016
     /*
     it("GETS Default page", (done) => {
-        request(url).get('/#/expenses/2014-0/').expect(200).end(done);
+        request(url).get('/#/expenses/test-0/').expect(200).end(done);
     });
 
     it("GETS Default page", function(res) {
-        var results = request(url).get('/#/expenses/2014-0/');
-        request(url).get('/#/expenses/2014-0/').expect(res.slices);
+        var results = request(url).get('/#/expenses/test-0/');
+        request(url).get('/#/expenses/test-0/').expect(res.slices);
     });
 
 
     it("GETS Default page", (done) => {
-        request(api.doc.slices).get('/#/expenses/2014-0/').expect(200).end(done);
+        request(api.doc.slices).get('/#/expenses/test-0/').expect(200).end(done);
     });
 
     it('GETS Another page', (done) => {
@@ -821,43 +821,43 @@ describe("Hvert fara  peningarnir", () => {
     });
 
     it('GETS 1.Layer', (done) => {
-        request(url).get('#/expenses/2014-0').expect(200).end(done);
+        request(url).get('#/expenses/test-0').expect(200).end(done);
     });
 
     it('GETS 2.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/3').expect(200).end(done);
+        request(url).get('#/expenses/test-0/3').expect(200).end(done);
     });
 
     it('GETS 2.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/1/3/').expect(200).end(done);
+        request(url).get('#/expenses/test-0/1/3/').expect(200).end(done);
     });
 
     it('GETS 3.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/2/3/04').expect(200).end(done);
+        request(url).get('#/expenses/test-0/2/3/04').expect(200).end(done);
     });
 
     it('GETS 4.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/3/3/04/049').expect(200).end(done);
+        request(url).get('#/expenses/test-0/3/3/04/049').expect(200).end(done);
     });
 
     it('GETS 5.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/4/3/04/049/04-222').expect(200).end(done);
+        request(url).get('#/expenses/test-0/4/3/04/049/04-222').expect(200).end(done);
     });
 
     it('GETS 6.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/5/3/04/049/04-222/1000').expect(200).end(done);
+        request(url).get('#/expenses/test-0/5/3/04/049/04-222/1000').expect(200).end(done);
     });
 
     it('GETS 6.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/5/3/04/049/04-222/1000').expect(200).end(done);
+        request(url).get('#/expenses/test-0/5/3/04/049/04-222/1000').expect(200).end(done);
     });
 
     it('GETS 7.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/6/3/04/049/04-222/1100').expect(200).end(done);
+        request(url).get('#/expenses/test-0/6/3/04/049/04-222/1100').expect(200).end(done);
     });
 
     it('GETS 8.Layer', (done) => {
-        request(url).get('#/expenses/2014-0/7/3/04/049/04-222/1141').expect(200).end(done);
+        request(url).get('#/expenses/test-0/7/3/04/049/04-222/1141').expect(200).end(done);
     });
 
 });*/

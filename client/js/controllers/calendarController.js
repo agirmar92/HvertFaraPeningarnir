@@ -5,20 +5,32 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.years = YEARS;
     $scope.months = MONTHS;
     $scope.quarters = QUARTERS;
-    $scope.selectedYear = YEARS[4];
+    $scope.selectedYear = hfpResource.getPeriod().substring(0,4);
     $scope.selectedMonth = MONTHS[0];
     $scope.selectedQuarter = QUARTERS[0];
 
     $rootScope.resetPeriod = function() {
-        $scope.selectedYear = YEARS[4];
         $scope.selectedMonth = MONTHS[0];
         $scope.selectedQuarter = QUARTERS[0];
     };
 
+    var pathChange = function (newPeriod) {
+        // Create a new path
+        var newPathPrefix = $location.path().split('/');
+        newPathPrefix[2] = newPeriod;
+        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+        // Change the path
+        $location.path(newPathPrefix, false);
+    };
+
     $scope.setYear = function(year) {
-        if (YEARS.indexOf(year) !== -1) {
-            $scope.selectedYear = year;
-        }
+        $scope.selectedYear = year;
+        var newPeriod = $scope.selectedYear;
+        newPeriod += '-0';
+
+        pathChange(newPeriod);
+        $rootScope.resetPeriod();
     };
 
     $scope.setMonth = function(i) {
@@ -31,13 +43,7 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
             newPeriod += '-' + i;
         }
 
-        // Create a new path
-        var newPathPrefix = $location.path().split('/');
-        newPathPrefix[2] = newPeriod;
-        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
-
-        // Change the path
-        $location.path(newPathPrefix, false);
+        pathChange(newPeriod);
     };
 
     $scope.setQuarter = function(quarter) {
@@ -56,12 +62,6 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
             newPeriod += '-4';
         }
 
-        // Create a new path
-        var newPathPrefix = $location.path().split('/');
-        newPathPrefix[2] = newPeriod;
-        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
-
-        // Change the path
-        $location.path(newPathPrefix, false);
+        pathChange(newPeriod);
     };
 });

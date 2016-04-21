@@ -34,7 +34,8 @@ hfpApp.constant('YEARS', [
     "2011",
     "2012",
     "2013",
-    "2014"
+    "2014",
+    "2015"
 ]);
 hfpApp.constant('QUARTERS', [
     "Veldu",

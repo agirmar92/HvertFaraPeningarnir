@@ -36,14 +36,14 @@ describe("CalendarController > ", function() {
             expect(scope.selectedYear).toEqual('2013');
         });
 
-        // Predicate: (YEARS.indexOf(year) !== -1) to false
+        /* Predicate: (YEARS.indexOf(year) !== -1) to false
         it("should set year to something invalid", function() {
             // Assert before the change
             expect(scope.selectedYear).toEqual('2014');
             scope.setYear('derka');
             // Assert after the change
             expect(scope.selectedYear).toEqual('2014');
-        });
+        });*/
     });
 
     /*

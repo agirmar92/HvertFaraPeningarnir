@@ -289,13 +289,13 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             if (factory.getType() === 'expenses') {
                 // Expenses
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
-                // Change the percentage number
-                factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
-
                 // Change total credit for whole year if needed
                 if (factory.getTotalC() === 0) {
                     factory.setTotalC(factory.getTotalCredit());
                 }
+                // Change the percentage number
+                factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
+
                 // Change total credit to have dots every the digits
                 factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
             } else {
@@ -431,7 +431,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.options[i].currChoice = -1;
         }
         if ($rootScope.type === 'expenses') {
-            $location.path('/' + INITIAL_VALUES.TYPE + '/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+            $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod().substring(0,4) + '-0/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
             $location.path('/joint-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
         } else {

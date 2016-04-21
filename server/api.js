@@ -147,7 +147,7 @@ api.post('/updateDatabase', (req, res) => {
 	}
 */
 api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
-    const period              = req.params.per;
+    let period              = req.params.per;
     const level               = req.params.lvl;
     const affairGroupID       = req.params.agroup;
     const affairID            = req.params.aff;
@@ -167,10 +167,14 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         <year>-1 ... <year>-4: quarter of year
         <year>-01 ... <year>-12: month of year
     */
+    const year = period.substring(0,4);
+    if (year === 'test') {
+        period = '2014' + period.substring(4);
+    }
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
-    const year = period.substring(0,4);
+    //console.log(year);
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
     let undef;
@@ -236,9 +240,10 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         mustFinanceKey = { "prefix": { [field]: { "value": financeKeyID } } };
     }
 
+    const ind = 'hfp-' + year;
     // Query the database for all expenses
     elasticClient.search({
-        index: 'hfp-' + year,
+        index: ind,
         body: {
             "query": {
                 "bool": {
@@ -317,7 +322,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         const totalCredit = doc.aggregations.total_amount.value;
         // Query the database for all incomes
         elasticClient.search({
-            index: 'hfp-' + year,
+            index: ind,
             body: {
                 "query": {
                     "bool": {
@@ -393,7 +398,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
  }
  */
 api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
-    const period              = req.params.per;
+    let period              = req.params.per;
     const level               = req.params.lvl;
     const departmentID        = req.params.dep;
     const financeKeyID        = req.params.fin;
@@ -401,10 +406,14 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     let mustFinanceKey        = {};
     let aggregator            = aggs[parseInt(level)];
 
+    const year = period.substring(0,4);
+    if (year === 'test') {
+        period = '2014' + period.substring(4);
+    }
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
-    const year = period.substring(0,4);
+
     //console.log('departmentID: ' + departmentID);
     //console.log('financeKeyID: ' + financeKeyID);
 
@@ -617,7 +626,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
  }
  */
 api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
-    const period              = req.params.per;
+    let period              = req.params.per;
     const level               = req.params.lvl;
     const affairGroupID       = req.params.agroup;
     const affairID            = req.params.aff;
@@ -637,10 +646,13 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
      <year>-1 ... <year>-4: quarter of year
      <year>-01 ... <year>-12: month of year
      */
+    const year = period.substring(0,4);
+    if (year === 'test') {
+        period = '2014' + period.substring(4);
+    }
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
-    const year = period.substring(0,4);
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
     let undef;
