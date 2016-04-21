@@ -19,9 +19,9 @@ args = parser.parse_args()
 user = 'admin'
 year = args.year
 
+# Runs a bash script that deletes and creates a new index in elasticsearch for the year specified by the user
 createIndex = "/bin/bash updateYear.sh " + year
 os.system(createIndex)
-
 
 es = Elasticsearch(
 	['http://hfp.northeurope.cloudapp.azure.com:9200'],
@@ -60,6 +60,6 @@ print('Finished! ' + str(len(docs)) + ' documents created.')
 
 # Query the database, just for fun
 time.sleep(2)
-res = es.search(index="hfp", body={"query": {"match_all": {}}})
+res = es.search(index='hfp-' + year, body={"query": {"match_all": {}}})
 print("Got %d Hits:" % res['hits']['total'])
 
