@@ -18,8 +18,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var choices = [];
     var totalCredit = 0;
     var totalDebit = 0;
-    var totalC = 32321545934;
-    var totalD = 18529125975;
+    var totalC = 0; //32321545934;
+    var totalD = 0; //18529125975;
+    var totalS = 0; //11089287535;
+    var currYear = 2014;
     var dynamic = 100;
     var clickedSlice = "";
     var clickedSliceLabel = "";
@@ -64,8 +66,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.getTotalD = function() {
         return totalD;
     };
-    factory.getTotalYearSpec = function() {
-        return 11089287535;
+    factory.getTotalS = function() {
+        return totalS;
+    };
+    factory.getCurrYear = function() {
+        return currYear;
     };
     factory.getDynamic = function() {
         return dynamic;
@@ -128,6 +133,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.setTotalD = function(newTotalD) {
         totalD = newTotalD;
+    };
+    factory.setTotalS = function(newTotalS) {
+        totalS = newTotalS;
+    };
+    factory.setCurrYear = function(newYear) {
+        currYear = newYear;
     };
     factory.setDynamic = function(newDynamic) {
         dynamic = newDynamic;
@@ -253,6 +264,14 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             factory.setTotalCredit(response.totalCredit);
             factory.setTotalDebit(response.totalDebit);
 
+            var year = factory.getPeriod().substring(0,4);
+            if (factory.getCurrYear() !== year) {
+                factory.setCurrYear(year);
+                factory.setTotalC(0);
+                factory.setTotalD(0);
+                factory.setTotalS(0);
+            }
+
             // Change the deepest properties for breadcrumbs
             factory.setDeepest(response.deepest);
 
@@ -266,24 +285,35 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
             $rootScope.chart.options.data[0].dataPoints[1].y = factory.getTotalDebit();
 
-            // Update percentage bar
+            // Update percentage bar and total amounts for whole year if needed
             if (factory.getType() === 'expenses') {
+                // Expenses
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
                 // Change the percentage number
                 factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
 
+                // Change total credit for whole year if needed
+                if (factory.getTotalC() === 0) {
+                    factory.setTotalC(factory.getTotalCredit());
+                }
                 // Change total credit to have dots every the digits
                 factory.setTotalCredit(factory.toNrWithDots(factory.getTotalCredit()));
             } else {
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalDebit() - factory.getTotalCredit();
                 // Change the percentage number
                 if (factory.getType() === 'joint-revenue') {
+                    // Change total joint revenue for whole year if needed
+                    if (factory.getTotalD() === 0) {
+                        factory.setTotalD(factory.getTotalDebit());
+                    }
                     factory.setDynamic((factory.getTotalDebit() / factory.getTotalD() * 100).toFixed(1));
                 } else {
-                    factory.setDynamic((factory.getTotalDebit() / factory.getTotalYearSpec() * 100).toFixed(1));
+                    // Change total special revenue for whole year if needed
+                    if (factory.getTotalS() === 0) {
+                        factory.setTotalS(factory.getTotalDebit());
+                    }
+                    factory.setDynamic((factory.getTotalDebit() / factory.getTotalS() * 100).toFixed(1));
                 }
-
-
                 // Change total debit to have dots every three digits
                 factory.setTotalDebit(factory.toNrWithDots(factory.getTotalDebit()));
             }

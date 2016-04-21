@@ -7,7 +7,7 @@ import csv
 from elasticsearch import Elasticsearch
 from pprint import pprint
 import time
-# import certifi
+import certifi
 import argparse
 import subprocess
 import os

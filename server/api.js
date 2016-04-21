@@ -170,6 +170,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
+    const year = period.substring(0,4);
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
     let undef;
@@ -237,7 +238,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 
     // Query the database for all expenses
     elasticClient.search({
-        index: 'hfp',
+        index: 'hfp-' + year,
         body: {
             "query": {
                 "bool": {
@@ -316,7 +317,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         const totalCredit = doc.aggregations.total_amount.value;
         // Query the database for all incomes
         elasticClient.search({
-            index: 'hfp',
+            index: 'hfp-' + year,
             body: {
                 "query": {
                     "bool": {
@@ -403,6 +404,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
+    const year = period.substring(0,4);
     //console.log('departmentID: ' + departmentID);
     //console.log('financeKeyID: ' + financeKeyID);
 
@@ -471,7 +473,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
 
     // Query the database for all incomes
     elasticClient.search({
-        index: 'hfp',
+        index: 'hfp-' + year,
         body: {
             "query": {
                 "bool": {
@@ -545,7 +547,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
         const totalDebit = Math.abs(doc.aggregations.total_amount.value);
         // Query the database for all expenses
         elasticClient.search({
-            index: 'hfp',
+            index: 'hfp-' + year,
             body: {
                 "query": {
                     "bool": {
@@ -638,6 +640,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
+    const year = period.substring(0,4);
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
     let undef;
@@ -710,7 +713,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
 
     // Query the database for all revenues
     elasticClient.search({
-        index: 'hfp',
+        index: 'hfp-' + year,
         body: {
             "query": {
                 "bool": {
@@ -798,7 +801,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         const totalDebit = Math.abs(doc.aggregations.total_amount.value);
         // Query the database for all revenue
         elasticClient.search({
-            index: 'hfp',
+            index: 'hfp-' + year,
             body: {
                 "query": {
                     "bool": {
