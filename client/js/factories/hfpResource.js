@@ -31,6 +31,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var departmentGroup = "all";
     var department = "all";
     var financeKey = "all";
+    var pieHeight = 0;
+    var pieWidth = 0;
 
     /*
     *       Getters
@@ -98,6 +100,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getFinanceKey = function() {
         return financeKey;
+    };
+    factory.getPieHeight = function() {
+        return pieHeight;
+    };
+    factory.getPieWidth = function() {
+        return pieWidth;
     };
 
     /*
@@ -167,6 +175,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.setFinanceKey = function(newFinanceKey) {
         financeKey = newFinanceKey;
     };
+    factory.setPieHeight = function(newPieHeight) {
+        pieHeight = newPieHeight;
+    };
+    factory.setPieWidth = function(newPieWidth) {
+        pieWidth = newPieWidth;
+    };
 
     /*
     *       Public methods
@@ -195,6 +209,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             if (firstTime) {
                 console.log("First time: filling filters");
                 setFilters(response.labels);
+                factory.setPieHeight($('#hfpPie').height() * 0.9);
+                factory.setPieWidth($('#hfpPie').width() * 0.9);
             }
             
             // Change the slices
@@ -536,8 +552,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 location: "pie-center"
             },
             size: {
-                canvasWidth: 900,
-                canvasHeight: 500
+                canvasWidth: factory.getPieWidth(),       //900,
+                canvasHeight: factory.getPieHeight()      //500
             },
             data: {
                 content: factory.getSlices()
@@ -687,6 +703,15 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.options[filterLevel].currChoice = 0;
         }
     };
+
+    $(window).resize(function(event) {
+        factory.setPieHeight($('#hfpPie').height() * 0.9);
+        factory.setPieWidth($('#hfpPie').width() * 0.9);
+
+        $rootScope.pie.options.size.canvasWidth = factory.getPieWidth();
+        $rootScope.pie.options.size.canvasHeight = factory.getPieHeight();
+        $rootScope.pie.redraw();
+    });
 
     return factory;
 });
