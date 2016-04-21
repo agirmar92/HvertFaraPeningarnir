@@ -53,7 +53,7 @@ for row in rows[2:-2]:
 # Process dictionaries into ElasticSearch
 for i, doc in enumerate(docs):
 	#print(str(i) + ': ' + str(doc['Amount']))
-	es.index(index=year, doc_type='doc', body=doc)
+	es.index(index='hfp-' + year, doc_type='doc', body=doc)
 	if i % 10000 == 0:
 		print('Processing database.. ' + str(i) + ' documents created.')
 print('Finished! ' + str(len(docs)) + ' documents created.')
