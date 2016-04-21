@@ -34,7 +34,10 @@
                             <input type="password" name="passInput" ng-model="user.password" class="form-control login-input" placeholder="Lykilorð" required>
                         </div>
 
-                        <input type="submit" class="hfp-login-button btn btn-success btn-lg" value="Innskrá" ng-click="login(loginForm)">
+                        <div class="row">
+                            <input ng-if="!loggingIn" type="submit" class="hfp-login-button btn btn-success btn-lg" value="Innskrá" ng-click="login(loginForm)">
+                            <div ng-if="loggingIn" class="spinner"></div>
+                        </div>
                     </form>
                 </div>
             </div>

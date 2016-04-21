@@ -45,6 +45,7 @@ hfpApp.factory('authenticationResource', function($rootScope, $firebaseAuth, $fi
             email: user.email,
             password: user.password
         }).catch(function(error) {
+            console.log(error);
             var errorMsg = 'Villa kom upp';
             if (error.code === 'INVALID_PASSWORD') {
                 errorMsg = 'Vitlaust lykilorð';
@@ -55,6 +56,7 @@ hfpApp.factory('authenticationResource', function($rootScope, $firebaseAuth, $fi
                 type: 'danger',
                 msg: errorMsg
             });
+            $rootScope.loggingIn = false;
         });
     };
     
