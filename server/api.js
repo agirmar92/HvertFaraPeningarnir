@@ -9,7 +9,7 @@ const elasticsearch = require('elasticsearch');
 
 const Firebase = require("firebase");
 const hfpFirebaseRef = new Firebase("https://hfp.firebaseio.com/");
-const jenkinsUpdateJob = "http://hfp.kopavogur.is:8080/view/FetchingData/job/AuthenticateAdmin/buildWithParameters?";
+const jenkinsUpdateJob = "http://hfp.northeurope.cloudapp.azure.com:8080/job/AuthenticateAdmin/buildWithParameters?";
 
 // Globals
 const api = express();
@@ -82,12 +82,10 @@ const determineTypeOfFinanceKey = (key) => {
 *       POST route that authenticates the user with a token.
 *       If authenticated, a response will be sent to Jenkins to update data for the given period.
 *
-*       The route expects five parameters from request payload = {
-*           from: Marks the beginning of the period to be updated <Year>,
-*           to: Marks the end of the period to be updated <Year>,
+*       The route expects three parameters from request payload = {
+*           year: Indicates the year to update <Year>,
 *           token: Token used to authenticate the user <String>,
-*           email: The user's email address <String>,
-*           updateAll: Indicates whether everything should be updated <Bool>
+*           email: The user's email address <String>
 *       }
 *
 *       Returns an object = {
@@ -97,13 +95,11 @@ const determineTypeOfFinanceKey = (key) => {
 *       }
 * */
 api.post('/updateDatabase', (req, res) => {
-    const from      = req.body.from;
-    const to        = req.body.to;
+    const year      = req.body.year;
     const token     = req.body.token;
     const email     = req.body.email;
-    const updateAll = req.body.updateAll;
 
-    const requestURL = jenkinsUpdateJob + 'userEmail=' + email + '&yearFrom=' + from + '&yearTo=' + to + '&updateAll=' + updateAll + '&token=fetch';
+    const requestURL = jenkinsUpdateJob + 'userEmail=' + email + '&year=' + year + '&token=fetch';
 
     // Initializing the object returned
     let responseObject = {
@@ -125,6 +121,10 @@ api.post('/updateDatabase', (req, res) => {
             request.get(
                 requestURL,
                 (error, response) => {
+                    /*if (error)
+                        console.log('got error: ' + error);
+                    if (response)
+                        console.log('got response: ' + response);*/
                     // TODO: Maybe check whether jenkins agreed? Fix the allow-origin jenkins stuff
                     responseObject.updateUnderway = true;
                     responseObject.msg = "All good";
