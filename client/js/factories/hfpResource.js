@@ -635,7 +635,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     "top": 50
                 },
                 "pieCenterOffset": {
-                    "y": 30
+                    "y": 0
                 }
             },
             effects: {
