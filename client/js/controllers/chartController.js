@@ -158,7 +158,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         } else {
             $scope.divider = hfpResource.getTotalDebit();
             net = hfpResource.toNr($scope.divider) - hfpResource.getTotalCredit();
-            console.log(net);
+            //console.log(net);
             $scope.netto = hfpResource.toNrWithDots(net);
             $scope.nettoPerc = (net / hfpResource.toNr($scope.divider) * 100).toFixed(1);
         }

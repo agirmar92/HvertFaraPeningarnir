@@ -182,7 +182,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     let labels = [];
 
     // Find the index and keys for deepest drilled properties
-    for (let i = fieldValues.length - 2; i >= 0; i--) {
+    /*for (let i = fieldValues.length - 2; i >= 0; i--) {
         if (fieldValues[i] !== 'all') {
             if (!deepest[0]) {
                 deepest[0] = {
@@ -198,12 +198,23 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         } else if (i === 0 && !deepest[0]) {
             deepest[0] = -1;
         }
+    }*/
+
+    for (let i = 0; i < fieldValues.length - 1; i++) {
+        if (fieldValues[i] !== 'all') {
+            labels.push({
+                key: fieldValues[i],
+                level: i,
+                label: aggs[i]
+            });
+        }
     }
+
     if (fieldValues[fieldValues.length - 1] !== 'all') {
-        deepest[1] = {
+        /*deepest[1] = {
             fieldId: fieldValues.length - 1,
             key: fieldValues[fieldValues.length - 1]
-        };
+        };*/
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -304,7 +315,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         }
     }).then((doc) => {
         // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
-        if (deepest[0] !== -1) {
+        /*if (deepest[0] !== -1) {
             deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
         } else {
             deepest[0] = 'Kópavogsbær';
@@ -312,7 +323,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         if (deepest[1] !== undefined) {
             let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
             deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
-        }
+        }*/
         for (let i = 0; i < labels.length; i++) {
             labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
         }
@@ -373,7 +384,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalDebit = Math.abs(docum.aggregations.total_amount.value);
-            const respObj = { slices, totalCredit, totalDebit, deepest, labels };
+            const respObj = { slices, totalCredit, totalDebit, /*deepest,*/ labels };
             res.status(200).send(respObj);
         }, (err) => {
             console.log(err);

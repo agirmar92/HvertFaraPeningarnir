@@ -34,6 +34,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var pieHeight = 0;
     var pieWidth = 0;
     var pieRadius = 0;
+    var pathLabels;
 
     /*
     *       Getters
@@ -111,6 +112,19 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.getPieRadius = function() {
         return pieRadius;
     };
+    factory.getPathLabels = function() {
+        if (pathLabels.length === 0) {
+            return "Allar deildir";
+        }
+
+        // Add the first label to the string
+        var pathString = pathLabels[0].label;
+        for (var i = 1; i < pathLabels.length; i++) {
+            // And every other label in the array with a preceding '>'
+            pathString += " > " + pathLabels[i].label;
+        }
+        return pathString;
+    };
 
     /*
     *       Setters
@@ -187,6 +201,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.setPieRadius = function(newPieRadius) {
         pieRadius = newPieRadius;
+    };
+    factory.setPathLabels = function(newPathLabels) {
+        pathLabels = newPathLabels;
     };
 
     /*
@@ -298,6 +315,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             // Change the deepest properties for breadcrumbs
             factory.setDeepest(response.deepest);
+            factory.setPathLabels(response.labels);
 
 
             /* Check if totalYearAmount should be changed
@@ -531,10 +549,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
         $rootScope.type = factory.getType();
-        $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.getDeepest()[0];
-        if (factory.getDeepest()[1]) {
+        //$rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.getDeepest()[0];
+        /*if (factory.getDeepest()[1]) {
             $rootScope.breadcrumb += ', ' + factory.getDeepest()[1];
-        }
+        }*/
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
@@ -550,14 +568,29 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         // Recreate the pie chart
         $rootScope.pie.destroy();
         $rootScope.pie = new d3pie("mypie", {
-            header: {
+            /*header: {
                 title: {
-                    text: "",
+                    text: "Derka",
                     color: CHART_TEXT_COLOR,
                     font: "font4",
                     fontSize: 24
                 },
                 location: "pie-center"
+            },*/
+            "header": {
+                "title": {
+                    "text": factory.translate() + ", " + factory.tDate(),
+                    "fontSize": 26,
+                    "font": "font4",
+                    "color": "#dadada"
+                },
+                "subtitle": {
+                    "text": factory.getPathLabels(),
+                    "color": "#999999",
+                    "fontSize": 14,
+                    "font": "font4"
+                },
+                "titleSubtitlePadding": 10
             },
             size: {
                 canvasWidth: factory.getPieWidth(),       //900,
@@ -597,6 +630,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     //enabled: "true",
                     percentage: 99,
                     color: "#1b1b1b"
+                },
+                "canvasPadding": {
+                    "top": 50
+                },
+                "pieCenterOffset": {
+                    "y": 30
                 }
             },
             effects: {
