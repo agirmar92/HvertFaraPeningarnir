@@ -711,28 +711,5 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
     };
 
-    /*
-    *       Callback function overwrite for when screen size is modified.
-    *       Calculates the new size of the chart and bar chart and redraws them.
-    * */
-    $(window).resize(function() {
-        // Set height and width variables appropriately to the changes
-        factory.setPieHeight($('#hfpPie').height());
-        factory.setPieWidth($('#hfpPie').width());
-        factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
-
-        // Modify the chart's settings and redraw
-        $rootScope.pie.options.size.canvasWidth = factory.getPieWidth();
-        $rootScope.pie.options.size.canvasHeight = factory.getPieHeight();
-        $rootScope.pie.options.size.pieOuterRadius = factory.getPieRadius();
-        $rootScope.pie.options.labels.mainLabel.fontSize = Math.max(12, factory.getPieRadius() * 0.125);
-        $rootScope.pie.options.labels.outer.pieDistance = Math.min((factory.getPieWidth() / 350) * 10, 50);
-        $rootScope.pie.redraw();
-
-        // Modify the bar chart's settings and redraw
-        var miniChartWidth = $('#miniChartContainer').width();
-        $('#miniChartContainer').css({'height': miniChartWidth + 'px'});
-    });
-
     return factory;
 });

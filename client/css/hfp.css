@@ -965,7 +965,7 @@ header {
         font-size: 22px;
     }
 
-    .hfp-title {
+    .hfp-title.col-xs-4 {
         width: 66.66666667%;
     }
 }

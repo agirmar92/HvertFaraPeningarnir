@@ -168,4 +168,28 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         });
         $scope.level = hfpResource.getLevel();
     };
+
+    /*
+     *       Callback function overwrite for when screen size is modified.
+     *       Calculates the new size of the chart and bar chart and redraws them.
+     * */
+    $(window).resize(function() {
+        // Set height and width variables appropriately to the changes
+        hfpResource.setPieHeight($('#hfpPie').height());
+        hfpResource.setPieWidth($('#hfpPie').width());
+        hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
+
+        // Modify the chart's settings and redraw
+        //console.log($rootScope.pie);
+        $rootScope.pie.options.size.canvasWidth = hfpResource.getPieWidth();
+        $rootScope.pie.options.size.canvasHeight = hfpResource.getPieHeight();
+        $rootScope.pie.options.size.pieOuterRadius = hfpResource.getPieRadius();
+        $rootScope.pie.options.labels.mainLabel.fontSize = Math.max(12, hfpResource.getPieRadius() * 0.125);
+        $rootScope.pie.options.labels.outer.pieDistance = Math.min((hfpResource.getPieWidth() / 350) * 10, 50);
+        $rootScope.pie.redraw();
+
+        // Modify the bar chart's settings and redraw
+        var miniChartWidth = $('#miniChartContainer').width();
+        $('#miniChartContainer').css({'height': miniChartWidth + 'px'});
+    });
 });
