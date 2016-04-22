@@ -65,7 +65,8 @@ html, body {
     bottom: 50px;
     right: 40px;
     height: 250px;
-    width: 250px;
+    min-width: 250px;
+    width: 18%;
     //opacity: 0.5;
 }
 
@@ -475,7 +476,7 @@ h1, h2 {
     right: 7%;
     top: 10.5px;
 }
-.option:hover, .option-choices:hover {
+.option:hover, .option-choices:hover, g:hover {
     cursor: pointer;
 }
 
@@ -540,12 +541,6 @@ h1, h2 {
         top: 195px;
     }
 }
-
-@media(max-width:1089px) {
-
-}
-
-/* TODO, support screens down to 768pixels wide */
 
 /*
     Login window syle below
@@ -945,4 +940,48 @@ header {
             transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
             -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
         }
+}
+
+/*
+    Styles making HFP responsive
+*/
+
+@media(max-width:768px) {
+    .hfp-secondary-btn {
+        display: none;
+    }
+}
+
+@media(max-width:725px) {
+    #hfp-progress > * {
+        display: none;
+    }
+
+    #hfp-progress, .hfp-headerbuttons {
+        width: 16.66666667%;
+    }
+
+    #hfp-breadcrumb {
+        font-size: 22px;
+    }
+
+    .hfp-title {
+        width: 66.66666667%;
+    }
+}
+
+@media(max-width:373px) {
+    #main-title {
+        font-size: 26px;
+    }
+
+    #sub-title {
+        font-size: 22px;
+    }
+}
+
+@media(max-width:768px) and (max-height:940px) {
+    #miniChartContainer {
+        display: none;
+    }
 }

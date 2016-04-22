@@ -33,6 +33,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var financeKey = "all";
     var pieHeight = 0;
     var pieWidth = 0;
+    var pieRadius = 0;
 
     /*
     *       Getters
@@ -106,6 +107,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getPieWidth = function() {
         return pieWidth;
+    };
+    factory.getPieRadius = function() {
+        return pieRadius;
     };
 
     /*
@@ -181,6 +185,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.setPieWidth = function(newPieWidth) {
         pieWidth = newPieWidth;
     };
+    factory.setPieRadius = function(newPieRadius) {
+        pieRadius = newPieRadius;
+    };
 
     /*
     *       Public methods
@@ -205,12 +212,13 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             method: 'GET',
             url: queryURL
         }).success(function (response) {
-            // If this is the first fetching money, set the filters like they should be
+            // If this is the first fetching money, set the filters like they should be and set the initial size of the chart
             if (firstTime) {
                 console.log("First time: filling filters");
                 setFilters(response.labels);
-                factory.setPieHeight($('#hfpPie').height() * 0.9);
-                factory.setPieWidth($('#hfpPie').width() * 0.9);
+                factory.setPieHeight($('#hfpPie').height());
+                factory.setPieWidth($('#hfpPie').width());
+                factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
             }
             
             // Change the slices
@@ -553,7 +561,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             },
             size: {
                 canvasWidth: factory.getPieWidth(),       //900,
-                canvasHeight: factory.getPieHeight()      //500
+                canvasHeight: factory.getPieHeight(),     //500
+                pieOuterRadius: factory.getPieRadius()
             },
             data: {
                 content: factory.getSlices()
@@ -561,7 +570,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             labels: {
                 outer: {
                     format: "label",
-                    pieDistance: 50
+                    pieDistance: Math.min((factory.getPieWidth() / 350) * 10, 50)
                 },
                 inner: {
                     hideWhenLessThanPercentage: 100
@@ -569,7 +578,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 mainLabel: {
                     color: CHART_TEXT_COLOR,
                     font: "font1",
-                    fontSize: "18"
+                    fontSize: Math.max(12, factory.getPieRadius() * 0.125)
                 },
                 value: {
                     color: CHART_TEXT_COLOR,
@@ -691,9 +700,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         for (var i = 0; i < labels.length; i++) {
             var filterLevel = labels[i].level;
             var filterLabel = labels[i].label;
-            //var filterKey = labels[i].key;
 
-            //console.log(filterLevel + ": " + filterLabel + " - " + filterKey);
             $rootScope.options[filterLevel].choices.push({
                 choiceId: 0,
                 content: filterLabel,
@@ -704,13 +711,27 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
     };
 
-    $(window).resize(function(event) {
-        factory.setPieHeight($('#hfpPie').height() * 0.9);
-        factory.setPieWidth($('#hfpPie').width() * 0.9);
+    /*
+    *       Callback function overwrite for when screen size is modified.
+    *       Calculates the new size of the chart and bar chart and redraws them.
+    * */
+    $(window).resize(function() {
+        // Set height and width variables appropriately to the changes
+        factory.setPieHeight($('#hfpPie').height());
+        factory.setPieWidth($('#hfpPie').width());
+        factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
 
+        // Modify the chart's settings and redraw
         $rootScope.pie.options.size.canvasWidth = factory.getPieWidth();
         $rootScope.pie.options.size.canvasHeight = factory.getPieHeight();
+        $rootScope.pie.options.size.pieOuterRadius = factory.getPieRadius();
+        $rootScope.pie.options.labels.mainLabel.fontSize = Math.max(12, factory.getPieRadius() * 0.125);
+        $rootScope.pie.options.labels.outer.pieDistance = Math.min((factory.getPieWidth() / 350) * 10, 50);
         $rootScope.pie.redraw();
+
+        // Modify the bar chart's settings and redraw
+        var miniChartWidth = $('#miniChartContainer').width();
+        $('#miniChartContainer').css({'height': miniChartWidth + 'px'});
     });
 
     return factory;

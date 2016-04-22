@@ -2,10 +2,10 @@
  * Created by agirmar on 20.3.2016.
  */
 hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource) {
+
     /*
     *       rootScope variables
     * */
-
     CanvasJS.addCultureInfo("is", {
             digitGroupSeparator: "."
 
