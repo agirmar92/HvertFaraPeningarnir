@@ -490,7 +490,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         if (typo === 'expenses') {
             return 'Gjöld';
         } else if (typo === 'joint-revenue') {
-            return 'Sameiginlegar Tekjur';
+            return 'Sameiginlegar tekjur';
         } else if (typo === 'special-revenue') {
             return 'Sértekjur';
         }
