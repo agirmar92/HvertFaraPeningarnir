@@ -642,10 +642,10 @@ describe('Tests for special revenues, primary finance key pie', () => {
     });
 
     it('should return the correct array for labels', (done) => {
-        expect(terms.labels[0].label).to.equal('Leikskólinn Núpur');
-        expect(terms.labels[1].label).to.equal('Leikskólar og dagvistun');
-        expect(terms.labels[2].label).to.equal('Fræðslumál');
-        expect(terms.labels[3].label).to.equal('Menntamál');
+        expect(terms.labels[0].label).to.equal('Menntamál');
+        expect(terms.labels[1].label).to.equal('Fræðslumál');
+        expect(terms.labels[2].label).to.equal('Leikskólar og dagvistun');
+        expect(terms.labels[3].label).to.equal('Leikskólinn Núpur');
         expect(terms.labels[4].label).to.equal('Tekjur');
         expect(terms.labels[5]).to.be.an('undefined');
         done();
@@ -679,10 +679,10 @@ describe('Tests for special revenues, secondary finance key pie', () => {
     });
 
     it('should return the correct array for labels', (done) => {
-        expect(terms.labels[0].label).to.equal('Tölvudeild');
-        expect(terms.labels[1].label).to.equal('Skrifstofur sveitarfélagsins');
-        expect(terms.labels[2].label).to.equal('Sameiginlegur kostnaður');
-        expect(terms.labels[3].label).to.equal('Önnur mál');
+        expect(terms.labels[0].label).to.equal('Önnur mál');
+        expect(terms.labels[1].label).to.equal('Sameiginlegur kostnaður');
+        expect(terms.labels[2].label).to.equal('Skrifstofur sveitarfélagsins');
+        expect(terms.labels[3].label).to.equal('Tölvudeild');
         expect(terms.labels[4].label).to.equal('Tekjur');
         expect(terms.labels[5].label).to.equal('Vörur og þjónusta til eigin nota');
         expect(terms.labels[6]).to.be.an('undefined');

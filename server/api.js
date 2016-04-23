@@ -597,7 +597,6 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     let mustDepartment        = {};
     let mustFinanceKey        = {};
     let aggregator            = aggs[level];
-    //console.log('aggregator: ' + aggregator);
     /*	Checking if we need to change period
      (user asking for whole year or quarter)
      <year>-0: all year
@@ -613,11 +612,10 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     const to = foo.to;
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
-    let undef;
     let labels = [];
 
     // Find the index and keys for drilled properties
-    for (let i = fieldValues.length - 2; i >= 0; i--) {
+    for (let i = 0; i < fieldValues.length - 1; i++) {
         if (fieldValues[i] !== 'all') {
             labels.push({
                 key: fieldValues[i],
