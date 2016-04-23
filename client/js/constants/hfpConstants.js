@@ -15,19 +15,19 @@ hfpApp.constant('COLORS', [
 ]);
 hfpApp.constant('CHART_TEXT_COLOR', '#dadada');
 hfpApp.constant('MONTHS', [
-    "Veldu",
-    "Janúar",
-    "Febrúar",
-    "Mars",
-    "Apríl",
-    "Maí",
-    "Júní",
-    "Júlí",
-    "Ágúst",
-    "September",
-    "Október",
-    "Nóvember",
-    "Desember"
+    "veldu",
+    "janúar",
+    "febrúar",
+    "mars",
+    "apríl",
+    "maí",
+    "júní",
+    "júlí",
+    "ágúst",
+    "september",
+    "október",
+    "nóvember",
+    "desember"
 ]);
 hfpApp.constant('YEARS', [
     "2010",
@@ -38,11 +38,11 @@ hfpApp.constant('YEARS', [
     "2015"
 ]);
 hfpApp.constant('QUARTERS', [
-    "Veldu",
-    "Fyrsti",
-    "Annar",
-    "Þriðji",
-    "Fjórði"
+    "veldu",
+    "fyrsti",
+    "annar",
+    "þriðji",
+    "fjórði"
 ]);
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'expenses',

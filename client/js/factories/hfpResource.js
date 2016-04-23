@@ -490,7 +490,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         if (typo === 'expenses') {
             return 'Gjöld';
         } else if (typo === 'joint-revenue') {
-            return 'Sameiginlegar Tekjur';
+            return 'Sameiginlegar tekjur';
         } else if (typo === 'special-revenue') {
             return 'Sértekjur';
         }
@@ -521,11 +521,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 return year;
             } else {
                 var quarter = parseInt(perio.charAt(5));
-                return year + ' (' + QUARTERS[quarter] + ' ársfjórðungur)';
+                return year + ' - ' + QUARTERS[quarter] + ' ársfjórðungur';
             }
         } else {
             var month = parseInt(perio.substring(5,7), 10);
-            return year + ' (' + MONTHS[month] + ')';
+            return year + ' - ' + MONTHS[month];
         }
     };
 

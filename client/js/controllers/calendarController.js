@@ -50,16 +50,11 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
         $scope.selectedQuarter = quarter;
         $scope.selectedMonth = MONTHS[0];
         var newPeriod = $scope.selectedYear;
-        if (quarter === 'Veldu') {
-            newPeriod += '-0';
-        } else if (quarter === 'Fyrsti') {
-            newPeriod += '-1';
-        } else if (quarter === 'Annar') {
-            newPeriod += '-2';
-        } else if (quarter === 'Þriðji') {
-            newPeriod += '-3';
-        } else if (quarter === 'Fjórði') {
-            newPeriod += '-4';
+        for (var i = 0; i < QUARTERS.length; i++) {
+            if (quarter === QUARTERS[i]) {
+                newPeriod += '-' + i;
+                break;
+            }
         }
 
         pathChange(newPeriod);
