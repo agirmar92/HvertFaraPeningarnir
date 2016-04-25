@@ -9,7 +9,7 @@ if fuser 8000/tcp ; then
     fuser -k 8000/tcp
 fi
 # Start a simple HTTP server (ignore output)
-nohup ./startClient.sh > /dev/null 2>1& &
+nohup ./startClient.sh > /dev/null 2>&1 &
 
 echo "STARTING LOCAL TEST API (port 4040)"
 echo "==========================="
@@ -20,7 +20,7 @@ if fuser 4040/tcp ; then
     fuser -k 4040/tcp
 fi
 # Start up an instance of the API (ignore output)
-nohup ./startServer.sh > /dev/null 2>1& &
+nohup ./startServer.sh > /dev/null 2>&1 &
 
 echo "STARTING SELENIUM STANDALONE SERVER (port 4444)"
 echo "==========================="
