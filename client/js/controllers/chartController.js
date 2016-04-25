@@ -65,12 +65,15 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     }
                 },
                 lineThickness: 0,
-                tickThickness: 0
+                tickThickness: 0,
+                labelFontFamily: "font4"
             },
             axisX: {
-                labelFontSize: 14,
+                labelFontSize: 16,
                 lineThickness: 0,
-                tickThickness: 0
+                tickThickness: 0,
+                labelFontColor: CHART_TEXT_COLOR,
+                labelFontFamily: "font4"
             },
             animationEnabled: true
         });
