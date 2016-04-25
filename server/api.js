@@ -5,7 +5,6 @@ const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
 const elasticsearch = require('elasticsearch');
-//const Promise = require('promise');
 
 const Firebase = require("firebase");
 const hfpFirebaseRef = new Firebase("https://hfp.firebaseio.com/");
@@ -136,14 +135,16 @@ api.post('/updateDatabase', (req, res) => {
 });
 
 /* 
-	This route will return an object containing 3 things:
-	- a bucket from an aggregation in ES, which is an array of objects or slices
-	- the total amount of all expenses
-	- the total amount of all income.
+    This route will return an object containing 4 things:
+    - a bucket from an aggregation in ES, which is an array of objects or slices.
+    - the total amount of all expenses.
+    - the total amount of all income.
+    - the labels of all drilled down properties.
 	Example: {
 		slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
 		totalCredit,
-		totalDebit
+		totalDebit,
+        labels [ { key: <KeyOfProperty>, level: <LevelOfProperty>, label: <LabelOfProperty> } ]
 	}
 */
 api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
@@ -160,7 +161,6 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     let mustDepartment        = {};
     let mustFinanceKey        = {};
     let aggregator            = aggs[level];
-    //console.log('aggregator: ' + aggregator);
     /*	Checking if we need to change period
         (user asking for whole year or quarter)
         <year>-0: all year
@@ -174,32 +174,12 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const foo = timeProcessor(period);
     const from = foo.from;
     const to = foo.to;
-    //console.log(year);
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
     let undef;
-    let deepest = [ undef, undef ];
     let labels = [];
 
-    // Find the index and keys for deepest drilled properties
-    /*for (let i = fieldValues.length - 2; i >= 0; i--) {
-        if (fieldValues[i] !== 'all') {
-            if (!deepest[0]) {
-                deepest[0] = {
-                    fieldId: i,
-                    key: fieldValues[i]
-                };
-            }
-            labels.push({
-                key: fieldValues[i],
-                level: i,
-                label: aggs[i]
-            });
-        } else if (i === 0 && !deepest[0]) {
-            deepest[0] = -1;
-        }
-    }*/
-
+    // Find the index and keys for drilled properties
     for (let i = 0; i < fieldValues.length - 1; i++) {
         if (fieldValues[i] !== 'all') {
             labels.push({
@@ -211,10 +191,6 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     }
 
     if (fieldValues[fieldValues.length - 1] !== 'all') {
-        /*deepest[1] = {
-            fieldId: fieldValues.length - 1,
-            key: fieldValues[fieldValues.length - 1]
-        };*/
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -314,16 +290,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
             }
         }
     }).then((doc) => {
-        // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
-        /*if (deepest[0] !== -1) {
-            deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
-        } else {
-            deepest[0] = 'Kópavogsbær';
-        }
-        if (deepest[1] !== undefined) {
-            let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
-            deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
-        }*/
+        // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
             labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
         }
@@ -384,7 +351,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalDebit = Math.abs(docum.aggregations.total_amount.value);
-            const respObj = { slices, totalCredit, totalDebit, /*deepest,*/ labels };
+            const respObj = { slices, totalCredit, totalDebit, labels };
             res.status(200).send(respObj);
         }, (err) => {
             console.log(err);
@@ -397,16 +364,17 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
 });
 
 /*
- This route will return an object containing 3 things:
- - a bucket from an aggregation in ES, which is an array of objects or slices
- - the total amount of all expenses
- - the total amount of all income.
- Example: {
- slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
- totalCredit,
- totalDebit,
- deepest: [ <DeepestOne>, <DeepestTwo> ]
- }
+    This route will return an object containing 4 things:
+    - a bucket from an aggregation in ES, which is an array of objects or slices.
+    - the total amount of all expenses.
+    - the total amount of all income.
+    - the labels of all drilled down properties.
+    Example: {
+        slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
+        totalCredit,
+        totalDebit,
+        labels [ { key: <KeyOfProperty>, level: <LevelOfProperty>, label: <LabelOfProperty> } ]
+    }
  */
 api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     let period              = req.params.per;
@@ -425,33 +393,19 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     const from = foo.from;
     const to = foo.to;
 
-    //console.log('departmentID: ' + departmentID);
-    //console.log('financeKeyID: ' + financeKeyID);
-
     const fieldValues = [departmentID, financeKeyID];
     let undef;
-    let deepest = [ undef, undef ];
     let labels = [];
 
-    // Find the index and keys for deepest drilled properties
+    // Find the index and keys for drilled properties
     if (fieldValues[0] !== 'all') {
-        deepest[0] = {
-            fieldId: 3,
-            key: fieldValues[0]
-        };
         labels.push({
             key: fieldValues[0],
             level: 3,
             label: aggs[3]
         });
-    } else {
-        deepest[0] = -1;
     }
     if (fieldValues[fieldValues.length - 1] !== 'all') {
-        deepest[1] = {
-            fieldId: fieldValues.length + 2,
-            key: fieldValues[fieldValues.length - 1]
-        };
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -545,16 +499,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
             }
         }
     }).then((doc) => {
-        // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
-        if (deepest[0] !== -1) {
-            deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
-        } else {
-            deepest[0] = 'Kópavogsbær';
-        }
-        if (deepest[1] !== undefined) {
-            let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
-            deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
-        }
+        // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
             labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
         }
@@ -612,7 +557,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalCredit = docum.aggregations.total_amount.value;
-            const respObj = { slices, totalCredit, totalDebit, deepest, labels };
+            const respObj = { slices, totalCredit, totalDebit, labels };
             //console.log(respObj);
             res.status(200).send(respObj);
         }, (err) => {
@@ -626,15 +571,17 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
 });
 
 /*
- This route will return an object containing 3 things:
- - a bucket from an aggregation in ES, which is an array of objects or slices
- - the total amount of all expenses
- - the total amount of all income.
- Example: {
- slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
- totalCredit,
- totalDebit
- }
+    This route will return an object containing 4 things:
+    - a bucket from an aggregation in ES, which is an array of objects or slices.
+    - the total amount of all expenses.
+    - the total amount of all income.
+    - the labels of all drilled down properties.
+    Example: {
+        slices: [ { key: <FieldToGet>, doc_count: <number>, sum_amount: { value: <number> }} ],
+        totalCredit,
+        totalDebit,
+        labels [ { key: <KeyOfProperty>, level: <LevelOfProperty>, label: <LabelOfProperty> } ]
+    }
  */
 api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     let period              = req.params.per;
@@ -650,7 +597,6 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     let mustDepartment        = {};
     let mustFinanceKey        = {};
     let aggregator            = aggs[level];
-    //console.log('aggregator: ' + aggregator);
     /*	Checking if we need to change period
      (user asking for whole year or quarter)
      <year>-0: all year
@@ -666,33 +612,19 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     const to = foo.to;
 
     const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
-    let undef;
-    let deepest = [ undef, undef ];
     let labels = [];
 
-    // Find the index and keys for deepest drilled properties
-    for (let i = fieldValues.length - 2; i >= 0; i--) {
+    // Find the index and keys for drilled properties
+    for (let i = 0; i < fieldValues.length - 1; i++) {
         if (fieldValues[i] !== 'all') {
-            if (!deepest[0]) {
-                deepest[0] = {
-                    fieldId: i,
-                    key: fieldValues[i]
-                };
-            }
             labels.push({
                 key: fieldValues[i],
                 level: i,
                 label: aggs[i]
             });
-        } else if (i === 0 && !deepest[0]) {
-            deepest[0] = -1;
         }
     }
     if (fieldValues[fieldValues.length - 1] !== 'all') {
-        deepest[1] = {
-            fieldId: fieldValues.length - 1,
-            key: fieldValues[fieldValues.length - 1]
-        };
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -802,16 +734,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             }
         }
     }).then((doc) => {
-        // Find the labels of the deepest drilldown in affair/department AND finance key (if any)
-        if (deepest[0] !== -1) {
-            deepest[0] = doc.hits.hits[0]._source[aggs[deepest[0].fieldId]].substring(deepest[0].key.length + 1);
-        } else {
-            deepest[0] = 'Kópavogsbær';
-        }
-        if (deepest[1] !== undefined) {
-            let fkType = determineTypeOfFinanceKey(deepest[1].key) + "FinanceKey";
-            deepest[1] = doc.hits.hits[0]._source[fkType].substring(deepest[1].key.length + 1);
-        }
+        // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
             labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
         }
@@ -882,7 +805,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalCredit = Math.abs(docum.aggregations.total_amount.value);
-            const respObj = { slices, totalCredit, totalDebit, deepest, labels };
+            const respObj = { slices, totalCredit, totalDebit, labels };
             //console.log(respObj);
             res.status(200).send(respObj);
         }, (err) => {
