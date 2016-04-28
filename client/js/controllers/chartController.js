@@ -113,13 +113,13 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.drawerToggled = false;
     $scope.toggleDrawer = function() {
         $("#wrapper").toggleClass("toggled");
-        $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-filter");
+        $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
         $scope.drawerToggled = !$scope.drawerToggled;
     };
 
     $scope.toggleCalendar = function() {
         $("#hfp-calendar-dropdown").toggleClass("hfp-hidden");
-        $("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-calendar");
+        $("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-time");
     };
 
     $rootScope.toggleInstructions = function () {
