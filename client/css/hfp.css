@@ -172,6 +172,7 @@ h1, h2 {
     border-radius: 0;
     border: 1px solid #dadada;
     font-family: font4;
+    overflow: visible;
 }
 
 #hfp.percentage {
@@ -519,28 +520,11 @@ h1, h2 {
     width: 100%;
 }
 
-/*span.option-selected {
-    left: 30%;
-}*/
-
-@media(max-width:1089px) {
-    .hfp-header {
-        height: 122px;
-    }
-
-    .hfp-chart {
-        height: calc(100% - 122px);
-    }
-
-    .hfp-curr-amount {
-        top: 85px;
-        font-family: "font4";
-    }
-
-    #hfp-calendar-dropdown {
-        top: 195px;
-    }
+span#hfp-percentage {
+    position: relative;
+    top: -19px;
 }
+
 
 /*
     Login window syle below
@@ -983,5 +967,24 @@ header {
 @media(max-width:768px) and (max-height:940px) {
     #miniChartContainer {
         display: none;
+    }
+}
+
+@media(max-width:1089px) {
+    .hfp-header {
+        height: 122px;
+    }
+
+    .hfp-chart {
+        height: calc(100% - 122px);
+    }
+
+    .hfp-curr-amount {
+        top: 85px;
+        font-family: "font4";
+    }
+
+    #hfp-calendar-dropdown {
+        top: 195px;
     }
 }
