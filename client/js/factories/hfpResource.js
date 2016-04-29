@@ -632,7 +632,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     color: "#1b1b1b"
                 },
                 "canvasPadding": {
-                    "top": 50
+                    "top": 20
                 },
                 "pieCenterOffset": {
                     "y": 0

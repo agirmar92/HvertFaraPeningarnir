@@ -159,17 +159,17 @@ h1, h2 {
     background-image: linear-gradient(to bottom, #007339 0%, #007339 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff286090', GradientType=0);
     background-repeat: repeat-x;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 #hfp-progress-bar {
-    height: 26px;
+    height: 34px;
     width: 60%;
     min-width: 220px;
     right: 15px;
     position: absolute;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
     border: 1px solid #dadada;
     font-family: font4;
     overflow: visible;
@@ -218,7 +218,12 @@ h1, h2 {
     position: absolute;
     display: inline;
     right: 15px;
-    top: 68px;
+    -webkit-transform: none;
+    -moz-transform: none;
+    -ms-transform: none;
+    -o-transform: none;
+    transform: none;
+    top: 63px;
     font-family: font4;
 }
 
@@ -980,8 +985,7 @@ header {
     }
 
     .hfp-curr-amount {
-        top: 85px;
-        font-family: "font4";
+        top: 80px;
     }
 
     #hfp-calendar-dropdown {
