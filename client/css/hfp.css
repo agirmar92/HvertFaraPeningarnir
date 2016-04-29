@@ -535,7 +535,7 @@ span#hfp-percentage {
     Login window syle below
 */
 .hfp-login-panel {
-    font-family: font3;
+    font-family: font4;
     max-width: 350px;
     width: 95%;
     max-height: 350px;
@@ -824,7 +824,7 @@ span#hfp-percentage {
 
 .modal-content {
     color: black;
-    font-family: font3;
+    font-family: font4;
 }
 
 .hfp-from-to {
