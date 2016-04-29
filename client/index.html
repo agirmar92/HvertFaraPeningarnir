@@ -153,6 +153,13 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
+    <!--tooltip hover-->
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
     <!-- Alert message-->
     <span ng-controller="alertController"> <uib-alert  class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}"  close="closeAlert($index)" dismiss-on-timeout="5000" >{{alert.msg}}</uib-alert></span>
 

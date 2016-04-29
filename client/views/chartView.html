@@ -5,13 +5,13 @@
             <div role="tab" class="panel-heading">
                 <div class="panel-title">
                     <div id="clear-btn" class="btn-group">
-                        <button type="button" id="clear-filters" class="btn" ng-click="resetApp()" href="javascript: void(0)">
+                        <button data-toggle="tooltip" title="Heim" type="button" id="clear-filters" class="btn" ng-click="resetApp()" href="javascript: void(0)">
                             Upphafsstilla
                         </button>
                     </div>
                     <!--span>Skoða</span-->
                     <div class="btn-group" uib-dropdown>
-                        <button id="type-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                        <button data-toggle="tooltip" title="Skoða gjöld, sameiginlegar tekjur eða sértekjur" id="type-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
                             <span ng-if="type === 'expenses'">Gjöld</span>
                             <span ng-if="type === 'joint-revenue'">Sameiginlegar tekjur</span>
                             <span ng-if="type === 'special-revenue'">Sértekjur</span>
@@ -104,10 +104,10 @@
         <!-- header-buttons -->
         <div class="col-xs-4 hfp-headerbuttons hfp-div">
 
-            <button class="btn btn-default hfp-btn glyphicon glyphicon-menu-hamburger hfp-primary-btn" 		  ng-click="toggleDrawer()"   id="menu-toggle"></button>
-            <button class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn"      ng-click="toggleCalendar()" id="calendar-toggle"></button>
-            <button class="btn btn-default hfp-btn glyphicon glyphicon-download-alt hfp-secondary-btn"  ng-click="changeView()"      id="download-toggle"></button>
-            <button class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleInstructions()" id="instructions-toggle"></button>
+            <button data-toggle="tooltip" title="Hliðarstika" class="btn btn-default hfp-btn glyphicon glyphicon-menu-hamburger hfp-primary-btn" ng-click="toggleDrawer()" id="menu-toggle"></button>
+            <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn" ng-click="toggleCalendar()" id="calendar-toggle"></button>
+            <button data-toggle="tooltip" title="Niðurhal" class="btn btn-default hfp-btn glyphicon glyphicon-download-alt hfp-secondary-btn" ng-click="changeView()" id="download-toggle"></button>
+            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleInstructions()" id="instructions-toggle"></button>
 
             <!-- calendar-dropdown -->
             <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
@@ -167,7 +167,7 @@
         <!-- title -->
         <div class="col-xs-4 hfp-div hfp-title">
             <div ng-click="resetApp()">
-                <a class="header-link" href="javascript: void(0)">
+                <a data-toggle="tooltip" title="Heim" class="header-link" href="javascript: void(0)">
                     <h2 id="main-title">Hvert fara peningarnir?</h2>
                     <h1 id="sub-title"><img src="koplogo.gif" alt="" id="kop-logo">Kópavogsbær</h1>
                 </a>
@@ -177,9 +177,9 @@
 
         <!-- progress-meter -->
         <div class="col-xs-4 hfp-div hfp-meter" id="hfp-progress">
-            <uib-progressbar id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-            <p ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-</p>
-            <p ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
+            <uib-progressbar data-toggle="tooltip" title="Hlutfall af heildarsummu bæjarins" id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
+            <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+            <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
         </div>
         <!-- /#progress-meter -->
 
@@ -231,12 +231,6 @@
         </div>
     </div>
     <!-- /#table-area -->
-
-    <!-- breadcrumb-area -->
-    <!--<div id="hfp-breadcrumb">-->
-        <!--&lt;!&ndash;span id="hfp-label">Þú ert að skoða:</span&ndash;&gt; <span>{{breadcrumb}}</span>-->
-    <!--</div>-->
-    <!-- /#breadcrumb-area -->
 
 </div>
 <!-- /#page-content-wrapper -->
