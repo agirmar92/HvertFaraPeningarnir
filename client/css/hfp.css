@@ -87,6 +87,10 @@ html, body {
     font-size: 16px;
 }
 
+.change-view-toggle {
+    height: 36px;
+}
+
 .hfp-circle {
     border-radius: 50%;
     width: 100%;

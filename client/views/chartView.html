@@ -106,7 +106,8 @@
 
             <button data-toggle="tooltip" title="Hliðarstika" class="btn btn-default hfp-btn glyphicon glyphicon-menu-hamburger hfp-primary-btn" ng-click="toggleDrawer()" id="menu-toggle"></button>
             <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn" ng-click="toggleCalendar()" id="calendar-toggle"></button>
-            <button data-toggle="tooltip" title="Niðurhal" class="btn btn-default hfp-btn glyphicon glyphicon-download-alt hfp-secondary-btn" ng-click="changeView()" id="download-toggle"></button>
+            <button data-toggle="tooltip" title="Töfluform" class="change-view-toggle btn btn-default hfp-btn glyphicon glyphicon-list-alt hfp-secondary-btn" ng-if="pieView" ng-click="changeView()"></button>
+            <button data-toggle="tooltip" title="Kökuform" class="change-view-toggle btn btn-default hfp-btn glyphicon fa fa-pie-chart hfp-secondary-btn" ng-if="!pieView" ng-click="changeView()"></button>
             <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleInstructions()" id="instructions-toggle"></button>
 
             <!-- calendar-dropdown -->
