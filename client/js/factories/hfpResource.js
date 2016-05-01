@@ -298,6 +298,13 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Change view if required
             if (($rootScope.pieView && factory.getSlices().length >= 30) ||
                (!$rootScope.pieView && factory.getSlices().length < 30)) {
+                if ($rootScope.pieView) {
+                    // Notify user that there are too many slices in the cake to show. Switching to table
+                    $rootScope.alerts.push({
+                        type: 'info',
+                        msg: 'Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
+                    });
+                }
                 $rootScope.changeView();
             }
 
