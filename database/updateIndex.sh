@@ -1,4 +1,14 @@
-curl -XPUT    "http://hfpserver.westeurope.cloudapp.azure.com:9200/foo" -d'
+#!/usr/bin/env bash
+
+if [ $# != 3 ]; then
+        echo "Usage: ./updateIndex.sh <elasticsearch_host_ip> <elasticsearch_port> <name_of_index (usually includes the year)>"
+        exit -1
+fi
+
+
+curl -XDELETE "$1:$2/$3"
+
+curl -XPUT    "$1:$2/$3" -d'
 {
     "settings": {
         "number_of_replicas": 0,
@@ -138,47 +148,55 @@ curl -XPUT    "http://hfpserver.westeurope.cloudapp.azure.com:9200/foo" -d'
     "mappings": {
         "doc": {
             "properties": {
-                "Department": {
-                    "type": "string"
-                },
-                "DepartmentID": {
-                    "type": "string"
-                },
-                "Unused1": {
-                    "type": "string"
-                },
-                "FinanceKey": {
-                    "type": "string"
-                },
-                "FinanceKeyID": {
-                    "type": "string"
-                },
-                "Creditor": {
-                    "type": "string"
-                },
-                "Date": {
-                    "type": "string"
-                },
-                "Affair": {
-                    "type": "string"
-                },
-                "Unused2": {
-                    "type": "string"
+            	"Date": {
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
                 "AffairID": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
-                "Unused3": {
-                    "type": "string"
+                "DepartmentID": {
+                    "type": "string",
+                    "index": "not_analyzed"
                 },
-                "Division": {
-                    "type": "string"
-                },
-                "Amount": {
+                "FinanceKeyID": {
                     "type": "integer"
                 },
+                "Amount": {
+                    "type": "long"
+                },
+                "FinanceKey": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
                 "PrimaryFinanceKey": {
-                    "type": "string"
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "SecondaryFinanceKey": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "Department": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "Affair": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "Creditor": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "DepartmentGroup": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "AffairGroup": {
+                    "type": "string",
+                    "index": "not_analyzed"
                 }
             }
         }

@@ -1,4 +1,11 @@
-curl -XPUT    "http://hfp.northeurope.cloudapp.azure.com:9200/hfp" -d'
+#!/usr/bin/env bash
+
+if [ $# != 3 ]; then
+	echo "Usage: ./createIndex.sh <elasticsearch_host_ip> <elasticsearch_port> <name_of_index>"
+	exit -1
+fi
+
+curl -XPUT    "$1:$2/$3" -d'
 {
     "settings": {
         "number_of_replicas": 0,

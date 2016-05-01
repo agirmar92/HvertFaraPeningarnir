@@ -13,27 +13,28 @@ import subprocess
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument("year", help="The year you are going to update.")
+parser.add_argument("--e", dest="encoding", default="utf-16", help="Use if you want to used utf8 encoding when reading from ../results.csv. Default = utf-16")
+parser.add_argument("host", help="Host address of elasticsearch")
+parser.add_argument("port", help="Port of elasticsearch instance")
+parser.add_argument("index", help="The index to update")
 args = parser.parse_args()
 
-user = 'admin'
-year = args.year
+script_args = args.host + ' ' + args.port + ' ' + args.index
 
 # Runs a bash script that deletes and creates a new index in elasticsearch for the year specified by the user
-createIndex = "/bin/bash updateYear.sh " + year
+createIndex = "/bin/bash updateIndex.sh " + script_args
 os.system(createIndex)
 
 es = Elasticsearch(
-	['http://hfp.northeurope.cloudapp.azure.com:9200'],
-	#http_auth=(user, pswd),
-	port=9200,
+	[args.host + ':' + args.port],
+	port=args.port,
 	verify_certs=True,
 	ca_certs=certifi.where(),
 )
 
 # Open the huge csv file and read from it
 rows = []
-with open('../results.csv', encoding='utf-16') as infile:
+with open('../results.csv', encoding=args.encoding) as infile:
 	readr = csv.reader(infile, delimiter=';')
 	for x in readr:
 		rows.append([ y.strip() for y in x ])
@@ -53,13 +54,13 @@ for row in rows[2:-2]:
 # Process dictionaries into ElasticSearch
 for i, doc in enumerate(docs):
 	#print(str(i) + ': ' + str(doc['Amount']))
-	es.index(index='hfp-' + year, doc_type='doc', body=doc)
+	es.index(index=args.index, doc_type='doc', body=doc)
 	if i % 10000 == 0:
 		print('Processing database.. ' + str(i) + ' documents created.')
 print('Finished! ' + str(len(docs)) + ' documents created.')
 
 # Query the database, just for fun
 time.sleep(2)
-res = es.search(index='hfp-' + year, body={"query": {"match_all": {}}})
+res = es.search(index=args.index, body={"query": {"match_all": {}}})
 print("Got %d Hits:" % res['hits']['total'])
 
