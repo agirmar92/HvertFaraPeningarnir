@@ -675,8 +675,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     } else if (lvl === 7) {
                         //console.log('Þú ert kominn niður á botninn.');
                     }
-                    //if (lvl < 7) {    TODO: put back in when creditors are allowed
-                    if (lvl < 6) {
+                    if (lvl < 7) {
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
                         var typ = factory.getType();

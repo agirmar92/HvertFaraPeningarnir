@@ -309,7 +309,7 @@ describe("TabsController > ", function() {
         });
 
         // Predicate: (option === 6) to true
-        /*it("should select a chosen finance key", function() { TODO: put back in when creditors are allowed
+        it("should select a chosen finance key", function() {
             var optionId = 6;
             var choiceId = 0;
 
@@ -331,6 +331,6 @@ describe("TabsController > ", function() {
             expect(rootScope.options[optionId].choices[choiceId].chosen).toBe(false);
             expect(rootScope.type).toEqual('expenses');
             expect(location.path()).toEqual("/expenses/2014-0/7/n/n/n/n/000");
-        });*/
+        });
     });
 });

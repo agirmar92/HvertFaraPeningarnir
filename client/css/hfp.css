@@ -486,7 +486,7 @@ h1, h2 {
     right: 7%;
     top: 10.5px;
 }
-.option:hover, .option-choices:hover, g:hover {
+.option-header:hover, .option-choices.clickable:hover, g:hover {
     cursor: pointer;
 }
 
