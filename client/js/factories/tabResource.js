@@ -47,13 +47,12 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
     };
 
     /*
-    *       TODO: I think this is unused. Check it out.
+    *       Toggles the clicked option in sidebar
     * */
     factory.optionClicked = function(optionId) {
         factory.toggleOption(optionId);
 
         if ($rootScope.options[optionId].currChoice !== -1) {
-            //$rootScope.options[optionId].choices[$rootScope.options[optionId].currChoice].chosen = false;
             $rootScope.options[optionId].currChoice = -1;
         }
     };

@@ -18,7 +18,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var choices = [];
     var totalCredit = 0;
     var totalDebit = 0;
-    var totalC = 32321545934;       // TODO: Put to 0 when API returns total credit and debit
+    var totalC = 32321545934;
     var totalD = 18529125975;
     var totalS = 11089287535;
     var currYear = 2014;
@@ -315,9 +315,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             var year = factory.getPeriod().substring(0,4);
             if (factory.getCurrYear() !== year) {
                 factory.setCurrYear(year);
-                /*factory.setTotalC(0);         TODO: Remove comments when total credit/debit is fixed
-                factory.setTotalD(0);
-                factory.setTotalS(0);*/
             }
 
             // Change the deepest properties for breadcrumbs
