@@ -29,12 +29,3 @@ app.listen(port, () => {
 	console.log('Server is on port', port);
 });
 
-/* Connect to MongoDB
-mongoose.connect('localhost/clipper');
-mongoose.connection.once('open', function() {
-	console.log('mongoose is connected');
-	app.listen(port, () => {
-		console.log('Server is on port', port);
-	});
-});
-*/
