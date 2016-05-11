@@ -65,8 +65,3 @@ hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
 		return original.apply($location, [path]);
 	};
 });
-
-/*$(window).resize((_.debounce)=>
-pie.options.canva.width = $('#pie-chart').width()
-pie.redraw()
-	, 500));*/

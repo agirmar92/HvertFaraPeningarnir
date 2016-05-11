@@ -54,7 +54,6 @@ hfpApp.controller('adminPanelController', function ($scope, $uibModal, $log, $ht
 
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
-
 hfpApp.controller('modalInstanceController', function ($scope, $uibModalInstance, items, YEARS) {
 
     $scope.years = YEARS;
@@ -76,16 +75,4 @@ hfpApp.controller('modalInstanceController', function ($scope, $uibModalInstance
     $scope.selectYear = function(year) {
         $scope.updateObject.selectedYear = year;
     };
-
-    /*$scope.selectYearTo = function(year) {
-        $scope.updateObject.selectedYearTo = year;
-    };
-
-    $scope.selectMonthFrom = function(month) {
-        $scope.updateObject.selectedMonthFrom = month;
-    };
-
-    $scope.selectMonthTo = function(month) {
-        $scope.updateObject.selectedMonthTo = month;
-    };*/
 });

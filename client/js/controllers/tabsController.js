@@ -104,8 +104,8 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     *       Either makes the choice chosen, or un-chosen (if it already is).
     * */
     $scope.choiceClicked = function(option, choice) {
+        // If user is at the deepest level
         if (option === 7) {
-            console.log("creditor selected, doing nothing.");
             return;
         }
 
@@ -122,6 +122,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
             // Drill down
             newFieldValue = $rootScope.options[option].choices[choice].key;
 
+            // Find the next level to expand
             while (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) {
                 nextLevel++;
             }

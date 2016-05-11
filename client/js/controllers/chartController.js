@@ -97,10 +97,9 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.max = 100;
 
     // If there are any route params we should parse them
-    //console.log(Object.keys($routeParams).length);
     hfpResource.parseRouteParams($location.path().split('/'));
     hfpResource.showMeTheMoney(true).then(function() {
-        //console.log("Initial data fetched");
+        console.log("Initial data fetched");
     });
 
     /*
@@ -161,7 +160,6 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         } else {
             $scope.divider = hfpResource.getTotalDebit();
             net = hfpResource.toNr($scope.divider) - hfpResource.getTotalCredit();
-            //console.log(net);
             $scope.netto = hfpResource.toNrWithDots(net);
             $scope.nettoPerc = (net / hfpResource.toNr($scope.divider) * 100).toFixed(1);
         }
@@ -180,10 +178,9 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         // Set height and width variables appropriately to the changes
         hfpResource.setPieHeight($('#hfpPie').height());
         hfpResource.setPieWidth($('#hfpPie').width());
-        hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
+        hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));s
 
         // Modify the chart's settings and redraw
-        //console.log($rootScope.pie);
         $rootScope.pie.options.size.canvasWidth = hfpResource.getPieWidth();
         $rootScope.pie.options.size.canvasHeight = hfpResource.getPieHeight();
         $rootScope.pie.options.size.pieOuterRadius = hfpResource.getPieRadius();

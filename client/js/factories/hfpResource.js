@@ -25,7 +25,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var dynamic = 100;
     var clickedSlice = "";
     var clickedSliceLabel = "";
-    var deepest = "";
     var affairGroup = "all";
     var affair = "all";
     var departmentGroup = "all";
@@ -84,9 +83,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getClickedSliceLabel = function() {
         return clickedSliceLabel;
-    };
-    factory.getDeepest = function() {
-        return deepest;
     };
     factory.getAffairGroup = function() {
         return affairGroup;
@@ -175,9 +171,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.setClickedSliceLabel = function(newclickedSliceLabel) {
         clickedSliceLabel = newclickedSliceLabel;
     };
-    factory.setDeepest = function(newDeepest) {
-        deepest = newDeepest;
-    };
     factory.setAffairGroup = function(newAffairGroup) {
         affairGroup = newAffairGroup;
     };
@@ -231,7 +224,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }).success(function (response) {
             // If this is the first fetching money, set the filters like they should be and set the initial size of the chart
             if (firstTime) {
-                console.log("First time: filling filters");
                 setFilters(response.labels);
                 factory.setPieHeight($('#hfpPie').height());
                 factory.setPieWidth($('#hfpPie').width());
@@ -295,7 +287,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             factory.setSlices(newSlices);
             factory.setChoices(newChoices);
 
-            // Change view if required
+            // Change view if required (too many slices)
             if (($rootScope.pieView && factory.getSlices().length >= 30) ||
                (!$rootScope.pieView && factory.getSlices().length < 30)) {
                 if ($rootScope.pieView) {
@@ -317,15 +309,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 factory.setCurrYear(year);
             }
 
-            // Change the deepest properties for breadcrumbs
-            factory.setDeepest(response.deepest);
+            // Change the path properties for breadcrumbs
             factory.setPathLabels(response.labels);
-
-
-            /* Check if totalYearAmount should be changed
-            if (factory.getPeriod().substring(0,4) === factory.getPeriod().substring(0,4)) {
-                factory.setTotalC(factory.getTotalCredit());
-            }*/
 
             // Updating bar chart data
             $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
@@ -414,9 +399,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Goes through the route parameters and sets the state of the app
     * */
     factory.parseRouteParams = function(params) {
-
-        //console.log("parsing");
-
         for (var param in params) {
             var typ = factory.getType();
             var value = params[param];
@@ -432,7 +414,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     tabResource.toggleOption(value);
                 }
             }
-            //console.log(param + ": " + value);
             factory['set' + param](value);
         }
     };
@@ -501,20 +482,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
 
     /*
-        Returns deepest labels for breadcrumbs
-     */
-    factory.deepest = function(label) {
-        var lvl = parseInt(factory.getLevel());
-        if (lvl === 0 || (lvl === 3 && factory.getType() === 'joint-revenue')) {
-            return 'Kópavogsbær';
-        } else if (lvl < 5) {
-            return factory.getClickedSliceLabel();
-        } else {
-            return factory.getDeepest() + ', ' + factory.getClickedSliceLabel();
-        }
-    };
-
-    /*
         Returns a time period in human form
      */
     factory.tDate = function () {
@@ -534,13 +501,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
 
     /*
-        Updates the breadcrumbs
-     */
-    factory.updateBreadcrumbs = function () {
-        $rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.deepest();
-    };
-
-    /*
      *       Private methods
      * */
 
@@ -553,10 +513,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
         $rootScope.type = factory.getType();
-        //$rootScope.breadcrumb = factory.translate() + ', ' + factory.tDate() + ', ' + factory.getDeepest()[0];
-        /*if (factory.getDeepest()[1]) {
-            $rootScope.breadcrumb += ', ' + factory.getDeepest()[1];
-        }*/
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
@@ -572,15 +528,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         // Recreate the pie chart
         $rootScope.pie.destroy();
         $rootScope.pie = new d3pie("mypie", {
-            /*header: {
-                title: {
-                    text: "Derka",
-                    color: CHART_TEXT_COLOR,
-                    font: "font4",
-                    fontSize: 24
-                },
-                location: "pie-center"
-            },*/
             "header": {
                 "title": {
                     "text": factory.translate() + ", " + factory.tDate(),
@@ -631,7 +578,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     segmentStroke: "null"
                 },
                 gradient: {
-                    //enabled: "true",
                     percentage: 99,
                     color: "#1b1b1b"
                 },
@@ -657,7 +603,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     var id = a.data.key;
                     var key;
                     var lvl = factory.getLevel();
-                    //console.log("lvl: " + lvl);
+                    // Finding position to cut off label
                     if (parseInt(lvl) === 0) {
                         key = 0;
                     } else if (lvl === 1) {
@@ -665,13 +611,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     } else if (lvl === 2) {
                         key = 2;
                     } else if (lvl === 3) {
-                        factory.setDeepest(a.data.label);
                         key = 3;
                     } else if (lvl > 3 && lvl < 7) {
                         key = 4;
-                    } else if (lvl === 7) {
-                        //console.log('Þú ert kominn niður á botninn.');
                     }
+
                     if (lvl < 7) {
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
@@ -694,14 +638,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
                         newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
-                        //tabResource.choiceClicked(option, eqChoice.choiceId);
-
                         // Change the path
                         $rootScope.$apply(function(){
                             $location.path(newPathPrefix, false, tabResource.choiceClicked, option, eqChoice.choiceId, nextLevel);
                         });
-
-                        factory.updateBreadcrumbs();
                     }
                 }
             },
