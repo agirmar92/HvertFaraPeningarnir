@@ -264,39 +264,7 @@ describe('Tests for expenses default pie', () => {
         expect(terms.labels[0]).to.be.an('undefined');
         done();
     });
-
-    // http://hfp.northeurope.cloudapp.azure.com/#/expenses/test-0/1/3/n/n/n/n
-    /*
-     it('GET amount in first slice (LAYER 1 - Menntamál)', (done) => {
-     request(apiUrl).get('/expenses/test-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
-     var terms = JSON.parse(res.text);
-     // Fræðslumál
-     var check = terms.slices[0].sum_amount.value;
-     expect(check).to.equal(11644921719);
-     done();
-     });
-     });
-
-     it('GET amount in second slice (LAYER 1 - Menntamál)', (done) => {
-     request(apiUrl).get('/expenses/test-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
-     var terms = JSON.parse(res.text);
-     // Æskulýðs- og íþróttamál
-     var check = terms.slices[1].sum_amount.value;
-     expect(check).to.equal(3966219349);
-     done();
-     });
-     });
-
-     it('GET amount in third slice (LAYER 1 - Menntamál)', (done) => {
-     request(apiUrl).get('/expenses/test-0/1/3/all/all/all/all').expect(200).end(function(err, res) {
-     var terms = JSON.parse(res.text);
-     // Byggingarsjóður MK
-     var check = terms.slices[2].sum_amount.value;
-     expect(check).to.equal(69738894);
-     done();
-     });
-     });
-     */
+    
 });
 
 describe('Tests for expenses, finance key pie', () => {

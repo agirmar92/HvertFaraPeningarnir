@@ -120,11 +120,6 @@ api.post('/updateDatabase', (req, res) => {
             request.get(
                 requestURL,
                 (error, response) => {
-                    /*if (error)
-                        console.log('got error: ' + error);
-                    if (response)
-                        console.log('got response: ' + response);*/
-                    // TODO: Maybe check whether jenkins agreed? Fix the allow-origin jenkins stuff
                     responseObject.updateUnderway = true;
                     responseObject.msg = "All good";
                     res.status(202).send(responseObject);
