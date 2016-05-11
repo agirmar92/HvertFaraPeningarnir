@@ -178,7 +178,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         // Set height and width variables appropriately to the changes
         hfpResource.setPieHeight($('#hfpPie').height());
         hfpResource.setPieWidth($('#hfpPie').width());
-        hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));s
+        hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
 
         // Modify the chart's settings and redraw
         $rootScope.pie.options.size.canvasWidth = hfpResource.getPieWidth();
