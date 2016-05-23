@@ -434,6 +434,13 @@ h1, h2 {
     transform: translate(-50%, -50%) rotate(45deg);
 }
 
+i.fa.fa-eye {
+    position: absolute;
+    top: 8px;
+    font-size: 30px;
+    left: 10%;
+}
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -447,6 +454,9 @@ h1, h2 {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
     -webkit-transition: 400ms all ease-out;
+    -moz-transition: 400ms all ease-out;
+    -ms-transition: 400ms all ease-out;
+    -o-transition: 400ms all ease-out;
     transition: 400ms all ease-out;
 }
 

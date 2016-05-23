@@ -513,6 +513,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.totalDebit = factory.getTotalDebit();
         $rootScope.dynamic = factory.getDynamic();
         $rootScope.type = factory.getType();
+        $rootScope.currentLevel = factory.getLevel();
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
