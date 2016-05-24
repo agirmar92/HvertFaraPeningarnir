@@ -29,9 +29,9 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver.find_element_by_xpath("//div[@id='option0']/div[2]/span").click()
         time.sleep(1)
 
-        # Slice "Menntamál" clicked in pie 
+        # Slice "Menntamál" clicked in pie
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/1/3/n/n/n/n", driver.current_url)
-        self.assertEqual("48.5%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("54.6%", driver.find_element_by_id("hfp-percentage").text)
         self.assertEqual(u"Menntamál", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         # Slice "Æskulýðs- og íþróttamál" clicked in pie
         driver.find_element_by_css_selector("[id*=_segment1]").click()
@@ -132,7 +132,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         time.sleep(1)
         self.assertEqual(u"Gjöld, 2014 - febrúar", driver.find_element_by_css_selector("[id*=_title]").text)
         self.assertEqual("http://localhost:8000/#/expenses/2014-02/0/n/n/n/n/n", driver.current_url)
-        self.assertEqual("7.4%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("8.2%", driver.find_element_by_id("hfp-percentage").text)
         # Select third quarter
         driver.find_element_by_id("quarter-dropdown").click()
         driver.find_element_by_link_text(u"þriðji").click()
@@ -217,12 +217,12 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         try: self.driver.find_element(by=how, value=what)
         except NoSuchElementException as e: return False
         return True
-    
+
     def is_alert_present(self):
         try: self.driver.switch_to_alert()
         except NoAlertPresentException as e: return False
         return True
-    
+
     def close_alert_and_get_its_text(self):
         try:
             alert = self.driver.switch_to_alert()
@@ -233,7 +233,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
                 alert.dismiss()
             return alert_text
         finally: self.accept_next_alert = True
-    
+
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
