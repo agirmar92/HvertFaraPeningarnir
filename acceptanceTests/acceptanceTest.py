@@ -62,7 +62,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver.find_element_by_css_selector("[id*=_segmentMainLabel2-outer]").click()
         time.sleep(1)
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/6/3/06/063/n/2500", driver.current_url)
-        self.assertEqual("kr. 2.035.366.-", driver.find_element_by_xpath("//div[@id='hfp-progress']/p").text)
+        self.assertEqual("kr. 1.492.291.-", driver.find_element_by_xpath("//div[@id='hfp-progress']/p").text)
         self.assertEqual(u"Menntamál > Æskulýðs- og íþróttamál > Félagsmiðstöðvar > Vörukaup > Orka", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         # Make sure slices "Rafmagn" and "Heitt vatn" are present and no third slice
         self.assertTrue(self.is_element_present(By.CSS_SELECTOR, "[id*=_segment0]"))
@@ -171,7 +171,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         # Click on slice "Vörukaup" in sidebar
         driver.find_element_by_xpath("//div[@id='option4']/div[6]/span").click()
         time.sleep(1)
-        self.assertEqual("4.5%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("5.0%", driver.find_element_by_id("hfp-percentage").text)
         self.assertEqual(u"Vörukaup", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/5/n/n/n/n/2000", driver.current_url)
         # Click on slice "Önnur vörukaup" in pe
