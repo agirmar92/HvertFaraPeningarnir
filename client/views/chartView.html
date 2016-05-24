@@ -37,6 +37,7 @@
             </div>
             <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index < 4">
                 <div class="option-header header{{option.optionId}}">
+                    <i class="fa fa-eye option-eye{{option.optionId}}" aria-hidden="true" ng-if="option.optionId === currentLevel"></i>
                     <span id="option-text1" ng-click="optionClicked(option.optionId)">{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true" ng-click="optionClicked(option.optionId)"></span>
                 </div>
@@ -56,6 +57,7 @@
             </div>
             <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index > 3 && $index < 7">
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
+                    <i class="fa fa-eye option-eye{{option.optionId}}" aria-hidden="true" ng-if="option.optionId === currentLevel"></i>
                     <span id="option-text2">{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
                 </div>
@@ -75,6 +77,7 @@
             </div>
             <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index > 6">
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
+                    <i class="fa fa-eye option-eye{{option.optionId}}" aria-hidden="true" ng-if="option.optionId === currentLevel"></i>
                     <span id="option-text3">{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
                 </div>
@@ -126,6 +129,22 @@
 
                 <div class="calendar-row row">
                     <div class="col-xs-12">
+                        <span>Ársfjórðungur: </span>
+                        <div class="btn-group" uib-dropdown>
+                            <button id="quarter-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
+                                {{selectedQuarter}} <span class="caret"></span>
+                            </button>
+                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
+                                <li role="menuitem" ng-repeat="quarter in quarters">
+                                    <a href="javascript:void(0)" ng-click="setQuarter(quarter)">{{quarter}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-row row">
+                    <div class="col-xs-12">
                         <span>Mánuður: </span>
                         <div class="btn-group" uib-dropdown>
                             <button id="month-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
@@ -140,21 +159,6 @@
                     </div>
                 </div>
 
-                <div class="calendar-row row">
-                    <div class="col-xs-12">
-                        <span>Ársfjórðungur: </span>
-                        <div class="btn-group" uib-dropdown>
-                            <button id="quarter-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
-                                {{selectedQuarter}} <span class="caret"></span>
-                            </button>
-                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
-                                <li role="menuitem" ng-repeat="quarter in quarters">
-                                    <a href="javascript:void(0)" ng-click="setQuarter(quarter)">{{quarter}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- /#calendar-dropdown -->
         </div>

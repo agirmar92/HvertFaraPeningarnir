@@ -1,8 +1,9 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, $location, hfpResource, tabResource, LEVELS, INITIAL_VALUES) {
+hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope, $location, hfpResource, tabResource) {
     $rootScope.type = 'expenses';
+    $rootScope.currentLevel = 0;
     $rootScope.expandedOption = 0;
     $rootScope.options = [
         {
