@@ -55,7 +55,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver.find_element_by_xpath("//div[@id='option4']/div[4]/span").click()
         time.sleep(1)
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/5/3/06/063/n/2000", driver.current_url)
-        self.assertEqual("kr. 10.081.255.-", driver.find_element_by_xpath("//div[@id='hfp-progress']/p").text)
+        self.assertEqual("kr. 7.955.093.-", driver.find_element_by_xpath("//div[@id='hfp-progress']/p").text)
         self.assertEqual(u"Menntamál > Æskulýðs- og íþróttamál > Félagsmiðstöðvar > Vörukaup", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         # Slice "Orka" clicked in pie (click on the label)
         driver.find_element_by_id("menu-toggle").click()
@@ -153,7 +153,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         # Click slice "Velferðarmál" in sidebar
         driver.find_element_by_xpath("//div[@id='option0']/div[4]/span").click()
         time.sleep(1)
-        self.assertEqual("9.8%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("11.0%", driver.find_element_by_id("hfp-percentage").text)
         self.assertEqual(u"Velferðarmál", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/1/6/n/n/n/n", driver.current_url)
         # Click the same slice again
