@@ -43,7 +43,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                         }
                     } else if (e.entries[0].dataPoint.label === 'Inn') {
                         if (hfpResource.getType() === 'expenses') {
-                            post = '<br>(Sértekjur, leiðréttingar og millifærslur)';
+                            post = ' (Sértekjur)';
                         } else {
                             post = ' (Kakan)';
                         }

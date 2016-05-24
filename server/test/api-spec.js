@@ -177,15 +177,6 @@ describe('Tests for breadcrumbs labels', () => {
         });
     });
 
-    it('should return Kópavogsbær and Tekjur', (done) => {
-        request(apinn.api).get('/expenses/test-0/0/all/all/all/all/0000').expect(200).end(function(err,res) {
-            terms = JSON.parse(res.text);
-            expect(terms.labels[0].label).to.equal('Tekjur');
-            expect(terms.labels[1]).to.be.an('undefined');
-            done();
-        });
-    });
-
     it('should return Velferðarmál and undefined', (done) => {
         request(apinn.api).get('/expenses/test-0/1/6/all/all/all/all').expect(200).end(function(err,res) {
             terms = JSON.parse(res.text);
@@ -240,23 +231,23 @@ describe('Tests for expenses default pie', () => {
     });
 
     it('should give the correct amounts for the pie', (done) => {
-        expect(terms.slices[0].sum_amount.value).to.equal(15680879962);
-        expect(terms.slices[1].sum_amount.value).to.equal(8734423653);
-        expect(terms.slices[2].sum_amount.value).to.equal(3156000085);
-        expect(terms.slices[3].sum_amount.value).to.equal(2989462505);
-        expect(terms.slices[4].sum_amount.value).to.equal(648354559);
+        expect(terms.slices[0].sum_amount.value).to.equal(15552774360);
+        expect(terms.slices[1].sum_amount.value).to.equal(5309563342);
+        expect(terms.slices[2].sum_amount.value).to.equal(3126896273);
+        expect(terms.slices[3].sum_amount.value).to.equal(2755185090);
+        expect(terms.slices[4].sum_amount.value).to.equal(624077624);
         expect(terms.slices[5].sum_amount.value).to.equal(588394000);
-        expect(terms.slices[6].sum_amount.value).to.equal(524031170);
+        expect(terms.slices[6].sum_amount.value).to.equal(503524452);
         done()
     });
 
     it('should give the correct amount for total credit', (done) => {
-        expect(terms.totalCredit).to.equal(32321545934);
+        expect(terms.totalCredit).to.equal(28460415141);
         done();
     });
 
     it('should give the correct amount for total debit', (done) => {
-        expect(terms.totalDebit).to.equal(14922044086);
+        expect(terms.totalDebit).to.equal(11060913293);
         done();
     });
 
@@ -264,7 +255,7 @@ describe('Tests for expenses default pie', () => {
         expect(terms.labels[0]).to.be.an('undefined');
         done();
     });
-    
+
 });
 
 describe('Tests for expenses, finance key pie', () => {
@@ -279,19 +270,19 @@ describe('Tests for expenses, finance key pie', () => {
     });
 
     it('should give the correct amounts for the pie', (done) => {
-        expect(terms.slices[0].sum_amount.value).to.equal(28338205);
+        expect(terms.slices[0].sum_amount.value).to.equal(15387631);
         expect(terms.slices[1].sum_amount.value).to.equal(1514663);
         expect(terms.slices[2].sum_amount.value).to.equal(5200);
         done()
     });
 
     it('should give the correct amount for total credit', (done) => {
-        expect(terms.totalCredit).to.equal(29858068);
+        expect(terms.totalCredit).to.equal(16907494);
         done();
     });
 
     it('should give the correct amount for total debit', (done) => {
-        expect(terms.totalDebit).to.equal(12950574);
+        expect(terms.totalDebit).to.equal(0);
         done();
     });
 
@@ -322,18 +313,18 @@ describe('Tests for expenses, secondary finance key pie', () => {
         expect(terms.slices[0].sum_amount.value).to.equal(2380891);
         expect(terms.slices[1].sum_amount.value).to.equal(642563);
         expect(terms.slices[2].sum_amount.value).to.equal(453585);
-        expect(terms.slices[3].sum_amount.value).to.equal(98801);
+        expect(terms.slices[3].sum_amount.value).to.equal(66821);
         expect(terms.slices[4].sum_amount.value).to.equal(1381);
         done()
     });
 
     it('should give the correct amount for total credit', (done) => {
-        expect(terms.totalCredit).to.equal(3577221);
+        expect(terms.totalCredit).to.equal(3545241);
         done();
     });
 
     it('should give the correct amount for total debit', (done) => {
-        expect(terms.totalDebit).to.equal(31980);
+        expect(terms.totalDebit).to.equal(0);
         done();
     });
 
@@ -361,21 +352,21 @@ describe('Tests for expenses, primary finance key pie', () => {
     });
 
     it('should give the correct amounts for the pie', (done) => {
-        expect(terms.slices[0].sum_amount.value).to.equal(31494882);
-        expect(terms.slices[1].sum_amount.value).to.equal(15165738);
-        expect(terms.slices[2].sum_amount.value).to.equal(7660118);
-        expect(terms.slices[3].sum_amount.value).to.equal(6702436);
-        expect(terms.slices[4].sum_amount.value).to.equal(3010917);
+        expect(terms.slices[0].sum_amount.value).to.equal(31436910);
+        expect(terms.slices[1].sum_amount.value).to.equal(14151290);
+        expect(terms.slices[2].sum_amount.value).to.equal(7516697);
+        expect(terms.slices[3].sum_amount.value).to.equal(6537156);
+        expect(terms.slices[4].sum_amount.value).to.equal(3003143);
         done()
     });
 
     it('should give the correct amount for total credit', (done) => {
-        expect(terms.totalCredit).to.equal(64034091);
+        expect(terms.totalCredit).to.equal(62645196);
         done();
     });
 
     it('should give the correct amount for total debit', (done) => {
-        expect(terms.totalDebit).to.equal(1388895);
+        expect(terms.totalDebit).to.equal(0);
         done();
     });
 
