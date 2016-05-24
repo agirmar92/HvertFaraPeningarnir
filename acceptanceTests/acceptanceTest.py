@@ -177,7 +177,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         # Click on slice "Önnur vörukaup" in pe
         driver.find_element_by_css_selector("[id*=_segment2]").click()
         time.sleep(1)
-        self.assertEqual("1.0%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("1.1%", driver.find_element_by_id("hfp-percentage").text)
         self.assertEqual(u"Vörukaup > Önnur vörukaup", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/6/n/n/n/n/2900", driver.current_url)
         # Click on "Upphafsstilla" to reset the app
