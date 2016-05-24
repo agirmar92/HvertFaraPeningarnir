@@ -37,7 +37,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver.find_element_by_css_selector("[id*=_segment1]").click()
         time.sleep(1)
         self.assertEqual("http://localhost:8000/#/expenses/2014-0/2/3/06/n/n/n", driver.current_url)
-        self.assertEqual("12.3%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("13.7%", driver.find_element_by_id("hfp-percentage").text)
         self.assertEqual(u"Menntamál > Æskulýðs- og íþróttamál", driver.find_element_by_css_selector("[id*=_subtitle]").text)
         # Slice "Félagsmiðstöðvar" clicked in sidebar
         driver.find_element_by_xpath("//div[@id='option2']/div[6]/span").click()
@@ -139,7 +139,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         time.sleep(1)
         self.assertEqual(u"Gjöld, 2014 - þriðji ársfjórðungur", driver.find_element_by_css_selector("[id*=_title]").text)
         self.assertEqual("http://localhost:8000/#/expenses/2014-3/0/n/n/n/n/n", driver.current_url)
-        self.assertEqual("21.2%", driver.find_element_by_id("hfp-percentage").text)
+        self.assertEqual("22.7%", driver.find_element_by_id("hfp-percentage").text)
         self.assertEqual("veldu", driver.find_element_by_id("month-dropdown").text)
         # Click on logo (go home)
         driver.find_element_by_id("main-title").click()
