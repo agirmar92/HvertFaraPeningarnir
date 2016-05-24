@@ -44,7 +44,7 @@ hfpApp.config(['$routeProvider',
 *		Addition to be able to prevent reload of page when URL changes
 * */
 hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
-	console.log($location.path());
+	//console.log($location.path());
 	var original = $location.path;
 	$location.path = function (path, reload, callback, option, choice, nextLevel) {
 		if (reload === false) {

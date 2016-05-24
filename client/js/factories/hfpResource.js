@@ -216,7 +216,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         } else {
             queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
         }
-        
+
         $http({
             // Fetch the data
             method: 'GET',
@@ -229,7 +229,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 factory.setPieWidth($('#hfpPie').width());
                 factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
             }
-            
+
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
@@ -316,14 +316,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.chart.options.data[0].dataPoints[0].y = factory.getTotalCredit();
             $rootScope.chart.options.data[0].dataPoints[1].y = factory.getTotalDebit();
 
-            // Update percentage bar and total amounts for whole year if needed
+            // Update percentage bar and total amounts for whole year
             if (factory.getType() === 'expenses') {
                 // Expenses
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalCredit() - factory.getTotalDebit();
-                // Change total credit for whole year if needed
-                if (factory.getTotalC() === 0) {
-                    factory.setTotalC(factory.getTotalCredit());
-                }
+                // Change total credit for whole year
+                factory.setTotalC(response.totalYear);
                 // Change the percentage number
                 factory.setDynamic((factory.getTotalCredit() / factory.getTotalC() * 100).toFixed(1));
 
@@ -333,16 +331,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 $rootScope.chart.options.data[0].dataPoints[2].y = factory.getTotalDebit() - factory.getTotalCredit();
                 // Change the percentage number
                 if (factory.getType() === 'joint-revenue') {
-                    // Change total joint revenue for whole year if needed
-                    if (factory.getTotalD() === 0) {
-                        factory.setTotalD(factory.getTotalDebit());
-                    }
+                    // Change total joint revenue for whole year
+                    factory.setTotalD(response.totalYear);
                     factory.setDynamic((factory.getTotalDebit() / factory.getTotalD() * 100).toFixed(1));
                 } else {
-                    // Change total special revenue for whole year if needed
-                    if (factory.getTotalS() === 0) {
-                        factory.setTotalS(factory.getTotalDebit());
-                    }
+                    // Change total special revenue for whole year
+                    factory.setTotalS(response.totalYear);
                     factory.setDynamic((factory.getTotalDebit() / factory.getTotalS() * 100).toFixed(1));
                 }
                 // Change total debit to have dots every three digits

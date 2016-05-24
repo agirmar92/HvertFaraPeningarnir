@@ -99,7 +99,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     // If there are any route params we should parse them
     hfpResource.parseRouteParams($location.path().split('/'));
     hfpResource.showMeTheMoney(true).then(function() {
-        console.log("Initial data fetched");
+        //console.log("Initial data fetched");
     });
 
     /*
@@ -137,16 +137,16 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.pieView = true;
 
     /*
-    *   Changes the view from pie to table or table to pie. 
+    *   Changes the view from pie to table or table to pie.
     */
     $rootScope.changeView = function () {
         $rootScope.pieView = !$rootScope.pieView;
         $("#mypie").toggleClass("hfp-hidden");
         $("#table").toggleClass("hfp-hidden");
     };
-    
+
     /*
-    *   Updates the table view. 
+    *   Updates the table view.
     */
     $rootScope.updateTable = function () {
         $scope.slices = hfpResource.getSlices();

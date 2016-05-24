@@ -129,7 +129,7 @@ api.post('/updateDatabase', (req, res) => {
     });
 });
 
-/* 
+/*
     This route will return an object containing 4 things:
     - a bucket from an aggregation in ES, which is an array of objects or slices.
     - the total amount of all expenses.
@@ -143,7 +143,7 @@ api.post('/updateDatabase', (req, res) => {
 	}
 */
 api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
-    let period              = req.params.per;
+    let period                = req.params.per;
     const level               = req.params.lvl;
     const affairGroupID       = req.params.agroup;
     const affairID            = req.params.aff;
@@ -230,15 +230,6 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
             "query": {
                 "bool": {
                     "must": [
-                        {   // Only expenses
-                            "filtered": {
-                                "filter": {
-                                    "range": {
-                                        "Amount": {"gt": 0}
-                                    }
-                                }
-                            }
-                        },
                         {   // Desired period
                             "filtered": {
                                 "filter": {
@@ -256,6 +247,15 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                                 "filter": {
                                     "range": {
                                         "AffairID": {"gt": "01"}
+                                    }
+                                }
+                            }
+                        },
+                        {   // All expenses
+                            "filtered": {
+                                "filter": {
+                                    "range": {
+                                        "PrimaryFinanceKey": { "gt": "0999" }
                                     }
                                 }
                             }
@@ -300,11 +300,11 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                 "query": {
                     "bool": {
                         "must": [
-                            {
+                            {   // All income
                                 "filtered": {
                                     "filter": {
                                         "range": {
-                                            "Amount": {"lt": 0}
+                                            "PrimaryFinanceKey": { "lt": "1000" }
                                         }
                                     }
                                 }
@@ -346,8 +346,60 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalDebit = Math.abs(docum.aggregations.total_amount.value);
-            const respObj = { slices, totalCredit, totalDebit, labels };
-            res.status(200).send(respObj);
+            elasticClient.search({
+                index: ind,
+                body: {
+                    "query": {
+                        "bool": {
+                            "must": [
+                                {   // Desired period
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "Date": {
+                                                    "from": year + "-01",
+                                                    "to": year + "-13"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // Exclude "Tekjur" Affair
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "AffairID": {"gt": "01"}
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // All expenses
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "PrimaryFinanceKey": { "gt": "0999" }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "size": 0,
+                    // Aggregate the total sums of Affairs and total expenses
+                    "aggs" : {
+                        "total_year": { "sum": { "field": "Amount" } }
+                    }
+                }
+            }).then((docume) => {
+                const totalYear = docume.aggregations.total_year.value;
+                const respObj = { slices, totalCredit, totalDebit, totalYear, labels };
+                //console.log(respObj);
+                res.status(200).send(respObj);
+            }, (err) => {
+                console.log(err);
+                res.status(500).send('Server error\n');
+            });
         }, (err) => {
             console.log(err);
             res.status(500).send('Server error\n');
@@ -440,9 +492,10 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
         }
     }
 
+    const ind = 'hfp-' + year;
     // Query the database for all incomes
     elasticClient.search({
-        index: 'hfp-' + year,
+        index: ind,
         body: {
             "query": {
                 "bool": {
@@ -507,7 +560,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
         const totalDebit = Math.abs(doc.aggregations.total_amount.value);
         // Query the database for all expenses
         elasticClient.search({
-            index: 'hfp-' + year,
+            index: ind,
             body: {
                 "query": {
                     "bool": {
@@ -552,9 +605,55 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalCredit = docum.aggregations.total_amount.value;
-            const respObj = { slices, totalCredit, totalDebit, labels };
-            //console.log(respObj);
-            res.status(200).send(respObj);
+            elasticClient.search({
+                index: ind,
+                body: {
+                    "query": {
+                        "bool": {
+                            "must": [
+                                {   // only income
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "Amount": { "lt": 0 }
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // Desired period
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "Date": {
+                                                    "from": year + "-01",
+                                                    "to": year + "-13"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // only "Tekjur" Affair
+                                    "term": {
+                                        "Affair": { "value": "00-Tekjur" }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "size": 0,
+                    "aggs" : {
+                        "total_year": { "sum": { "field": "Amount" }}
+                    }
+                }
+            }).then((docume) => {
+                const totalYear = Math.abs(docume.aggregations.total_year.value);
+                const respObj = { slices, totalCredit, totalDebit, totalYear, labels };
+                //console.log(respObj);
+                res.status(200).send(respObj);
+            }, (err) => {
+                console.log(err);
+                res.status(500).send('Server error\n');
+            });
         }, (err) => {
             console.log(err);
             res.status(500).send('Server error\n');
@@ -661,9 +760,10 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         }
     }
 
+    const ind = 'hfp-' + year;
     // Query the database for all revenues
     elasticClient.search({
-        index: 'hfp-' + year,
+        index: ind,
         body: {
             "query": {
                 "bool": {
@@ -742,7 +842,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         const totalDebit = Math.abs(doc.aggregations.total_amount.value);
         // Query the database for all revenue
         elasticClient.search({
-            index: 'hfp-' + year,
+            index: ind,
             body: {
                 "query": {
                     "bool": {
@@ -800,9 +900,66 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         }).then((docum) => {
             // Store the response and convert to absolute value
             const totalCredit = Math.abs(docum.aggregations.total_amount.value);
-            const respObj = { slices, totalCredit, totalDebit, labels };
-            //console.log(respObj);
-            res.status(200).send(respObj);
+            elasticClient.search({
+                index: ind,
+                body: {
+                    "query": {
+                        "bool": {
+                            "must": [
+                                {   // Only revenues
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "Amount": { "lt": 0 }
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // Desired period
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "Date": {
+                                                    "from": year + "-01",
+                                                    "to": year + "-13"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // Exclude Tekjur
+                                    "filtered": {
+                                        "filter": {
+                                            "range": {
+                                                "AffairID": { "gt": "01" }
+                                            }
+                                        }
+                                    }
+                                },
+                                {   // Only "Tekjur" PrimaryFinanceKey
+                                    "prefix": {
+                                        "PrimaryFinanceKey": { "value": "0" }
+                                    }
+                                }
+
+                            ]
+                        }
+                    },
+                    "size": 0,
+                    // Aggregate the total sums of Affairs and total revenue
+                    "aggs" : {
+                        "total_year": { "sum": { "field": "Amount" }}
+                    }
+                }
+            }).then((docume) => {
+                const totalYear = Math.abs(docume.aggregations.total_year.value);
+                const respObj = { slices, totalCredit, totalDebit, totalYear, labels };
+                //console.log(respObj);
+                res.status(200).send(respObj);
+            }, (err) => {
+                console.log(err);
+                res.status(500).send('Server error\n');
+            });
         }, (err) => {
             console.log(err);
             res.status(500).send('Server error\n');
