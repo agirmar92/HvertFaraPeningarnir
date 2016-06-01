@@ -6,9 +6,15 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.months = MONTHS;
     $scope.quarters = QUARTERS;
     $scope.selectedYear = hfpResource.getPeriod().substring(0,4);
-    $scope.selectedMonth = MONTHS[0];
-    $scope.selectedQuarter = QUARTERS[0];
+    if (hfpResource.getPeriod()[5] === '0' || hfpResource.getPeriod().substring(5).length > 1) {
+        $scope.selectedMonth = MONTHS[parseInt(hfpResource.getPeriod().substring(5))];
+        $scope.selectedQuarter = QUARTERS[0];
+    } else {
+        $scope.selectedMonth = MONTHS[0];
+        $scope.selectedQuarter = QUARTERS[parseInt(hfpResource.getPeriod().substring(5))];
+    }
 
+    // TODO: This is currently unused, check again later, if still unused, dispose me of this garbage!
     $rootScope.resetPeriod = function() {
         $scope.selectedMonth = MONTHS[0];
         $scope.selectedQuarter = QUARTERS[0];
@@ -26,11 +32,10 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
 
     $scope.setYear = function(year) {
         $scope.selectedYear = year;
-        var newPeriod = $scope.selectedYear;
-        newPeriod += '-0';
+        var newPeriod = $scope.selectedYear + hfpResource.getPeriod().substring(4);
 
         pathChange(newPeriod);
-        $rootScope.resetPeriod();
+        //$rootScope.resetPeriod();
     };
 
     $scope.setMonth = function(i) {

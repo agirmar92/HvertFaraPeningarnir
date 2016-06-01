@@ -443,22 +443,27 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
 
     /*
-    *       Method that resets the app to it's initial state
+    *       Method that resets the app to it's initial state with respect to the data type being viewed
     * */
     factory.resetApp = function() {
         // Clear all filter choices, expect for the base level
-        for (var i = 1; i < 8;  i++) {
+        var from = 1;
+        if ($rootScope.type === 'joint-revenue') {
+            from = 4;
+        }
+        for (var i = from; i < 8;  i++) {
             $rootScope.options[i].choices = [];
             $rootScope.options[i].currChoice = -1;
         }
         if ($rootScope.type === 'expenses') {
-            $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod().substring(0,4) + '-0/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+            console.log(factory.getPeriod());
+            $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
-            $location.path('/joint-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
+            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
         } else {
-            $location.path('/special-revenue/' + INITIAL_VALUES.PERIOD + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+            $location.path('/special-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
         }
-        $rootScope.resetPeriod();
+        //$rootScope.resetPeriod();
     };
 
     /*
