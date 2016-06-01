@@ -143,6 +143,9 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         self.assertEqual("veldu", driver.find_element_by_id("month-dropdown").text)
         # Click on logo (go home)
         driver.find_element_by_id("main-title").click()
+        # Deselect third quarter
+        driver.find_element_by_id("quarter-dropdown").click()
+        driver.find_element_by_link_text(u"veldu").click()
         time.sleep(1)
         self.assertEqual("veldu", driver.find_element_by_id("month-dropdown").text)
         self.assertEqual("veldu", driver.find_element_by_id("quarter-dropdown").text)
