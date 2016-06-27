@@ -187,6 +187,10 @@ curl -XPUT    "$1:$2/$3" -d'
                     "type": "string",
                     "index": "not_analyzed"
                 },
+                "CreditorID": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
                 "DepartmentGroup": {
                     "type": "string",
                     "index": "not_analyzed"
