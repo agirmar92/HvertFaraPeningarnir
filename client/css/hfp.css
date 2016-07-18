@@ -626,6 +626,7 @@ span#hfp-percentage {
     top: 45%;
     left: 20px;
     width: 60px;
+    cursor: pointer;
 }
 
 #arrow-big-right {
@@ -634,6 +635,16 @@ span#hfp-percentage {
     top: 45%;
     right: 20px;
     width: 60px;
+    cursor: pointer;
+}
+
+
+#arrow-big-right:hover {
+    width: 70px;
+}
+
+#arrow-big-left:hover {
+    width: 70px;
 }
 
 #next-instr {
