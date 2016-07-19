@@ -27,27 +27,6 @@ describe("CalendarController > ", function() {
     *       Test suite for function setYear(year)
     * */
     
-    /*
-    describe("setYear > ", function() {
-        // Predicate: (YEARS.indexOf(year) !== -1) to true
-        it("should set year to 2013", function() {
-            // Assert before the change
-            expect(scope.selectedYear).toEqual('2014');
-            scope.setYear('2013');
-            // Assert after the change
-            expect(scope.selectedYear).toEqual('2013');
-        });
-
-        /* Predicate: (YEARS.indexOf(year) !== -1) to false
-        it("should set year to something invalid", function() {
-            // Assert before the change
-            expect(scope.selectedYear).toEqual('2014');
-            scope.setYear('derka');
-            // Assert after the change
-            expect(scope.selectedYear).toEqual('2014');
-        }); 
-    });
-    */ 
     
     /*
     *       Test suite for function setMonth(month)
