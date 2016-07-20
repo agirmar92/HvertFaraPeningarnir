@@ -33,76 +33,6 @@
 	<div id="wrapper" class="toggled hfp-wrapper" ng-view></div>
 	<!-- /#hvertfarapeningarnir -->
 
-	<!-- instructions -->
-	<div id="hfp-instructions" class="hfp-hidden" ng-controller="instructionsController">
-        <div id="instr0">
-            <div>Notaðu örvarnar til að fletta í gegnum notkunarleiðbeiningar. Þú getur líka notað örvarnar á lyklaborðinu þínu til að fletta.</div>
-        </div>
-        <img src="ArrowBigLeft.png" alt="" id="arrow-big-left" ng-click="prevInstr()">
-        <img src="ArrowBigRight.png" alt="" id="arrow-big-right" ng-click="nextInstr()">
-        <div id="instr1" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow1">
-            <span>Hér geturðu falið eða kallað fram hliðarstikuna.</span>
-        </div>
-        <div id="instr2" class="hfp-hidden">
-            <img src="Arrow1.png" alt="" height="50px" class="arrow2">
-            <span>Hér geturðu falið eða kallað fram glugga til að velja tímabil.</span>
-        </div>
-		<div id="instr4" class="hfp-hidden">
-			<img src="Arrow1.png" alt="" height="50px" class="arrow3">
-			<span>Hér geturðu falið eða kallað fram notkunarleiðbeiningar.</span>
-		</div>
-		<div id="instr3" class="hfp-hidden">
-			<img src="Arrow2.png" alt="" height="50px" class="arrow4">
-			<span>Hér geturðu skipt á milli þess að skoða gögnin í töflu og í kökuriti.</span>
-		</div>
-        <div id="instr5" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow1">
-            <span>Hér geturðu síað gögnin sjálf(ur).</span>
-        </div>
-        <div id="instr6" class="hfp-hidden">
-            <img src="Arrow1.png" alt="" height="50px" class="arrow3">
-            <span>Hér geturðu skoðað algengar fyrirspurnir sem gætu sparað þér vinnuna við að sía gögnin sjálf(ur).</span>
-        </div>
-        <div id="instr7" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow5">
-            <div>Hér geturðu hreinsað allar síurnar og farið í upphafsham ársins sem þú ert með valið.</div>
-        </div>
-        <div id="instr8" class="hfp-hidden">
-            <img src="Arrow1.png" alt="" height="50px" class="arrow6">
-            <div>Hér geturðu valið að skoða gjöld, sameiginlegar tekjur og sértekjur bæjarins.</div>
-            <div>Gjöldin sýna útgjöld bæjarins.</div>
-            <div>Sameiginlegar tekjur eru tekjur sem koma inn í almennum tilgangi, þ.e. ekki eyrnamerkt ákveðinni deild/stofnun.</div>
-            <div>Sértekjur eru tekjur sem koma inn í ákveðnum tilgangi, þ.e. eyrnamerkt ákveðni deild/stofnun, t.d. Í formi leikskólagjalda, aðgangseyris í sund, húsaleigu fyrir knatthús, o.þ.h.</div>
-        </div>
-        <div id="instr9" class="hfp-hidden">
-            <img src="Arrow1.png" alt="" height="50px" class="arrow6">
-            <div>Smelltu á eigindi til að sía gögnin eftir.</div>
-            <div>Smelltu á mínus táknið á eigindum til að hreinsa þau úr síu.</div>
-        </div>
-        <div id="instr10" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow7">
-            <div>Smelltu á sneið til að sjá hana í heilli köku, skipt eftir næsta þrepi fyrir neðan. Sveimaðu yfir sneið til að fá upphæð hennar og hlutfall hennar af kökunni.</div>
-        </div>
-        <div id="instr11" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow8">
-            <div>Hér sérðu hvaða gögn þú ert að skoða núna, tegund gagna, tímabil og brauðmylsnuslóð.</div>
-        </div>
-        <div id="instr12" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow9">
-            <div>Sveimaðu yfir stöplana til að fá nánari útskýringu á þeim.</div>
-        </div>
-        <div id="instr13" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow10">
-            <div>Hér sérðu hversu hátt hlutfall af heildarsummunni fyrir allan bæinn þú ert að skoða akkúrat núna í skífuritinu.</div>
-        </div>
-        <div id="instr14" class="hfp-hidden">
-            <img src="Arrow2.png" alt="" height="50px" class="arrow11">
-            <div>Þessa slóð er hægt að afrita og deila með hverjum sem er, sem gæti þá séð þau gögn sem þú hefur síað og ert að skoða.</div>
-        </div>
-    </div>
-	<!-- /#instructions -->
-
 	<script src="node_modules/angular/angular.js" type="text/javascript" charset="utf-8"></script>
 	<script src="node_modules/angular-animate/angular-animate.js" type="text/javascript" charset="utf-8"></script>
 	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
@@ -156,6 +86,76 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
+
+    <!-- instructions -->
+    <div id="hfp-instructions" class="hfp-hidden" ng-controller="instructionsController">
+        <div id="instr0">
+            <div>Notaðu örvarnar til að fletta í gegnum notkunarleiðbeiningar. Þú getur líka notað örvarnar á lyklaborðinu þínu til að fletta.</div>
+        </div>
+        <img src="ArrowBigLeft.png" alt="" id="arrow-big-left" ng-click="prevInstr()">
+        <img src="ArrowBigRight.png" alt="" id="arrow-big-right" ng-click="nextInstr()">
+        <div id="instr1" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow1">
+            <span>Hér geturðu falið eða kallað fram hliðarstikuna.</span>
+        </div>
+        <div id="instr2" class="hfp-hidden">
+            <img src="Arrow1.png" alt="" height="50px" class="arrow2">
+            <span>Hér geturðu falið eða kallað fram glugga til að velja tímabil.</span>
+        </div>
+        <div id="instr4" class="hfp-hidden">
+            <img src="Arrow1.png" alt="" height="50px" class="arrow3">
+            <span>Hér geturðu falið eða kallað fram notkunarleiðbeiningar.</span>
+        </div>
+        <div id="instr3" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow4">
+            <span>Hér geturðu skipt á milli þess að skoða gögnin í töflu og í kökuriti.</span>
+        </div>
+        <div id="instr5" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow1">
+            <span>Hér geturðu síað gögnin sjálf(ur).</span>
+        </div>
+        <div id="instr6" class="hfp-hidden">
+            <img src="Arrow1.png" alt="" height="50px" class="arrow3">
+            <span>Hér geturðu skoðað algengar fyrirspurnir sem gætu sparað þér vinnuna við að sía gögnin sjálf(ur).</span>
+        </div>
+        <div id="instr7" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow5">
+            <div>Hér geturðu hreinsað allar síurnar og farið í upphafsham ársins sem þú ert með valið.</div>
+        </div>
+        <div id="instr8" class="hfp-hidden">
+            <img src="Arrow1.png" alt="" height="50px" class="arrow6">
+            <div>Hér geturðu valið að skoða gjöld, sameiginlegar tekjur og sértekjur bæjarins.</div>
+            <div>Gjöldin sýna útgjöld bæjarins.</div>
+            <div>Sameiginlegar tekjur eru tekjur sem koma inn í almennum tilgangi, þ.e. ekki eyrnamerkt ákveðinni deild/stofnun.</div>
+            <div>Sértekjur eru tekjur sem koma inn í ákveðnum tilgangi, þ.e. eyrnamerkt ákveðni deild/stofnun, t.d. Í formi leikskólagjalda, aðgangseyris í sund, húsaleigu fyrir knatthús, o.þ.h.</div>
+        </div>
+        <div id="instr9" class="hfp-hidden">
+            <img src="Arrow1.png" alt="" height="50px" class="arrow6">
+            <div>Smelltu á eigindi til að sía gögnin eftir.</div>
+            <div>Smelltu á mínus táknið á eigindum til að hreinsa þau úr síu.</div>
+        </div>
+        <div id="instr10" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow7">
+            <div>Smelltu á sneið til að sjá hana í heilli köku, skipt eftir næsta þrepi fyrir neðan. Sveimaðu yfir sneið til að fá upphæð hennar og hlutfall hennar af kökunni.</div>
+        </div>
+        <div id="instr11" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow8">
+            <div>Hér sérðu hvaða gögn þú ert að skoða núna, tegund gagna, tímabil og brauðmylsnuslóð.</div>
+        </div>
+        <div id="instr12" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow9">
+            <div>Sveimaðu yfir stöplana til að fá nánari útskýringu á þeim.</div>
+        </div>
+        <div id="instr13" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow10">
+            <div>Hér sérðu hversu hátt hlutfall af heildarsummunni fyrir allan bæinn þú ert að skoða akkúrat núna í skífuritinu.</div>
+        </div>
+        <div id="instr14" class="hfp-hidden">
+            <img src="Arrow2.png" alt="" height="50px" class="arrow11">
+            <div>Þessa slóð er hægt að afrita og deila með hverjum sem er, sem gæti þá séð þau gögn sem þú hefur síað og ert að skoða.</div>
+        </div>
+    </div>
+    <!-- /#instructions -->
 
     <!-- Alert message-->
     <span ng-controller="alertController"> <uib-alert  class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}"  close="closeAlert($index)" dismiss-on-timeout="5000" >{{alert.msg}}</uib-alert></span>
