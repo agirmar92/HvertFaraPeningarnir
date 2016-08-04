@@ -89,7 +89,12 @@
 
         </uib-tab>
 
-        <uib-tab index="1" heading="Alg. fyrirsp.">Algengar fyrirspurnir</uib-tab>
+        <uib-tab index="1" heading="Almennar fyrirsp.">
+            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/3/n/n/n/n/n">Hver er heildarkostnaður eftir bókhaldslyklum?</a> </br>
+            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/7/n/n/n/n/n">Hver er heildarkostnaður eftir lánardrottnum?</a> </br>
+            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/1/n/n/n/n/1000">Hver eru starfsmannakostnaður eftir málaflokkum?</a> </br>
+            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/3/n/n/n/n/1000">Hver eru starfsmannakostnaður eftir deildum?</a>
+        </uib-tab>
     </uib-tabset>
 </div>
 <!-- /#sidebar-wrapper -->
@@ -211,8 +216,8 @@
                 <tr ng-repeat="s in slices">
                     <td class="col1" ng-class="{'hfp-hidden':level===7}">{{s.key}}</td>
                     <td class="col2">{{s.label}}</td>
-                    <td class="col3">{{s.value + ' kr.'}}</td>
-                    <td class="col4">{{s.percentage + '%'}}</td>
+                    <td class="col3">{{s.value}} kr.</td>
+                    <td class="col4">{{s.percentage}}%</td>
                 </tr>
                 <tr class="head">
                     <th class="col1" ng-class="{'hfp-hidden':level===7}"></th>
