@@ -664,7 +664,7 @@ span#hfp-percentage {
     left: 0px;
     height: 100%;
     width: 100%;
-    font-family: font5;
+    font-family: font4;
     font-size: 24px;
     background: rgba(43, 43, 43, .8);
 }
@@ -923,6 +923,11 @@ header {
 .admin-panel-row.top-row {
     margin-bottom: 10px;
 }
+
+
+td { border: 1px; solid #ccc; padding: 10px; }
+thead { width: 100%; position: fixed; height; 109px; }
+tbody { margin: 109px 0 0 0;  }
 
 /*
     Loading spinner. Credit to http://tobiasahlin.com/spinkit/
