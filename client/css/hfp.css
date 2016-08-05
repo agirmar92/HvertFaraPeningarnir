@@ -925,9 +925,10 @@ header {
 }
 
 
-td { border: 1px; solid #ccc; padding: 10px; }
+/* td { border: 1px; solid #ccc; padding: 10px; }
 thead { width: 100%; position: fixed; height; 109px; }
 tbody { margin: 109px 0 0 0;  }
+*/
 
 /*
     Loading spinner. Credit to http://tobiasahlin.com/spinkit/
