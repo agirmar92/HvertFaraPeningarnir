@@ -90,10 +90,10 @@
         </uib-tab>
 
         <uib-tab index="1" heading="Almennar fyrirsp.">
-            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/3/n/n/n/n/n">Hver er heildarkostnaður eftir bókhaldslyklum?</a> </br>
-            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/7/n/n/n/n/n">Hver er heildarkostnaður eftir lánardrottnum?</a> </br>
-            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/1/n/n/n/n/1000">Hver eru starfsmannakostnaður eftir málaflokkum?</a> </br>
-            <a href="http://hfp.kopavogur.is/#/expenses/2014-0/3/n/n/n/n/1000">Hver eru starfsmannakostnaður eftir deildum?</a>
+            <a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/n')">Hver er heildarkostnaður eftir bókhaldslyklum?</a> </br>
+            <a ng-click="pathChange('expenses/' + selectedYear + '-0/7/n/n/n/n/n')">Hver er heildarkostnaður eftir lánardrottnum?</a> </br>
+            <a ng-click="pathChange('expenses/' + selectedYear + '-0/1/n/n/n/n/1000')">Hver eru starfsmannakostnaður eftir málaflokkum?</a> </br>
+            <a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/1000')">Hver eru starfsmannakostnaður eftir deildum?</a>
         </uib-tab>
     </uib-tabset>
 </div>

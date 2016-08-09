@@ -5,7 +5,7 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.years = YEARS;
     $scope.months = MONTHS;
     $scope.quarters = QUARTERS;
-    $scope.selectedYear = hfpResource.getPeriod().substring(0,4);
+    $rootScope.selectedYear = hfpResource.getPeriod().substring(0,4);
     if (hfpResource.getPeriod()[5] === '0' || hfpResource.getPeriod().substring(5).length > 1) {
         $scope.selectedMonth = MONTHS[parseInt(hfpResource.getPeriod().substring(5))];
         $scope.selectedQuarter = QUARTERS[0];
@@ -29,10 +29,11 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
         // Change the path
         $location.path(newPathPrefix, false);
     };
+    
 
     $scope.setYear = function(year) {
-        $scope.selectedYear = year;
-        var newPeriod = $scope.selectedYear + hfpResource.getPeriod().substring(4);
+        $rootScope.selectedYear = year;
+        var newPeriod = $rootScope.selectedYear + hfpResource.getPeriod().substring(4);
 
         pathChange(newPeriod);
         //$rootScope.resetPeriod();
@@ -41,7 +42,7 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.setMonth = function(i) {
         $scope.selectedQuarter = QUARTERS[0];
         $scope.selectedMonth = MONTHS[i];
-        var newPeriod = $scope.selectedYear;
+        var newPeriod = $rootScope.selectedYear;
         if (i < 10 && i !== 0) {
             newPeriod += '-0' + i;
         } else {
@@ -54,7 +55,7 @@ hfpApp.controller('calendarController', function ($scope, $rootScope, $location,
     $scope.setQuarter = function(quarter) {
         $scope.selectedQuarter = quarter;
         $scope.selectedMonth = MONTHS[0];
-        var newPeriod = $scope.selectedYear;
+        var newPeriod = $rootScope.selectedYear;
         for (var i = 0; i < QUARTERS.length; i++) {
             if (quarter === QUARTERS[i]) {
                 newPeriod += '-' + i;

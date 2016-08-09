@@ -150,4 +150,9 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     $scope.resetApp = function () {
         hfpResource.resetApp();
     };
+
+    $scope.pathChange = function (newPath) {
+        // Change the path
+        $location.path(newPath, false);
+    };
 });
