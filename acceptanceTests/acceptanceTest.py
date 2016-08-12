@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 from pyvirtualdisplay import Display
 import unittest, time, re
-'''
+
 class SeleniumAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
@@ -17,7 +17,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         self.base_url = "http://localhost:8000/"
         self.verificationErrors = []
         self.accept_next_alert = True
-
+'''
     def test_expenses_drilldown(self):
         print("test_expenses_drilldown:\n======================")
         driver = self.driver
@@ -242,7 +242,9 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         self.assertEqual([], self.verificationErrors)
         self.display.stop()
 
+'''
+
 if __name__ == "__main__":
     unittest.main()
     
-'''
+
