@@ -23,7 +23,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver = self.driver
         # Open up the website
         driver.get(self.base_url)
-        self.assertEqual("http://localhost:8000/#/expenses/2014-0/0/n/n/n/n/n", driver.current_url)
+        self.assertEqual("http://localhost:8000/#/expenses/2015-0/0/n/n/n/n/n", driver.current_url)
         self.assertEqual("100.0%", driver.find_element_by_id("hfp-percentage").text)
         driver.find_element_by_id("menu-toggle").click()
         driver.find_element_by_xpath("//div[@id='option0']/div[2]/span").click()
@@ -76,7 +76,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver = self.driver
         # Open up the website
         driver.get(self.base_url)
-        self.assertEqual("http://localhost:8000/#/expenses/2014-0/0/n/n/n/n/n", driver.current_url)
+        self.assertEqual("http://localhost:8000/#/expenses/2015-0/0/n/n/n/n/n", driver.current_url)
         self.assertEqual("100.0%", driver.find_element_by_id("hfp-percentage").text)
         driver.find_element_by_id("menu-toggle").click()
         time.sleep(1)
@@ -120,7 +120,7 @@ class SeleniumAcceptanceTests(unittest.TestCase):
         driver = self.driver
         # Open up the website
         driver.get(self.base_url)
-        self.assertEqual("http://localhost:8000/#/expenses/2014-0/0/n/n/n/n/n", driver.current_url)
+        self.assertEqual("http://localhost:8000/#/expenses/2015-0/0/n/n/n/n/n", driver.current_url)
         self.assertEqual("100.0%", driver.find_element_by_id("hfp-percentage").text)
         driver.find_element_by_id("menu-toggle").click()
         self.assertEqual(u"Gjöld, 2014", driver.find_element_by_css_selector("[id*=_title]").text)
