@@ -35,7 +35,7 @@ hfpApp.config(['$routeProvider',
 				templateUrl: 'views/chartView.html'
 			})
 			.otherwise( {
-				redirectTo: '/expenses/2014-0/0/n/n/n/n/n/'
+				redirectTo: '/expenses/2015-0/0/n/n/n/n/n/'
 			});
 	}
 ]);
