@@ -930,6 +930,62 @@ thead { width: 100%; position: fixed; height; 109px; }
 tbody { margin: 109px 0 0 0;  }
 */
 
+
+/* TODO: Almennar/Algengar Fyrirspurnir */
+
+/* Almennar/Algengar Fyrirspurnir */
+ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#query {
+    text-decoration: none;
+
+    height: 92px;
+    line-height: 62px;
+    background: #004080;
+    width: 100%;
+    padding: 0 25px;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 4px;
+    display: block;
+
+    /*
+    font-size: 30px;
+    color: #fff;
+    float: left;
+    */
+
+    display: table-cell;
+    float: none;
+    line-height: 1;
+    vertical-align: middle;
+    cursor: pointer;
+
+
+    height: 50px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    background-color: rgb(39, 39, 39);
+    background-color: rgba(39, 39, 39, 0.8);
+    position: relative;
+    border-bottom: 1px solid black;
+
+    font-family: font1;
+
+}
+
+#query:hover {
+    background-color: rgb(1, 114, 56);
+}
+
 /*
     Loading spinner. Credit to http://tobiasahlin.com/spinkit/
 */

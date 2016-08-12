@@ -89,15 +89,48 @@
 
         </uib-tab>
 
+        <!-- ALmennar/Algengar Fyrirspurnir-->
         <uib-tab index="1" heading="Almennar fyrirsp.">
-            <a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/n')">Hver er heildarkostnaður eftir bókhaldslyklum?</a> </br>
-            <a ng-click="pathChange('expenses/' + selectedYear + '-0/7/n/n/n/n/n')">Hver er heildarkostnaður eftir lánardrottnum?</a> </br>
-            <a ng-click="pathChange('expenses/' + selectedYear + '-0/1/n/n/n/n/1000')">Hver eru starfsmannakostnaður eftir málaflokkum?</a> </br>
-            <a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/1000')">Hver eru starfsmannakostnaður eftir deildum?</a>
+            <div id="queries" class="btn-group-vertical">
+                <ul>
+                    <li><a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/n')" id="query">Hver er heildarkostnaður eftir bókhaldslyklum?</a> </li>
+                    <li><a ng-click="pathChange('expenses/' + selectedYear + '-0/7/n/n/n/n/n')" id="query">Hver er heildarkostnaður eftir lánardrottnum?</a>  </li>
+                    <li><a ng-click="pathChange('expenses/' + selectedYear + '-0/1/n/n/n/n/1000')" id="query">Hver er starfsmannakostnaður eftir málaflokkum?</a> </li>
+                    <li><a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/1000')" id="query">Hver er starfsmannakostnaður eftir deildum?</a> </li>
+                </ul>
+            </div>
         </uib-tab>
     </uib-tabset>
 </div>
 <!-- /#sidebar-wrapper -->
+
+
+<!-- Modal Instruction Helper -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    <script type="text/ng-template" id="helpModalContent.html">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true" ng-click="cancel()">&times;</button>
+                <h3 class="modal-title">Leiðbeiningar</h3>
+            </div>
+
+            <!-- modal-body -->
+            <div class="modal-body">
+                <p>Smelltu á Leiðbeiningar ef þú vilt fara yfir hvernig vefsíðan virkar.</p>
+                <p>Smelltu á Senda ábendingu ef þú vilt koma einhverjum skilaboðum fram til Kópavogsbæjar.</p>
+            </div>
+            <!-- /#modal-body -->
+
+            <div class="modal-footer">
+                <button type="button" ng-click="toggleInstructions(); cancel()" class="btn btn-success" data-dismiss="modal">Leiðbeiningar</button>
+                <a href="http://www.kopavogur.is/abendingar" target="_blank" ng-click="cancel()" class="btn btn-primary" role="button">Senda ábendingu</a>
+            </div>
+        </div>
+    </script>
+    </div>
+</div>
+
 
 <!-- page-content-wrapper -->
 <div id="page-content-wrapper" class="container-fluid hfp-content" ng-controller="chartController">
@@ -111,7 +144,7 @@
             <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn" ng-click="toggleCalendar()" id="calendar-toggle"></button>
             <button data-toggle="tooltip" title="Töfluform" class="change-view-toggle btn btn-default hfp-btn glyphicon glyphicon-list-alt hfp-secondary-btn" ng-if="pieView" ng-click="changeView()"></button>
             <button data-toggle="tooltip" title="Kökuform" class="change-view-toggle btn btn-default hfp-btn glyphicon fa fa-pie-chart hfp-secondary-btn" ng-if="!pieView" ng-click="changeView()"></button>
-            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleInstructions()" id="instructions-toggle"></button>
+            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleInstructions()" id="instructions-toggle"> <!-- data-toggle="modal" data-target="#myModal" --> </button>
 
             <!-- calendar-dropdown -->
             <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
