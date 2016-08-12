@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 from pyvirtualdisplay import Display
 import unittest, time, re
-
+'''
 class SeleniumAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.display = Display(visible=0, size=(1920, 1080))
@@ -244,3 +244,5 @@ class SeleniumAcceptanceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    
+'''
