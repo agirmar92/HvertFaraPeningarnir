@@ -27,7 +27,8 @@ hfpApp.constant('MONTHS', [
     "september",
     "október",
     "nóvember",
-    "desember"
+    "desember",
+    "allt"
 ]);
 hfpApp.constant('YEARS', [
     "2014",
@@ -38,7 +39,8 @@ hfpApp.constant('QUARTERS', [
     "fyrsti",
     "annar",
     "þriðji",
-    "fjórði"
+    "fjórði",
+    "allt"
 ]);
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'expenses',

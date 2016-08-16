@@ -487,7 +487,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         var perio = factory.getPeriod();
         var year = perio.substring(0,4);
         if (perio.length === 6) {
-            if (perio.charAt(5) === '0') {
+            if (perio.charAt(5) === '0' || perio.charAt(5) === '5') {
                 return year;
             } else {
                 var quarter = parseInt(perio.charAt(5));
@@ -495,7 +495,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
         } else {
             var month = parseInt(perio.substring(5,7), 10);
-            return year + ' - ' + MONTHS[month];
+            if (MONTHS[month] === 'allt' || MONTHS[month] === 'allir') {
+                return year;
+            } else {
+                return year + ' - ' + MONTHS[month];
+            }
+
         }
     };
 
