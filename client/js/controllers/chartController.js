@@ -126,7 +126,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             $scope.toggleDrawer();
         }
         $("#hfp-instructions").toggleClass("hfp-hidden");
-        $("#instructions-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-question-sign");
+        $("#instructions-close").toggleClass("hfp-hidden").toggleClass("bring-to-front");
+        $("#instructions-toggle").toggleClass("hfp-hidden");
     };
     
     $scope.toggleHelp = function() {
@@ -136,8 +137,6 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             controller: 'helpModalInstanceController',
             size: 'sm'
         });
-
-
     };
 
     $scope.slices = [];

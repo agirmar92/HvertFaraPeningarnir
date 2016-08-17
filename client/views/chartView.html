@@ -144,7 +144,8 @@
             <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn" ng-click="toggleCalendar()" id="calendar-toggle"></button>
             <button data-toggle="tooltip" title="Töfluform" class="change-view-toggle btn btn-default hfp-btn glyphicon glyphicon-list-alt hfp-secondary-btn" ng-if="pieView" ng-click="changeView()"></button>
             <button data-toggle="tooltip" title="Kökuform" class="change-view-toggle btn btn-default hfp-btn glyphicon fa fa-pie-chart hfp-secondary-btn" ng-if="!pieView" ng-click="changeView()"></button>
-            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleHelp()" id="instructions-toggle" data-toggle="modal" data-target="#myModal"></button>
+            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign hfp-secondary-btn" ng-click="toggleHelp()" id="instructions-toggle" data-toggle="modal" data-target="#myModal"></button>
+            <button data-toggle="tooltip" title="Loka leiðbeiningum" class="btn btn-default hfp-btn glyphicon glyphicon-remove hfp-secondary-btn hfp-hidden" ng-click="toggleInstructions()" id="instructions-close"></button>
 
             <!-- calendar-dropdown -->
             <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
