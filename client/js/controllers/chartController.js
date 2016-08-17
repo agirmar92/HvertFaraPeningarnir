@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource) {
+hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource, $uibModal) {
 
     /*
     *       rootScope variables
@@ -128,6 +128,17 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $("#hfp-instructions").toggleClass("hfp-hidden");
         $("#instructions-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-question-sign");
     };
+    
+    $scope.toggleHelp = function() {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'helpModalContent.html',
+            controller: 'helpModalInstanceController',
+            size: 'sm'
+        });
+
+
+    };
 
     $scope.slices = [];
     $scope.divider = 0;
@@ -192,4 +203,12 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         var miniChartWidth = $('#miniChartContainer').width();
         $('#miniChartContainer').css({'height': miniChartWidth + 'px'});
     });
+});
+
+
+hfpApp.controller('helpModalInstanceController', function ($scope, $uibModalInstance) {
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });

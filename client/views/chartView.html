@@ -117,8 +117,8 @@
 
             <!-- modal-body -->
             <div class="modal-body">
-                <p>Smelltu á Leiðbeiningar ef þú vilt fara yfir hvernig vefsíðan virkar.</p>
-                <p>Smelltu á Senda ábendingu ef þú vilt koma einhverjum skilaboðum fram til Kópavogsbæjar.</p>
+                <p>Smelltu á „Leiðbeiningar“ ef þú vilt fara yfir hvernig vefsíðan virkar.</p>
+                <p>Smelltu á „Senda ábendingu“ ef þú vilt koma einhverjum skilaboðum fram til Kópavogsbæjar.</p>
             </div>
             <!-- /#modal-body -->
 
@@ -144,7 +144,7 @@
             <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn" ng-click="toggleCalendar()" id="calendar-toggle"></button>
             <button data-toggle="tooltip" title="Töfluform" class="change-view-toggle btn btn-default hfp-btn glyphicon glyphicon-list-alt hfp-secondary-btn" ng-if="pieView" ng-click="changeView()"></button>
             <button data-toggle="tooltip" title="Kökuform" class="change-view-toggle btn btn-default hfp-btn glyphicon fa fa-pie-chart hfp-secondary-btn" ng-if="!pieView" ng-click="changeView()"></button>
-            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleInstructions()" id="instructions-toggle"> <!-- data-toggle="modal" data-target="#myModal" --> </button>
+            <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign bring-to-front hfp-secondary-btn" ng-click="toggleHelp()" id="instructions-toggle" data-toggle="modal" data-target="#myModal"></button>
 
             <!-- calendar-dropdown -->
             <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
