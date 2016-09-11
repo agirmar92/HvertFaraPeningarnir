@@ -10,10 +10,7 @@ hfpApp.config(['$routeProvider',
 
 		$routeProvider
 			// Configuring optional routing parameters. Type, period and all of the levels.
-            .when('/instructions', {
-                templateUrl: 'views/instructionsView.html'
-            })
-			.when('/login', {
+            .when('/login', {
 				templateUrl: 'views/adminLoginView.html'
 			})
 			.when('/admin', {
@@ -25,13 +22,10 @@ hfpApp.config(['$routeProvider',
 					}
 				}
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?/:Creditor?', {
+			.when('/:Type/:Period/:Level/:Department/:FinanceKey/:Creditor/:Creditor', {
 				templateUrl: 'views/chartView.html'
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/:Creditor/', {
-				templateUrl: 'views/chartView.html'
-			})
-			.when('/:income/:Period/:Level/:Department/:FinanceKey/:Creditor/', {
+			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/:Creditor', {
 				templateUrl: 'views/chartView.html'
 			})
 			.otherwise( {
@@ -52,8 +46,8 @@ hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
 				$route.current = lastRoute;
 				un();
 
-				// If we are going to level 7 from any other level AND there is a creditor selected.
-				var to7fromAnyOtherWithSelectedCreditor = nextLevel === 7 && hfpResource.getLevel() !== 7 && $rootScope.options[7].currChoice !== -1;
+				// If we are going to level 7 from any other level AND there is a creditor selected there.
+				var to7fromAnyOtherWithSelectedCreditor = nextLevel === 7 && $rootScope.options[7].currChoice !== -1 && option !== 7;
 				hfpResource.parseRouteParams($location.path().split('/'));
 				hfpResource.showMeTheMoney(false, to7fromAnyOtherWithSelectedCreditor).then(function() {
 					// If there is a callback, then call it once data has been fetched

@@ -215,7 +215,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       and recreates that charts to show the newly fetched data.
     *       If parameter 'firstTime' is true, then this is the app initialization.
     * */
-    factory.showMeTheMoney = function(firstTime, to7fromAnyOtherWithSelectedCreditor) {
+    factory.showMeTheMoney = function(firstTime, to7fromAnyWithSelectedCreditor) {
         var deferred = $q.defer();
         var queryURL;
         if (factory.getType() !== 'joint-revenue') {
@@ -265,7 +265,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     newChoice = {
                         choiceId: sliceNumber,
                         content: slice.aggs.buckets[0].key,
-                        chosen: to7fromAnyOtherWithSelectedCreditor, // Set to true if flag is set
+                        chosen: to7fromAnyWithSelectedCreditor, // Set to true if flag is set
                         key: slice.key
                     };
                 } else {
@@ -465,7 +465,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             console.log(factory.getPeriod());
             $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
-            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n', false);
+            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n/n', false);
         } else {
             $location.path('/special-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         }
