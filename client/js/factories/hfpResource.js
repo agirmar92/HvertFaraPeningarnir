@@ -538,7 +538,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     "text": factory.translate() + ", " + factory.tDate(),
                     "fontSize": 26,
                     "font": "font4",
-                    "color": "#dadada"
+                    "color": "#444e52"
                 },
                 "subtitle": {
                     "text": factory.getPathLabels(),
@@ -566,7 +566,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 },
                 mainLabel: {
                     color: CHART_TEXT_COLOR,
-                    font: "font1",
+                    font: "font4",
                     fontSize: Math.max(12, factory.getPieRadius() * 0.125)
                 },
                 value: {
@@ -657,7 +657,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 styles: {
                     color: CHART_TEXT_COLOR,
                     font: "font4",
-                    fontSize: 14
+                    fontSize: 14,
+                    opacity: 1,
+                    backgroundColor: '#e8e8e8',
+                    backgroundOpacity: '0.9',
+                    padding: 8
                 },
                 placeholderParser: function(index, data) {
                     var valueStr = data.value.toString();

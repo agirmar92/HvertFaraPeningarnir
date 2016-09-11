@@ -42,17 +42,15 @@ hfpApp.controller('instructionsController', function ($scope) {
 
     var checkKey = function(e) {
         e = e || window.event;
-        if (e.keyCode === 37) {         // Left arrow
+        if ($('#hfp-instructions').is(':visible') && e.keyCode === 37) {         // Left arrow
             $scope.prevInstr();
             e.preventDefault();
         }
-        else if (e.keyCode === 39) {    // Right arrow
+        else if ($('#hfp-instructions').is(':visible') && e.keyCode === 39) {    // Right arrow
             $scope.nextInstr();
             e.preventDefault();
-        } else if (e.keyCode === 27) {  // Escape button
-            if (!$("#hfp-instructions").hasClass("hfp-hidden")) {
-                $scope.toggleInstructions();
-            }
+        } else if ($('#hfp-instructions').is(':visible') && e.keyCode === 27) {  // Escape button
+            $scope.toggleInstructions();
             e.preventDefault();
         }
     };

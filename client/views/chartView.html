@@ -1,5 +1,5 @@
 <!-- sidebar-wrapper -->
-<div id="sidebar-wrapper" ng-controller="tabsController">
+<div id="sidebar-wrapper" class="toggle-sidebar" ng-controller="tabsController">
     <uib-tabset active="activeJustified" justified="true">
         <uib-tab index="0" heading="Síur" id="panel-filters">
             <div role="tab" class="panel-heading">
@@ -36,9 +36,9 @@
                 <span class="tree-header-span">1. Málaflokkar/deildir</span>
             </div>
             <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index < 4">
-                <div class="option-header header{{option.optionId}}">
+                <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
                     <i class="fa fa-eye option-eye{{option.optionId}}" aria-hidden="true" ng-if="option.optionId === currentLevel"></i>
-                    <span id="option-text1" ng-click="optionClicked(option.optionId)">{{option.label}}</span>
+                    <span id="option-text1">{{option.label}}</span>
                     <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true" ng-click="optionClicked(option.optionId)"></span>
                 </div>
 
@@ -90,7 +90,7 @@
         </uib-tab>
 
         <!-- ALmennar/Algengar Fyrirspurnir-->
-        <uib-tab index="1" heading="Almennar fyrirsp.">
+        <uib-tab index="1" heading="Almennar fyrirsp." id="faq">
             <div id="queries" class="btn-group-vertical">
                 <ul>
                     <li><a ng-click="pathChange('expenses/' + selectedYear + '-0/3/n/n/n/n/n')" id="query">Hver er heildarkostnaður eftir bókhaldslyklum?</a> </li>

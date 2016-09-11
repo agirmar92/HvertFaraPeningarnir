@@ -13,7 +13,7 @@ hfpApp.constant('COLORS', [
     "#e6fa6b",
     "#b352bd"
 ]);
-hfpApp.constant('CHART_TEXT_COLOR', '#dadada');
+hfpApp.constant('CHART_TEXT_COLOR', '#444e52');
 hfpApp.constant('MONTHS', [
     "veldu",
     "janúar",

@@ -27,7 +27,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             toolTip: {
                 enabled: true,
                 animationEnabled: true,
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
+                backgroundColor: "rgba(232, 232, 232, 0.9)",
                 cornerRadius: 3,
                 borderThickness: 0,
                 fontColor: CHART_TEXT_COLOR,
@@ -99,7 +99,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     // If there are any route params we should parse them
     hfpResource.parseRouteParams($location.path().split('/'));
     hfpResource.showMeTheMoney(true).then(function() {
-        //console.log("Initial data fetched");
+        console.log("Initial data fetched");
     });
 
     /*
@@ -111,7 +111,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
 
     $scope.drawerToggled = false;
     $scope.toggleDrawer = function() {
-        $("#wrapper").toggleClass("toggled");
+        $("#sidebar-wrapper").toggleClass("toggle-sidebar");
         $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
         $scope.drawerToggled = !$scope.drawerToggled;
     };
