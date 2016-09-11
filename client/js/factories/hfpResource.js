@@ -609,8 +609,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             },
             callbacks: {
                 onClickSegment: function(a) {
-                    console.log('a: ');
-                    console.log(a);
                     factory.setClickedSlice(a.data.key);
                     factory.setClickedSliceLabel(a.data.label);
                     var id = a.data.key;

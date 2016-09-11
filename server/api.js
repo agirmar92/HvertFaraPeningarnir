@@ -302,7 +302,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) =>
                 "total_amount": { "sum": { "field": "Amount" }}
             }
         }
-    }).then((doc) => {console.log(labels);
+    }).then((doc) => {
         // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
             if (labels[i].label === 'Creditor') {
@@ -310,7 +310,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) =>
             } else {
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
             }
-        }console.log(labels);
+        }
         // store the response from the database
         const slices = doc.aggregations.amounts.buckets;
         const totalCredit = doc.aggregations.total_amount.value;
@@ -578,7 +578,12 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin/:cre', (req, res) => {
                         "size": 0
                     },
                     "aggs" : {
-                        "sum_amount": { "sum": { "field": "Amount" } }
+                        "sum_amount": { "sum": { "field": "Amount" } },
+                        "aggs": {
+                            "terms": {
+                                "field": "Creditor"
+                            }
+                        }                        
                     }
                 },
                 "total_amount": { "sum": { "field": "Amount" }}
@@ -878,7 +883,12 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, 
                         "size": 0
                     },
                     "aggs" : {
-                        "sum_amount": { "sum": { "field": "Amount" } }
+                        "sum_amount": { "sum": { "field": "Amount" } },
+                        "aggs": {
+                            "terms": {
+                                "field": "Creditor"
+                            }
+                        }
                     }
                 },
                 "total_amount": { "sum": { "field": "Amount" }}
