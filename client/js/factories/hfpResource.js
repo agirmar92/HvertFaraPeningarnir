@@ -231,7 +231,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }).success(function (response) {
             // If this is the first fetching money, set the filters like they should be and set the initial size of the chart
             if (firstTime) {
-                setFilters(response.labels);
+                to7fromAnyWithSelectedCreditor = setFilters(response.labels);
                 factory.setPieHeight($('#hfpPie').height());
                 factory.setPieWidth($('#hfpPie').width());
                 factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
@@ -286,8 +286,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     };
                 }
                 sliceNumber++;
-                newSlices.push(newSlice);
-                newChoices.push(newChoice);
+                if (newSlice.value > 0) {
+                    newSlices.push(newSlice);
+                    newChoices.push(newChoice);
+                }
             });
 
             factory.setSlices(newSlices);
@@ -691,8 +693,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Iterates through the given labels array and sets the corresponding filters.
     * */
     var setFilters = function(labels) {
+        var creditorIsSelected = false;
         for (var i = 0; i < labels.length; i++) {
             var filterLevel = labels[i].level;
+            if (filterLevel === 7) {
+                creditorIsSelected = true;
+            }
             var filterLabel = labels[i].label;
 
             $rootScope.options[filterLevel].choices.push({
@@ -703,6 +709,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             });
             $rootScope.options[filterLevel].currChoice = 0;
         }
+        return creditorIsSelected;
     };
 
     return factory;
