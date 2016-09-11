@@ -152,6 +152,7 @@
             <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign hfp-secondary-btn" ng-click="toggleHelp()" id="instructions-toggle" data-toggle="modal" data-target="#myModal"></button>
             <button data-toggle="tooltip" title="Loka leiðbeiningum" class="btn btn-default hfp-btn glyphicon glyphicon-remove hfp-secondary-btn hfp-hidden" ng-click="toggleInstructions()" id="instructions-close"></button>
 
+
             <!-- calendar-dropdown -->
             <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
 
@@ -222,7 +223,9 @@
         <!-- progress-meter -->
         <div class="col-xs-4 hfp-div hfp-meter" id="hfp-progress">
             <uib-progressbar data-toggle="tooltip" title="Hlutfall af heildarsummu bæjarins" id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
-            <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-</p>
+            <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-
+               <i title="Þessi bókhaldsgögn innihalda allar innri færslur hjá Kópavogsbæ (tekjur og gjöld) milli stofnanna. Þetta er gert til að sjáist hvað rekstur einstaka rekstrareininga kostar í raun.Þetta þýðir að summa tekna og gjalda verður töluvert hærri en kemur fram í samstæðureikningi Kópavogsbæjar." class="glyphicon glyphicon-info-sign"></i>
+            </p>
             <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
         </div>
         <!-- /#progress-meter -->
