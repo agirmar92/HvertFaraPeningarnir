@@ -9,7 +9,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     CanvasJS.addCultureInfo("is", {
             digitGroupSeparator: "."
 
-        });
+    });
     $rootScope.chart = new CanvasJS.Chart("miniChartContainer", {
             data: [
                 {
@@ -91,6 +91,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.dynamic = 100;
     $rootScope.breadcrumb = '';
 
+    $scope.dataReady = false;
+
     /*
     *       scope variables
     * */
@@ -99,7 +101,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     // If there are any route params we should parse them
     hfpResource.parseRouteParams($location.path().split('/'));
     hfpResource.showMeTheMoney(true).then(function() {
-        console.log("Initial data fetched");
+        $scope.dataReady = true;
     });
 
     /*
