@@ -143,9 +143,10 @@ div#sidebar-wrapper.toggle-sidebar {
     height: auto;
     overflow-y: visible;
     background: rgb(204, 204, 204);
-    background: rgba(204, 204, 204, .8);
     font-family: font4;
     padding: 0;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
 }
 
 table {
