@@ -4,6 +4,10 @@ body {
     z-index: -5;
 }
 
+#page-content-wrapper {
+    padding: 14px;
+}
+
 @font-face {
     font-family: font1;
     src: url(../fonts/Optima-Italic.ttf);
@@ -113,6 +117,9 @@ div#sidebar-wrapper.toggle-sidebar {
 
 .hfp-headerbuttons {
     text-align: left;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .nav > .hfp-tab.active > a {
@@ -130,9 +137,9 @@ div#sidebar-wrapper.toggle-sidebar {
 #hfp-calendar-dropdown {
     z-index: 1000;
     position: absolute;
-    left: 75px;
+    left: 134px;
     width: auto;
-    top: 180px;
+    top: 200px;
     height: auto;
     overflow-y: visible;
     background: rgb(204, 204, 204);
@@ -150,8 +157,8 @@ table {
 }
 
 #kop-logo {
-    width: 28px;
-    margin-right: 6px;
+    height: 90px;
+    margin-right: 11px;
 }
 
 h1, h2 {
@@ -160,13 +167,23 @@ h1, h2 {
 
 #sub-title {
     font-family: font3;
-    font-size: 28px;
+    font-size: 30px;
+    position: relative;
+    top: 2px;
+    height: 40px;
+}
+
+.p2, .p10 {
+    padding: 0px;
+}
+
+.p10 {
+    flex: 1;
 }
 
 #main-title {
-    font-size: 32px;
+    font-size: 36px;
     font-family: font2;
-    margin-bottom: 10px;
 }
 
 #hfp-progress-bar > * {
@@ -269,21 +286,17 @@ h1, h2 {
 }
 
 .hfp-btn {
-    margin-right: 12px;
+    margin-right: 0px;
     color: #444e52;
     background: transparent;
     font-size: 20px;
     padding: 2px;
     text-shadow: none;
     width: 44px;
-    -webkit-border-radius:0;
-    -moz-border-radius:0;
-    border-radius: 0;
+    -webkit-border-radius:4;
+    -moz-border-radius:4;
+    border-radius: 4;
     border-width: 2px;
-    border-color: #444e52;
-}
-
-.hfp-btn {
     border-color: #444e52;
 }
 
@@ -340,6 +353,7 @@ h1, h2 {
     background: rgba(204, 204, 204, .8);
     color: #444e52;
     border-top-left-radius: 0;
+    height: calc(100% - 110px);
 }
 
 #accordionA {
@@ -920,6 +934,7 @@ span#hfp-percentage {
     border-top-color: #008c44;
     border-left-color: #008c44;
     border-radius: 10px;
+    display:none;
 }
 
 .arrow11 {
