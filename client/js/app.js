@@ -25,17 +25,17 @@ hfpApp.config(['$routeProvider',
 					}
 				}
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?', {
+			.when('/:Type/:Period/:Level/:AffairGroup?/:Affair?/:DepartmentGroup?/:Department?/:FinanceKey?/:Creditor?', {
 				templateUrl: 'views/chartView.html'
 			})
-			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/', {
+			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/:Creditor/', {
 				templateUrl: 'views/chartView.html'
 			})
-			.when('/:income/:Period/:Level/:Department/:FinanceKey/', {
+			.when('/:income/:Period/:Level/:Department/:FinanceKey/:Creditor/', {
 				templateUrl: 'views/chartView.html'
 			})
 			.otherwise( {
-				redirectTo: '/expenses/2015-0/0/n/n/n/n/n/'
+				redirectTo: '/expenses/2015-0/0/n/n/n/n/n/n/'
 			});
 	}
 ]);
@@ -44,20 +44,21 @@ hfpApp.config(['$routeProvider',
 *		Addition to be able to prevent reload of page when URL changes
 * */
 hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
-	//console.log($location.path());
 	var original = $location.path;
-	$location.path = function (path, reload, callback, option, choice, nextLevel) {
+	$location.path = function (path, reload, callback, option, choice, nextLevel, isUnchoosingCreditor) {
 		if (reload === false) {
 			var lastRoute = $route.current;
 			var un = $rootScope.$on('$locationChangeSuccess', function () {
 				$route.current = lastRoute;
 				un();
 
+				// If we are going to level 7 from any other level AND there is a creditor selected.
+				var to7fromAnyOtherWithSelectedCreditor = nextLevel === 7 && hfpResource.getLevel() !== 7 && $rootScope.options[7].currChoice !== -1;
 				hfpResource.parseRouteParams($location.path().split('/'));
-				hfpResource.showMeTheMoney().then(function() {
+				hfpResource.showMeTheMoney(false, to7fromAnyOtherWithSelectedCreditor).then(function() {
 					// If there is a callback, then call it once data has been fetched
 					if (callback) {
-						callback(option, choice, nextLevel);
+						callback(option, choice, nextLevel, isUnchoosingCreditor);
 					}
 				});
 			});

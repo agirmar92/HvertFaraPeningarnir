@@ -15,7 +15,7 @@ const api = express();
 const elasticClient = new elasticsearch.Client({
     host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
-const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "Creditor" ];
+const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "CreditorID" ];
 api.use(bodyParser.json());
 
 const timeProcessor = (period) => {
@@ -142,7 +142,7 @@ api.post('/updateDatabase', (req, res) => {
         labels [ { key: <KeyOfProperty>, level: <LevelOfProperty>, label: <LabelOfProperty> } ]
 	}
 */
-api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
+api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) => {
     let period                = req.params.per;
     const level               = req.params.lvl;
     const affairGroupID       = req.params.agroup;
@@ -150,11 +150,13 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const departmentGroupID   = req.params.dgroup;
     const departmentID        = req.params.dep;
     const financeKeyID        = req.params.fin;
+    const creditorID          = req.params.cre;
     let mustAffairGroup       = {};
     let mustAffair            = {};
     let mustDepartmentGroup   = {};
     let mustDepartment        = {};
     let mustFinanceKey        = {};
+    let mustCreditor          = {};
     let aggregator            = aggs[level];
     /*	Checking if we need to change period
         (user asking for whole year or quarter)
@@ -170,12 +172,13 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     const from = foo.from;
     const to = foo.to;
 
-    const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
+    const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID, creditorID];
     let undef;
     let labels = [];
-
+    
     // Find the index and keys for drilled properties
-    for (let i = 0; i < fieldValues.length - 1; i++) {
+    const len = fieldValues.length;
+    for (let i = 0; i < len - 2; i++) {
         if (fieldValues[i] !== 'all') {
             labels.push({
                 key: fieldValues[i],
@@ -184,8 +187,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
             });
         }
     }
-
-    if (fieldValues[fieldValues.length - 1] !== 'all') {
+    if (fieldValues[len - 2] !== 'all') {
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -202,6 +204,13 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                 label: aggs[i]
             });
         }
+    }
+    if (fieldValues[len - 1] !== 'all') {
+        labels.push({
+            key: fieldValues[len - 1],
+            level: aggs.length - 1,
+            label: 'Creditor'
+        });
     }
 
 	// Generate database queries based on parameters
@@ -220,6 +229,9 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
     if (financeKeyID !== 'all') {
         const field = determineTypeOfFinanceKey(financeKeyID) + "FinanceKey";
         mustFinanceKey = { "prefix": { [field]: { "value": financeKeyID } } };
+    }
+    if (creditorID !== 'all') {
+        mustCreditor = { "term": { "CreditorID": creditorID } };
     }
 
     const ind = 'hfp-' + year;
@@ -264,7 +276,8 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                         mustAffair,
                         mustDepartmentGroup,
                         mustDepartment,
-                        mustFinanceKey
+                        mustFinanceKey,
+                        mustCreditor
                     ]
                 }
             },
@@ -278,18 +291,26 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                         "size": 0
                     },
                     "aggs" : {
-                        "sum_amount": { "sum": { "field": "Amount" } }
-                    }
+                        "sum_amount": { "sum": { "field": "Amount" } },
+                        "aggs": {
+                            "terms": {
+                                "field": "Creditor"
+                            }
+                        }
+                    },
                 },
                 "total_amount": { "sum": { "field": "Amount" }}
             }
         }
-    }).then((doc) => {
+    }).then((doc) => {console.log(labels);
         // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
-            labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
-        }
-
+            if (labels[i].label === 'Creditor') {
+                labels[i].label = doc.hits.hits[0]._source[labels[i].label];
+            } else {
+                labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+            }
+        }console.log(labels);
         // store the response from the database
         const slices = doc.aggregations.amounts.buckets;
         const totalCredit = doc.aggregations.total_amount.value;
@@ -334,7 +355,8 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
                             mustAffair,
                             mustDepartmentGroup,
                             mustDepartment,
-                            mustFinanceKey
+                            mustFinanceKey,
+                            mustCreditor
                         ]
                     }
                 },
@@ -423,13 +445,15 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
         labels [ { key: <KeyOfProperty>, level: <LevelOfProperty>, label: <LabelOfProperty> } ]
     }
  */
-api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
-    let period              = req.params.per;
+api.get('/joint-revenue/:per/:lvl/:dep/:fin/:cre', (req, res) => {
+    let period                = req.params.per;
     const level               = req.params.lvl;
     const departmentID        = req.params.dep;
     const financeKeyID        = req.params.fin;
+    const creditorID          = req.params.cre;
     let mustDepartment        = {};
     let mustFinanceKey        = {};
+    let mustCreditor          = {};
     let aggregator            = aggs[parseInt(level)];
 
     const year = period.substring(0,4);
@@ -440,11 +464,12 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     const from = foo.from;
     const to = foo.to;
 
-    const fieldValues = [departmentID, financeKeyID];
+    const fieldValues = [departmentID, financeKeyID, creditorID];
     let undef;
     let labels = [];
 
     // Find the index and keys for drilled properties
+    const len = fieldValues.length;
     if (fieldValues[0] !== 'all') {
         labels.push({
             key: fieldValues[0],
@@ -452,7 +477,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
             label: aggs[3]
         });
     }
-    if (fieldValues[fieldValues.length - 1] !== 'all') {
+    if (fieldValues[len - 2] !== 'all') {
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -469,6 +494,13 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
                 label: aggs[i]
             });
         }
+    }
+    if (fieldValues[len - 1] !== 'all') {
+        labels.push({
+            key: fieldValues[len - 1],
+            level: aggs.length - 1,
+            label: 'Creditor'
+        });
     }
 
     if (departmentID !== 'all') {
@@ -490,6 +522,11 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
                 "prefix": { "FinanceKey": { "value": financeKeyID } }
             };
         }
+    }
+    if (creditorID !== 'all') {
+        mustCreditor = {
+            "prefix": { "CreditorID": { "value": creditorID } }
+        };
     }
 
     const ind = 'hfp-' + year;
@@ -527,7 +564,8 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
                             }
                         },  // Drilldown
                         mustDepartment,
-                        mustFinanceKey
+                        mustFinanceKey,
+                        mustCreditor
                     ]
                 }
             },
@@ -549,7 +587,11 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
     }).then((doc) => {
         // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
-            labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+            if (labels[i].label === 'Creditor') {
+                labels[i].label = doc.hits.hits[0]._source[labels[i].label];
+            } else {
+                labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+            }
         }
 
         // store the response from the database
@@ -593,7 +635,8 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
                             },
                             // Drilldown
                             mustDepartment,
-                            mustFinanceKey
+                            mustFinanceKey,
+                            mustCreditor
                         ]
                     }
                 },
@@ -677,19 +720,21 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin', (req, res) => {
         labels [ { key: <KeyOfProperty>, level: <LevelOfProperty>, label: <LabelOfProperty> } ]
     }
  */
-api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) => {
-    let period              = req.params.per;
+api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) => {
+    let period                = req.params.per;
     const level               = req.params.lvl;
     const affairGroupID       = req.params.agroup;
     const affairID            = req.params.aff;
     const departmentGroupID   = req.params.dgroup;
     const departmentID        = req.params.dep;
     const financeKeyID        = req.params.fin;
+    const creditorID          = req.params.cre;
     let mustAffairGroup       = {};
     let mustAffair            = {};
     let mustDepartmentGroup   = {};
     let mustDepartment        = {};
     let mustFinanceKey        = {};
+    let mustCreditor          = {};
     let aggregator            = aggs[level];
     /*	Checking if we need to change period
      (user asking for whole year or quarter)
@@ -705,11 +750,12 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     const from = foo.from;
     const to = foo.to;
 
-    const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID];
+    const fieldValues = [affairGroupID, affairID, departmentGroupID, departmentID, financeKeyID, creditorID];
     let labels = [];
 
     // Find the index and keys for drilled properties
-    for (let i = 0; i < fieldValues.length - 1; i++) {
+    let len = fieldValues.length;
+    for (let i = 0; i < len - 2; i++) {
         if (fieldValues[i] !== 'all') {
             labels.push({
                 key: fieldValues[i],
@@ -718,7 +764,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
             });
         }
     }
-    if (fieldValues[fieldValues.length - 1] !== 'all') {
+    if (fieldValues[len - 2] !== 'all') {
         const typeFin = determineTypeOfFinanceKey(financeKeyID);
         let it;
         if (typeFin === 'Primary') {
@@ -735,6 +781,13 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
                 label: aggs[i]
             });
         }
+    }
+    if (fieldValues[len - 1] !== 'all') {
+        labels.push({
+            key: fieldValues[len - 1],
+            level: aggs.length - 1,
+            label: 'Creditor'
+        });
     }
 
     // Generate database queries based on parameters
@@ -758,6 +811,9 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
         } else {
             mustFinanceKey = { "prefix": { "FinanceKey": { "value": financeKeyID } } };
         }
+    }
+    if (creditorID !== 'all') {
+        mustCreditor = { "prefix": { "CreditorID": { "value": creditorID } } };
     }
 
     const ind = 'hfp-' + year;
@@ -807,8 +863,8 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
                             "prefix": {
                                 "PrimaryFinanceKey": { "value": "0" }
                             }
-                        }
-
+                        },
+                        mustCreditor
                     ]
                 }
             },
@@ -831,7 +887,11 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
     }).then((doc) => {
         // Find the labels of the drilled down labels in affair/department AND finance key (if any)
         for (let i = 0; i < labels.length; i++) {
-            labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+            if (labels[i].label === 'Creditor') {
+                labels[i].label = doc.hits.hits[0]._source[labels[i].label];
+            } else {
+                labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
+            }
         }
 
         // store the response from the database
@@ -888,7 +948,8 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin', (req, res) 
                                         "value": "0"
                                     }
                                 }
-                            }
+                            },
+                            mustCreditor
                         ]
                     }
                 },

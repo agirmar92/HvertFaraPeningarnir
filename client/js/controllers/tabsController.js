@@ -80,7 +80,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     * */
     $scope.optionClicked = function(optionId) {
         // Find the correct index of route parameter
-        var paramPosition = Math.min(4, optionId);
+        var paramPosition = (optionId === 7) ? 5 : Math.min(4, optionId);
         if ($rootScope.type === 'joint-revenue') {
             paramPosition -= 3;
         }
@@ -106,16 +106,16 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     * */
     $scope.choiceClicked = function(option, choice) {
         // If user is at the deepest level
-        if (option === 7) {
+        if (option === 8) {
             return;
         }
 
-        var paramPosition = Math.min(4, option);
+        var paramPosition = (option === 7) ? 5 : Math.min(4, option);
         if ($rootScope.type === 'joint-revenue') {
             paramPosition -= 3;
         }
 
-        var nextLevel = option + 1;
+        var nextLevel = (option === 7) ? option : option + 1;
         var newFieldValue;
         var newPathPrefix = $location.path().split('/');
 
@@ -124,7 +124,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
             newFieldValue = $rootScope.options[option].choices[choice].key;
 
             // Find the next level to expand
-            while (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) {
+            while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
                 nextLevel++;
             }
 
@@ -144,7 +144,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
         // Change the path
-        $location.path(newPathPrefix, false, tabResource.choiceClicked, option, choice, nextLevel);
+        $location.path(newPathPrefix, false, tabResource.choiceClicked, option, choice, nextLevel, (option === 7 && $rootScope.options[option].currChoice !== -1 && hfpResource.getLevel() === 7));
     };
 
     $scope.resetApp = function () {

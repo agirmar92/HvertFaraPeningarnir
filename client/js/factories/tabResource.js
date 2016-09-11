@@ -8,7 +8,18 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
     /*
     *       Animates the choice clicked in the sidebar
     * */
-        factory.choiceClicked = function(option, choice, nextLevel) {
+    factory.choiceClicked = function(option, choice, nextLevel, isUnchoosingCreditor) {
+        // If unchoosing a creditor while being in the top level
+        if (isUnchoosingCreditor) {
+            $rootScope.options[option].currChoice = -1;
+            return;
+        }
+        
+        // If choosing a creditor the choices array has been reduced to a single entry, so the choice is always = 0
+        if (option === 7) {
+            choice = 0;
+        }
+
         // If another choice is already chosen, un-choose it
         if ($rootScope.options[option].currChoice !== choice && $rootScope.options[option].currChoice !== -1) {
             $rootScope.options[option].choices[$rootScope.options[option].currChoice].chosen = false;
@@ -52,6 +63,7 @@ hfpApp.factory('tabResource', function($http, $q, $rootScope) {
     factory.optionClicked = function(optionId) {
         factory.toggleOption(optionId);
 
+        // Unchoose the current choice before expanding the option
         if ($rootScope.options[optionId].currChoice !== -1) {
             $rootScope.options[optionId].currChoice = -1;
         }

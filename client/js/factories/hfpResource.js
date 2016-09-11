@@ -30,6 +30,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     var departmentGroup = "all";
     var department = "all";
     var financeKey = "all";
+    var creditor = "all";
     var pieHeight = 0;
     var pieWidth = 0;
     var pieRadius = 0;
@@ -98,6 +99,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     };
     factory.getFinanceKey = function() {
         return financeKey;
+    };
+    factory.getCreditor = function() {
+        return creditor;
     };
     factory.getPieHeight = function() {
         return pieHeight;
@@ -186,6 +190,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     factory.setFinanceKey = function(newFinanceKey) {
         financeKey = newFinanceKey;
     };
+    factory.setCreditor = function(newCreditor) {
+        creditor = newCreditor;
+    };
     factory.setPieHeight = function(newPieHeight) {
         pieHeight = newPieHeight;
     };
@@ -208,13 +215,13 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       and recreates that charts to show the newly fetched data.
     *       If parameter 'firstTime' is true, then this is the app initialization.
     * */
-    factory.showMeTheMoney = function(firstTime) {
+    factory.showMeTheMoney = function(firstTime, to7fromAnyOtherWithSelectedCreditor) {
         var deferred = $q.defer();
         var queryURL;
         if (factory.getType() !== 'joint-revenue') {
-            queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
+            queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getAffairGroup() + '/' + this.getAffair() + '/' + this.getDepartmentGroup() + '/' + this.getDepartment() + '/' + this.getFinanceKey() + '/' + this.getCreditor();
         } else {
-            queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getDepartment() + '/' + this.getFinanceKey();
+            queryURL = API_URL + this.getType() + '/' + this.getPeriod() + '/' + this.getLevel() + '/' + this.getDepartment() + '/' + this.getFinanceKey() + '/' + this.getCreditor();
         }
 
         $http({
@@ -233,7 +240,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
-            //console.log('currLvl: ' + currLvl);
 
             var newSlices = [];
             var newChoices = [];
@@ -249,23 +255,23 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     cut = 3;
                 } else if (currLvl === 3) {
                     cut = 6;
-                } else if (currLvl > 6) {
+                } else if (currLvl === 7) {
                     newSlice = {
-                        label: slice.key,
+                        label: slice.aggs.buckets[0].key,
                         value: slice.sum_amount.value,
                         color: COLORS[sliceNumber % 8],
                         key: slice.key
                     };
                     newChoice = {
                         choiceId: sliceNumber,
-                        content: slice.key,
-                        chosen: false,
+                        content: slice.aggs.buckets[0].key,
+                        chosen: to7fromAnyOtherWithSelectedCreditor, // Set to true if flag is set
                         key: slice.key
                     };
                 } else {
                     cut = 4;
                 }
-                if (factory.getLevel() < 7) {
+                if (currLvl < 7) {
                     newSlice = {
                         label: slice.key.substring(cut + 1),
                         value: slice.sum_amount.value,
@@ -407,7 +413,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 if ($rootScope.expandedOption !== value) {
                     tabResource.toggleOption(value);
                 }
-            }
+            }//console.log(param, value);
             factory['set' + param](value);
         }
     };
@@ -457,11 +463,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         }
         if ($rootScope.type === 'expenses') {
             console.log(factory.getPeriod());
-            $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+            $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
-            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/', false);
+            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n', false);
         } else {
-            $location.path('/special-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n', false);
+            $location.path('/special-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         }
         //$rootScope.resetPeriod();
     };
@@ -603,49 +609,48 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             },
             callbacks: {
                 onClickSegment: function(a) {
+                    console.log('a: ');
+                    console.log(a);
                     factory.setClickedSlice(a.data.key);
                     factory.setClickedSliceLabel(a.data.label);
                     var id = a.data.key;
-                    var key;
+                    var pathIndex;
                     var lvl = factory.getLevel();
                     // Finding position to cut off label
-                    if (parseInt(lvl) === 0) {
-                        key = 0;
-                    } else if (lvl === 1) {
-                        key = 1;
-                    } else if (lvl === 2) {
-                        key = 2;
-                    } else if (lvl === 3) {
-                        key = 3;
+                    if (lvl >= 0 && lvl <= 3) {
+                        pathIndex = lvl;
                     } else if (lvl > 3 && lvl < 7) {
-                        key = 4;
+                        pathIndex = 4;
+                    } else if (lvl === 7) {
+                        pathIndex = 5;
                     }
 
-                    if (lvl < 7) {
+                    if (lvl < 8) {
                         // Create a new path with a incremented level
                         var newPathPrefix = $location.path().split('/');
                         var typ = factory.getType();
                         if (typ === 'joint-revenue') {
-                            key -= 3;
+                            pathIndex -= 3;
                         }
 
                         // fetch the equivalent choice in the sidebar and select it
-                        var option = factory.getLevel();
-                        var eqChoice = factory.searchChoice(id, $rootScope.options[option].choices);
+                        var currLevel = factory.getLevel();
+                        var eqChoice = factory.searchChoice(id, $rootScope.options[currLevel].choices);
 
-                        var nextLevel = option + 1;
-                        while (nextLevel < 8 && $rootScope.options[nextLevel].currChoice !== -1) {
+                        var nextLevel = (currLevel === 7) ? currLevel : currLevel + 1;
+                        // Find the highest level (smallest number) that has no locked in choice.
+                        while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
                             nextLevel++;
                         }
 
                         newPathPrefix[3] = nextLevel;
-                        newPathPrefix[4 + key] = id;
+                        newPathPrefix[4 + pathIndex] = id;
 
                         newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
 
                         // Change the path
                         $rootScope.$apply(function(){
-                            $location.path(newPathPrefix, false, tabResource.choiceClicked, option, eqChoice.choiceId, nextLevel);
+                            $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
                         });
                     }
                 }
