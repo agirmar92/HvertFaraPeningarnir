@@ -255,22 +255,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     cut = 3;
                 } else if (currLvl === 3) {
                     cut = 6;
-                } else if (currLvl === 7) {
-                    newSlice = {
-                        label: slice.aggs.buckets[0].key,
-                        value: slice.sum_amount.value,
-                        color: COLORS[sliceNumber % 8],
-                        key: slice.key
-                    };
-                    newChoice = {
-                        choiceId: sliceNumber,
-                        content: slice.aggs.buckets[0].key,
-                        chosen: to7fromAnyWithSelectedCreditor, // Set to true if flag is set
-                        key: slice.key
-                    };
                 } else {
-                    cut = 4;
+                    cut = slice.key.indexOf('-');
                 }
+
                 if (currLvl < 7) {
                     newSlice = {
                         label: slice.key.substring(cut + 1),
@@ -284,7 +272,21 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         chosen: false,
                         key: slice.key.substring(0,cut)
                     };
+                } else {
+                    newSlice = {
+                        label: slice.aggs.buckets[0].key,
+                        value: slice.sum_amount.value,
+                        color: COLORS[sliceNumber % 8],
+                        key: slice.key
+                    };
+                    newChoice = {
+                        choiceId: sliceNumber,
+                        content: slice.aggs.buckets[0].key,
+                        chosen: to7fromAnyWithSelectedCreditor, // Set to true if flag is set
+                        key: slice.key
+                    };
                 }
+
                 sliceNumber++;
                 if (newSlice.value > 0) {
                     newSlices.push(newSlice);

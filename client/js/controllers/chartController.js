@@ -169,11 +169,17 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             net = hfpResource.toNr($scope.divider) - hfpResource.getTotalDebit();
             $scope.netto = hfpResource.toNrWithDots(net);
             $scope.nettoPerc = (net / hfpResource.toNr($scope.divider) * 100).toFixed(1);
+            $scope.extraDimLabel = "Sértekjur";
+            $scope.extraDim = hfpResource.toNrWithDots(hfpResource.getTotalDebit());
+            $scope.extraDimPerc = (hfpResource.getTotalDebit() / hfpResource.toNr($scope.divider) * 100).toFixed(1);
         } else {
             $scope.divider = hfpResource.getTotalDebit();
             net = hfpResource.toNr($scope.divider) - hfpResource.getTotalCredit();
             $scope.netto = hfpResource.toNrWithDots(net);
             $scope.nettoPerc = (net / hfpResource.toNr($scope.divider) * 100).toFixed(1);
+            $scope.extraDimLabel = "Kostnaðarliðir";
+            $scope.extraDim = hfpResource.toNrWithDots(hfpResource.getTotalCredit());
+            $scope.extraDimPerc = (hfpResource.getTotalCredit() / hfpResource.toNr($scope.divider) * 100).toFixed(1);
         }
         $scope.slices.map(function(slice) {
             slice.percentage = (slice.value / hfpResource.toNr($scope.divider) * 100).toFixed(1);
