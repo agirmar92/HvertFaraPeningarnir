@@ -1062,6 +1062,10 @@ ul, li {
 
 }
 
+.orderable {
+    cursor: pointer;
+}
+
 /*
     Loading spinner. Credit to http://tobiasahlin.com/spinkit/
 */

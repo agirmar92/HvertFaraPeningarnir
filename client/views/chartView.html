@@ -254,12 +254,12 @@
         <div id="table" class="table-editable hfp-hidden">
             <table class="table">
                 <tr class="head">
-                    <th class="col1" ng-class="{'hfp-hidden':level===7}">Kóti</th>
-                    <th class="col2">Heiti</th>
-                    <th class="col3">Upphæð</th>
+                    <th ng-click="orderBy('key')" class="col1 orderable" ng-class="{'hfp-hidden':level===7}">Kóti <span ng-if="toOrderBy === 'key'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
+                    <th ng-click="orderBy('label')" class="col2 orderable">Heiti <span ng-if="toOrderBy === 'label'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
+                    <th ng-click="orderBy('')" class="col3 orderable">Upphæð <span ng-if="toOrderBy === ''" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
                     <th class="col4">Hlutfall</th>
                 </tr>
-                <tr ng-repeat="s in slices">
+                <tr ng-repeat="s in slices | orderBy:toOrderBy:orderReverse">
                     <td class="col1" ng-class="{'hfp-hidden':level===7}">{{s.key}}</td>
                     <td class="col2">{{s.label}}</td>
                     <td class="col3">{{s.value}} kr.</td>

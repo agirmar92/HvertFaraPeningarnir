@@ -92,6 +92,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.breadcrumb = '';
 
     $scope.dataReady = false;
+    $scope.toOrderBy = '';
+    $scope.orderReverse = false;
 
     /*
     *       scope variables
@@ -109,6 +111,16 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     * */
     $scope.resetApp = function() {
         hfpResource.resetApp();
+    };
+
+    $scope.orderBy = function(newOrderBy) {
+        if (newOrderBy === $scope.toOrderBy) {
+            // If we should reverse the order
+            $scope.orderReverse = !$scope.orderReverse;
+        } else {
+            // Else switch the order by
+            $scope.toOrderBy = newOrderBy;
+        }
     };
 
     $scope.drawerToggled = false;
@@ -154,6 +166,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.changeView = function () {
         $rootScope.pieView = !$rootScope.pieView;
         $("#mypie").toggleClass("hfp-hidden");
+        $("#miniChartContainer").toggleClass("hfp-hidden");
         $("#table").toggleClass("hfp-hidden");
     };
 
