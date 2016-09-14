@@ -162,7 +162,7 @@
     </script>
 
     <!-- Alert message-->
-    <span ng-controller="alertController"> <uib-alert  class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}"  close="closeAlert($index)" dismiss-on-timeout="5000" >{{alert.msg}}</uib-alert></span>
+    <span ng-controller="alertController"> <uib-alert  class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}"  close="closeAlert($index)" dismiss-on-timeout="10000" >{{alert.msg}}</uib-alert></span>
 
 </body>
 </html>

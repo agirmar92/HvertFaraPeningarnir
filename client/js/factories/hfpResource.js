@@ -236,11 +236,12 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 factory.setPieWidth($('#hfpPie').width());
                 factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
             }
+            var pieContainsNegativeSlice = false;
 
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
-
+            
             var newSlices = [];
             var newChoices = [];
             response.slices.map(function(slice) {
@@ -288,9 +289,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 }
 
                 sliceNumber++;
-                if (newSlice.value > 0) {
-                    newSlices.push(newSlice);
-                    newChoices.push(newChoice);
+                newSlices.push(newSlice);
+                newChoices.push(newChoice);
+                if (newSlice.value < 0) {
+                    pieContainsNegativeSlice = true;
                 }
             });
 
@@ -304,10 +306,18 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     // Notify user that there are too many slices in the cake to show. Switching to table
                     $rootScope.alerts.push({
                         type: 'info',
-                        msg: 'Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
+                        msg: 'ATH! Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
                     });
                 }
                 $rootScope.changeView();
+            }
+
+            // Show notification if negative slices exist in pie
+            if (pieContainsNegativeSlice) {
+                $rootScope.alerts.push({
+                    type: 'info',
+                    msg: 'ATH! Þessi kaka inniheldur sneiðar með mínusgildi sem eru ekki sýndar í kökunni. Skiptu yfir í töflusýn til að sjá öll gögnin.'
+                });
             }
 
             // Change the total amounts

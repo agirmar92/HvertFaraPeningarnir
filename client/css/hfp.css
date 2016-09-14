@@ -970,8 +970,11 @@ span#hfp-percentage {
     width: 75%;
     left: 50%;
     margin-left: -37.5%;
+    background-color: #ffbd6d;
+    background-image: none;
+    border: none;
+    border-radius: 0px;
 }
-
 /*
     Table
 */
