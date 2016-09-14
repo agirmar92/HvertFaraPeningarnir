@@ -32,7 +32,8 @@ hfpApp.constant('MONTHS', [
 ]);
 hfpApp.constant('YEARS', [
     "2014",
-    "2015"
+    "2015",
+    "2016"
 ]);
 hfpApp.constant('QUARTERS', [
     "veldu",
