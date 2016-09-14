@@ -66,9 +66,9 @@ const timeProcessor = (period) => {
 
 const determineTypeOfFinanceKey = (key) => {
     if (key !== 'all') {
-        if (key.substring(1,4) === '000') {
+        if (key.substring(key.length - 3, key.length) === '000') {
             return "Primary";
-        } else if (key.substring(2,4) === '00' || key.substring(1,3) == '00') {
+        } else if (key.substring(key.length - 2, key.length) === '00' || key.substring(1,3) == '00') {
             return "Secondary";
         } else {
             return "";
@@ -199,7 +199,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) =>
         }
         for (let i = 4; i <= it; i++) {
             labels.push({
-                key: 'atli', // pun intended, doesn't matter the value, only the length ;)
+                key: (financeKeyID.length === 4) ? 'atli' : 'darri', // pun intended, doesn't matter the value, only the length ;)
                 level: i,
                 label: aggs[i]
             });
@@ -489,7 +489,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin/:cre', (req, res) => {
         }
         for (let i = 4; i <= it; i++) {
             labels.push({
-                key: 'atli', // pun intended, doesn't matter the value, only the length ;)
+                key: (financeKeyID.length === 4) ? 'atli' : 'darri', // pun intended, doesn't matter the value, only the length ;)
                 level: i,
                 label: aggs[i]
             });
@@ -781,7 +781,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, 
         }
         for (let i = 4; i <= it; i++) {
             labels.push({
-                key: 'atli', // pun intended, doesn't matter the value, only the length ;)
+                key: (financeKeyID.length === 4) ? 'atli' : 'darri', // pun intended, doesn't matter the value, only the length ;)
                 level: i,
                 label: aggs[i]
             });
