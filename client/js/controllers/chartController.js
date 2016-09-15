@@ -91,14 +91,16 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.dynamic = 100;
     $rootScope.breadcrumb = '';
 
-    $scope.dataReady = false;
-    $scope.toOrderBy = '';
-    $scope.orderReverse = false;
-
     /*
     *       scope variables
     * */
     $scope.max = 100;
+    $scope.dataReady = false;
+    $scope.toOrderBy = '';
+    $scope.orderReverse = false;
+    $scope.drawerToggled = false;
+    $scope.infoShow = false;
+
 
     // If there are any route params we should parse them
     hfpResource.parseRouteParams($location.path().split('/'));
@@ -123,7 +125,10 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         }
     };
 
-    $scope.drawerToggled = false;
+    $scope.toggleInfo = function() {
+        $scope.infoShow = !$scope.infoShow;
+    }
+
     $scope.toggleDrawer = function() {
         $("#sidebar-wrapper").toggleClass("toggle-sidebar");
         $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
