@@ -40,8 +40,8 @@ hfpApp.config(['$routeProvider',
 hfpApp.run(function ($route, $rootScope, $location, $analytics, hfpResource, $window) {
 	$rootScope.$on('$routeChangeSuccess', function(event) {
 		// Send Google analytics info
-		//$window.ga('send', 'pageview', { page: $location.url() });
-		$analytics.pageTrack($location.url());
+		$window.ga('send', 'pageview', { page: $location.url() });
+		$analytics.pageTrack($location.path());
 	});
 
 	var original = $location.path;
