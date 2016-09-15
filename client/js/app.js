@@ -37,10 +37,11 @@ hfpApp.config(['$routeProvider',
 /*
 *		Addition to be able to prevent reload of page when URL changes
 * */
-hfpApp.run(function ($route, $rootScope, $location, hfpResource, $window) {
+hfpApp.run(function ($route, $rootScope, $location, $analytics, hfpResource, $window) {
 	$rootScope.$on('$routeChangeSuccess', function(event) {
 		// Send Google analytics info
-		$window.ga('send', 'pageview', { page: $location.url() });
+		//$window.ga('send', 'pageview', { page: $location.url() });
+		$analytics.pageTrack($location.url());
 	});
 
 	var original = $location.path;
