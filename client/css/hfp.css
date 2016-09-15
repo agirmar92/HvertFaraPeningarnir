@@ -964,16 +964,16 @@ span#hfp-percentage {
 }
 
 .hfp-alert {
-    position: fixed;
-    bottom: 10px;
+    bottom: 100px;
+    left: 20%;
     z-index: 100;
-    width: 75%;
-    left: 50%;
-    margin-left: -37.5%;
+    width: 60%;
+    margin: 3px;
     background-color: #ffbd6d;
     background-image: none;
     border: none;
     border-radius: 0px;
+    color: inherit;
 }
 /*
     Table

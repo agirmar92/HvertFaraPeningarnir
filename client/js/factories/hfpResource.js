@@ -310,6 +310,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                     });
                 }
                 $rootScope.changeView();
+                // No need to show the "negative slices" alert because user will already be looking at tableview
+                pieContainsNegativeSlice = false;
             }
 
             // Show notification if negative slices exist in pie
