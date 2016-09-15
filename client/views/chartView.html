@@ -228,7 +228,7 @@
         <div class="col-xs-4 hfp-div hfp-meter" id="hfp-progress">
             <uib-progressbar data-toggle="tooltip" title="Hlutfall af heildarsummu bæjarins" id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
             <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-
-               <i class="glyphicon glyphicon-info-sign" ng-click="toggleInfo()"></i>
+               <i class="glyphicon glyphicon-info-sign" ng-click="toggleInfo()" title="Smelltu til að sjá nánari útskýringu." ></i>
             </p>
             <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
         </div>
