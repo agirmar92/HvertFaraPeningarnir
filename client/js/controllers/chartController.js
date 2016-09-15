@@ -197,6 +197,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $scope.slices.map(function(slice) {
             slice.percentage = (slice.value / hfpResource.toNr($scope.divider) * 100).toFixed(1);
             slice.value = hfpResource.toNrWithDots(slice.value);
+            slice.key = parseInt(slice.key);
         });
         $scope.level = hfpResource.getLevel();
     };

@@ -256,7 +256,7 @@
                 <tr class="head">
                     <th ng-click="orderBy('key')" class="col1 orderable" ng-class="{'hfp-hidden':level===7}">Kóti <span ng-if="toOrderBy === 'key'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
                     <th ng-click="orderBy('label')" class="col2 orderable">Heiti <span ng-if="toOrderBy === 'label'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
-                    <th ng-click="orderBy('')" class="col3 orderable">Upphæð <span ng-if="toOrderBy === ''" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
+                    <th ng-click="orderBy('')" class="col3 orderable"><span ng-if="toOrderBy === ''" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span> Upphæð</th>
                     <th class="col4">Hlutfall</th>
                 </tr>
                 <tr ng-repeat="s in slices | orderBy:toOrderBy:orderReverse">

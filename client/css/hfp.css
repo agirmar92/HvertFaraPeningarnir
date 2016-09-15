@@ -998,6 +998,7 @@ header {
 
 .col1 {
     text-align: left;
+    min-width: 60px; 
 }
 
 .col2 {
@@ -1067,6 +1068,10 @@ ul, li {
 
 .orderable {
     cursor: pointer;
+}
+.orderable:hover {
+    text-decoration: underline;
+    color: #5594ba;
 }
 
 /*
