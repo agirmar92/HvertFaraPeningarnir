@@ -45,7 +45,7 @@ hfpApp.constant('QUARTERS', [
 ]);
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'expenses',
-    'PERIOD': '2014-0',
+    'PERIOD': '2016-0',
     'LEVEL_EX': 0,
     'LEVEL_IN': 3
 });
