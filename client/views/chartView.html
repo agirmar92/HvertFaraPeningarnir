@@ -228,7 +228,7 @@
         <div class="col-xs-4 hfp-div hfp-meter" id="hfp-progress">
             <uib-progressbar data-toggle="tooltip" title="Hlutfall af heildarsummu bæjarins" id="hfp-progress-bar" max="max" value="dynamic"><span id="hfp-percentage" style="vertical-align: middle; white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
             <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'expenses'" class="hfp-curr-amount">kr. {{totalCredit}}.-
-               <i title="Þessi bókhaldsgögn innihalda allar innri færslur hjá Kópavogsbæ (tekjur og gjöld) milli stofnanna. Þetta er gert til að sjáist hvað rekstur einstaka rekstrareininga kostar í raun. Þetta þýðir að summa tekna og gjalda verður töluvert hærri en kemur fram í samstæðureikningi Kópavogsbæjar." class="glyphicon glyphicon-info-sign"></i>
+               <i class="glyphicon glyphicon-info-sign" ng-click="toggleInfo()"></i>
             </p>
             <p data-toggle="tooltip" title="Heildarsumma köku" ng-if="type === 'joint-revenue' || type === 'special-revenue'" class="hfp-curr-amount">kr. {{totalDebit}}.-</p>
         </div>
@@ -288,6 +288,14 @@
     </div>
     <!-- /#table-area -->
 
+    <div class="info-text-background" ng-click="toggleInfo()" ng-if="infoShow">
+        <div class="info-text">
+            <p><b>Gjöld: </b>Til einföldunar og til að auka notagildi vefsins þá eru hér sameinuð í eina tölu rekstrargjöld, innri viðskipti og eignfærslur og hér nefnd gjöld. Þetta er gert til að hægt sé að sýna betur umsvif einstakra rekstrareininga.  Þetta þýðir að summa tekna og gjalda sem hér sést getur verið hærri en kemur fram í samstæðureikningi Kópavogsbæjar.</p>
+            <p><b>Innri viðskipti: </b>Útgjöld sem mynda jafnháar tekjur annarsstaðar í reikningsskilum Kópavogs og er ætlað heimfæra útgjöld sem rekstur einstakra eininga veldur, á réttan stað. Sem dæmi um svona kostnað má nefna innri leigu, en hún er gjaldfærð á viðkomandi stofnun en samsvarandi tekjufærsla myndast hjá eignasjóði. Aðrir svona liðir eru t.d. rekstur upplýsingatæknideildar, þjónusta við eignasjóð, þjónusta við Vatnsveitu og Fráveitu, bæjarvinna, sumarvinna, vélavinna, rekstur fasteigna sem dreifist á fleiri en eina deild, útdeiling kostnaðar vegna íþróttahúsa o.fl.</p>
+            <p><b>Sérstök athugasemd vegna 2016: </b>Athugið að vefurinn sýnir færslur í bókhaldi eins og þær eru bókaðar á fyrirspurnartíma. Þar er ekki að finna reikningshaldslegar færslur (reclass og adjust) vegna uppgjöra sem unnar eru utan bókhaldskerfisins vegna viðkomandi uppgjörs. Í lok árs eru uppgjörsfærslur keyrðar inn og þá er líklegt að flokkun gjalda hér, geti tekið breytingum á milli einstaka deilda og fjárhagslykla hjá Kópavogsbæ.</p>
+            <p>Gerður er fyrirvari um mögulegar villur.</p>
+        </div>
+    </div>
+
 </div>
 <!-- /#page-content-wrapper -->
-
