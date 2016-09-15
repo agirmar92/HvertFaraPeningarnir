@@ -162,22 +162,17 @@
     <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-81532902-4', 'auto');
         });
     </script>
 
     <!-- Alert message-->
     <span ng-controller="alertController"> <uib-alert  class="col-xs-12 hfp-alert" ng-repeat="alert in alerts" type="{{alert.type}}"  close="closeAlert($index)" dismiss-on-timeout="10000" >{{alert.msg}}</uib-alert></span>
-
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-81532902-4', 'auto');
-//        ga('send', 'pageview');
-
-    </script>
 
 </body>
 </html>
