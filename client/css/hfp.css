@@ -754,28 +754,28 @@ span#hfp-percentage {
 #instr1 {
     position: absolute;
     top: 130px;
-    left: 60px;
+    left: 90px;
     width: 60%;
 }
 
 #instr2 {
     position: relative;
     top: 130px;
-    left: 60px;
+    left: 112px;
     width: 60%;
 }
 
 #instr4 {
     position: relative;
     top: 130px;
-    left: 60px;
+    left: 88px;
     width: 60%;
 }
 
 #instr3 {
     position: relative;
     top: 130px;
-    left: 60px;
+    left: 110px;
     width: 60%;
 }
 
@@ -833,8 +833,8 @@ span#hfp-percentage {
 
 #instr12 {
     position: absolute;
-    bottom: 40%;
-    right: 20%;
+    top: 28%;
+    right: 251px;
     width: auto;
 }
 

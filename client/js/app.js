@@ -1,5 +1,5 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
-	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'firebase']);
+	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'firebase', 'angulartics', 'angulartics.google.analytics']);
 
 
 /*
@@ -37,7 +37,13 @@ hfpApp.config(['$routeProvider',
 /*
 *		Addition to be able to prevent reload of page when URL changes
 * */
-hfpApp.run(function ($route, $rootScope, $location, hfpResource) {
+hfpApp.run(function ($route, $rootScope, $location, $analytics, hfpResource, $window) {
+	$rootScope.$on('$routeChangeSuccess', function(event) {
+		// Send Google analytics info
+		$window.ga('send', 'pageview', { page: $location.url() });
+		$analytics.pageTrack($location.path());
+	});
+
 	var original = $location.path;
 	$location.path = function (path, reload, callback, option, choice, nextLevel, isUnchoosingCreditor) {
 		if (reload === false) {

@@ -7,24 +7,14 @@
 	<title>Kópavogsbær | Hvert fara peningarnir</title>
 	<link rel='shortcut icon' href='fav.ico' type='image/x-icon' />
 
-	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular/angular-csp.css">
 	<link rel="stylesheet" type="text/css" href="node_modules/angular-loading-bar/src/loading-bar.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="css/simple-sidebar.css">
 	<link rel="stylesheet" type="text/css" href="css/animate.css">
 	<link rel="stylesheet" type="text/css" href="css/hfp.css">
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-78226558-1', 'auto');
-        ga('send', 'pageview');
-
-    </script>
 </head>
 <body ng-app="hvertfarapeningarnir">
 
@@ -107,17 +97,29 @@
     <img class="footer-banner" src="koptop.png" alt="">
     <!-- /#footer-picture -->
 
-	<script src="node_modules/angular/angular.js" type="text/javascript" charset="utf-8"></script>
-	<script src="node_modules/angular-animate/angular-animate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="node_modules/angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="node_modules/angular-animate/angular-animate.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.1.2.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-	<script src="node_modules/angular-route/angular-route.js" type="text/javascript" charset="utf-8"></script>
+	<script src="node_modules/angular-route/angular-route.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="node_modules/angular-loading-bar/src/loading-bar.js" type="text/javascript" charset="utf-8"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
 	<script src="js/d3pie.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/canvasjs.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <!--Analytics-->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-81532902-4', 'auto');
+    </script>
+    <script src="node_modules/angulartics/dist/angulartics.min.js"></script>
+    <script src="node_modules/angulartics-google-analytics/dist/angulartics-ga.min.js"></script>
 
     <!--Firebase -->
     <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
