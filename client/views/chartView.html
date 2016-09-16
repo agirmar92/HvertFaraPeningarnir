@@ -254,13 +254,13 @@
         <div id="table" class="table-editable hfp-hidden">
             <table class="table">
                 <tr class="head">
-                    <th ng-click="orderBy('key')" class="col1 orderable" ng-class="{'hfp-hidden':level===7}">Kóti <span ng-if="toOrderBy === 'key'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
+                    <th ng-click="orderBy('key')" class="col1 orderable"">Kóti <span ng-if="toOrderBy === 'key'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
                     <th ng-click="orderBy('label')" class="col2 orderable">Heiti <span ng-if="toOrderBy === 'label'" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span></th>
                     <th ng-click="orderBy('')" class="col3 orderable"><span ng-if="toOrderBy === ''" ng-class="{'glyphicon-arrow-up' : orderReverse, 'glyphicon-arrow-down' : !orderReverse}" class="glyphicon"></span> Upphæð</th>
                     <th class="col4">Hlutfall</th>
                 </tr>
                 <tr ng-repeat="s in slices | orderBy:toOrderBy:orderReverse">
-                    <td class="col1" ng-class="{'hfp-hidden':level===7}">{{s.key}}</td>
+                    <td class="col1">{{s.key}}</td>
                     <td class="col2">{{s.label}}</td>
                     <td class="col3">{{s.value}} kr.</td>
                     <td class="col4">{{s.percentage}}%</td>

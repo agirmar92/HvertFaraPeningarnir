@@ -291,7 +291,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 sliceNumber++;
                 newSlices.push(newSlice);
                 newChoices.push(newChoice);
-                if (newSlice.value < 0) {
+                if (newSlice.value <= 0) {
                     pieContainsNegativeSlice = true;
                 }
             });
