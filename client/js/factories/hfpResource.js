@@ -211,6 +211,52 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     * */
 
     /*
+    *       Method for when a slice is clicked, prepares the app for a drilldown.
+    * */
+    factory.sliceClicked = function(a) {
+        factory.setClickedSlice(a.data.key);
+        factory.setClickedSliceLabel(a.data.label);
+        var id = a.data.key;
+        var pathIndex;
+        var lvl = factory.getLevel();
+        // Finding position to cut off label
+        if (lvl >= 0 && lvl <= 3) {
+            pathIndex = lvl;
+        } else if (lvl > 3 && lvl < 7) {
+            pathIndex = 4;
+        } else if (lvl === 7) {
+            pathIndex = 5;
+        }
+
+        if (lvl < 8) {
+            // Create a new path with a incremented level
+            var newPathPrefix = $location.path().split('/');
+            var typ = factory.getType();
+            if (typ === 'joint-revenue') {
+                pathIndex -= 3;
+            }
+
+            // fetch the equivalent choice in the sidebar and select it
+            var currLevel = factory.getLevel();
+            var eqChoice = factory.searchChoice(id, $rootScope.options[currLevel].choices);
+
+            var nextLevel = (currLevel === 7) ? currLevel : currLevel + 1;
+            // Find the highest level (smallest number) that has no locked in choice.
+            while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
+                nextLevel++;
+            }
+
+            newPathPrefix[3] = nextLevel;
+            newPathPrefix[4 + pathIndex] = id;
+
+            newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
+
+            // Change the path
+            $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
+        }
+    };
+
+    /*
     *       Method that takes the current state of the app (filters and variables), fetches the appropriate data
     *       and recreates that charts to show the newly fetched data.
     *       If parameter 'firstTime' is true, then this is the app initialization.
@@ -630,48 +676,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             },
             callbacks: {
                 onClickSegment: function(a) {
-                    factory.setClickedSlice(a.data.key);
-                    factory.setClickedSliceLabel(a.data.label);
-                    var id = a.data.key;
-                    var pathIndex;
-                    var lvl = factory.getLevel();
-                    // Finding position to cut off label
-                    if (lvl >= 0 && lvl <= 3) {
-                        pathIndex = lvl;
-                    } else if (lvl > 3 && lvl < 7) {
-                        pathIndex = 4;
-                    } else if (lvl === 7) {
-                        pathIndex = 5;
-                    }
-
-                    if (lvl < 8) {
-                        // Create a new path with a incremented level
-                        var newPathPrefix = $location.path().split('/');
-                        var typ = factory.getType();
-                        if (typ === 'joint-revenue') {
-                            pathIndex -= 3;
-                        }
-
-                        // fetch the equivalent choice in the sidebar and select it
-                        var currLevel = factory.getLevel();
-                        var eqChoice = factory.searchChoice(id, $rootScope.options[currLevel].choices);
-
-                        var nextLevel = (currLevel === 7) ? currLevel : currLevel + 1;
-                        // Find the highest level (smallest number) that has no locked in choice.
-                        while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
-                            nextLevel++;
-                        }
-
-                        newPathPrefix[3] = nextLevel;
-                        newPathPrefix[4 + pathIndex] = id;
-
-                        newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
-
-                        // Change the path
-                        $rootScope.$apply(function(){
-                            $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
-                        });
-                    }
+                    factory.sliceClicked(a);
                 }
             },
             tooltips: {

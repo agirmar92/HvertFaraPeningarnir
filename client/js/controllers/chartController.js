@@ -127,7 +127,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
 
     $scope.toggleInfo = function() {
         $scope.infoShow = !$scope.infoShow;
-    }
+    };
 
     $scope.toggleDrawer = function() {
         $("#sidebar-wrapper").toggleClass("toggle-sidebar");
@@ -138,6 +138,18 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.toggleCalendar = function() {
         $("#hfp-calendar-dropdown").toggleClass("hfp-hidden");
         $("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-time");
+    };
+
+    /*
+    *       When a list item is clicked inside the table view, drill down just as if a slice was clicked.
+    * */
+    $scope.listItemClicked = function(listItem) {
+        // If the listItem has a string representive of the key, replace the int version with the string.
+        if (listItem.data.keyString) {
+            listItem.data.key = listItem.data.keyString;
+            delete listItem.data['keyString'];
+        }
+        hfpResource.sliceClicked(listItem);
     };
 
     $rootScope.toggleInstructions = function () {
@@ -203,6 +215,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             slice.percentage = (slice.value / hfpResource.toNr($scope.divider) * 100).toFixed(1);
             slice.value = hfpResource.toNrWithDots(slice.value);
             if (hfpResource.getLevel() !== 3 && hfpResource.getLevel() !== 7) {
+                // Preserve the key as a string as well.
+                slice.keyString = slice.key;
                 slice.key = parseInt(slice.key);
             }
         });

@@ -8,11 +8,11 @@ body {
     padding: 14px;
 }
 
-@font-face {
-    font-family: font1;
-    src: url(../fonts/Optima-Italic.ttf);
-    font-weight: bold;
-}
+/*@font-face {*/
+    /*font-family: font1;*/
+    /*src: url(../fonts/Optima-Italic.ttf);*/
+    /*font-weight: bold;*/
+/*}*/
 
 @font-face {
     font-family: font2;
@@ -29,10 +29,10 @@ body {
     src: url(../fonts/Lato-Regular.ttf);
 }
 
-@font-face {
-    font-family: font5;
-    src: url(../fonts/FultonsHand_Regular.ttf);
-}
+/*@font-face {*/
+    /*font-family: font5;*/
+    /*src: url(../fonts/FultonsHand_Regular.ttf);*/
+/*}*/
 
 html, body {
     height: 100%;
@@ -210,9 +210,9 @@ h1, h2 {
     overflow: visible;
 }
 
-#hfp.percentage {
-    /*font-family: font4;*/
-
+.table-list-item:hover {
+    background-color: rgb(103, 230, 141);
+    cursor: pointer;
 }
 
 #clear-filters {
@@ -1118,12 +1118,12 @@ ul, li {
 }
 
 @media(max-width:725px) {
-    #hfp-progress > * {
+    #hfp-progress {
         display: none;
     }
 
-    #hfp-progress, .hfp-headerbuttons {
-        width: 16.66666667%;
+    div.hfp-headerbuttons.col-xs-4, div.hfp-title.col-xs-4 {
+        width: 50%;
     }
 
     #hfp-breadcrumb {
@@ -1135,13 +1135,36 @@ ul, li {
     }
 }
 
-@media(max-width:373px) {
+@media(max-width:500px) {
     #main-title {
         font-size: 26px;
     }
 
     #sub-title {
         font-size: 22px;
+    }
+
+    #table {
+        display: block;
+    }
+
+    #chartContainer, .hfp-table-btn {
+        display: none;
+    }
+
+    #table {
+        position: initial;
+        width: 100vw;
+        margin-left: -13px;
+        height: 100%;
+        left: 0;
+        top: 0;
+        margin-top: 10px;
+    }
+
+    .container {
+        padding: 0;
+        height: calc(100% - 122px);
     }
 }
 
@@ -1151,10 +1174,16 @@ ul, li {
     }
 }
 
-@media(max-width:1089px) {
-    .hfp-header {
-        height: 122px;
+@media(max-width:378px) {
+    .col1 {
+        display: none;
     }
+}
+
+@media(max-width:1089px) {
+    /*.hfp-header {*/
+        /*height: 122px;*/
+    /*}*/
 
     .hfp-chart {
         height: calc(100% - 122px);
@@ -1203,4 +1232,9 @@ ul, li {
     z-index: 2999;
 }
 
-
+@media (min-width: 0px) {
+    .nav-tabs.nav-justified > li {
+        display: table-cell;
+        width: 1%;
+    }
+}
