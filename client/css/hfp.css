@@ -8,11 +8,11 @@ body {
     padding: 14px;
 }
 
-@font-face {
-    font-family: font1;
-    src: url(../fonts/Optima-Italic.ttf);
-    font-weight: bold;
-}
+/*@font-face {*/
+    /*font-family: font1;*/
+    /*src: url(../fonts/Optima-Italic.ttf);*/
+    /*font-weight: bold;*/
+/*}*/
 
 @font-face {
     font-family: font2;
@@ -29,10 +29,10 @@ body {
     src: url(../fonts/Lato-Regular.ttf);
 }
 
-@font-face {
-    font-family: font5;
-    src: url(../fonts/FultonsHand_Regular.ttf);
-}
+/*@font-face {*/
+    /*font-family: font5;*/
+    /*src: url(../fonts/FultonsHand_Regular.ttf);*/
+/*}*/
 
 html, body {
     height: 100%;
@@ -46,6 +46,10 @@ html, body {
 
 .hfp-header {
     height: 90px;
+}
+
+.xs-hfp-header {
+    display: none;
 }
 
 .hfp-div {
@@ -139,7 +143,7 @@ div#sidebar-wrapper.toggle-sidebar {
     position: absolute;
     left: 134px;
     width: auto;
-    top: 200px;
+    top: 96px;
     height: auto;
     overflow-y: visible;
     background: rgb(204, 204, 204);
@@ -210,9 +214,9 @@ h1, h2 {
     overflow: visible;
 }
 
-#hfp.percentage {
-    /*font-family: font4;*/
-
+.table-list-item:hover {
+    background-color: rgb(103, 230, 141);
+    cursor: pointer;
 }
 
 #clear-filters {
@@ -986,14 +990,16 @@ header {
 }
 
 #table {
-    position: absolute;
-    width: 600px;
-    height: 400px;
-    left: 50%;
-    top: 55%;
-    margin-left: -300px;
-    margin-top: -200px;
     overflow: scroll;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-top: 12px;
+}
+
+.container {
+    height: calc(100% - 90px);
+    max-width: 750px;
 }
 
 .col1 {
@@ -1111,19 +1117,19 @@ ul, li {
     Styles making HFP responsive
 */
 
-@media(max-width:768px) {
+@media(max-width:864px) {
     .hfp-secondary-btn {
         display: none;
     }
 }
 
 @media(max-width:725px) {
-    #hfp-progress > * {
+    #hfp-progress {
         display: none;
     }
 
-    #hfp-progress, .hfp-headerbuttons {
-        width: 16.66666667%;
+    div.hfp-headerbuttons.col-xs-4, div.hfp-title.col-xs-4 {
+        width: 50%;
     }
 
     #hfp-breadcrumb {
@@ -1135,13 +1141,95 @@ ul, li {
     }
 }
 
-@media(max-width:373px) {
+@media(max-width:500px) {
+    .hfp-header {
+        display: none;
+    }
+
+    .xs-hfp-header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding: 0 14px;
+    }
+
+    .stacked-buttons {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+
+    .xs-hfp-header-buttons {
+        float: left;
+    }
+
+    .xs-hfp-title {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .xs-hfp-title * {
+        flex-grow: 1;
+    }
+
+    .xs-kop-logo {
+        height: 24px;
+    }
+
+    .menu-toggle {
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        z-index: 1;
+    }
+
+    .calendar-toggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 1;
+    }
+
+    .stacked-buttons .hfp-btn:first-child {
+        margin-bottom: 6px;
+    }
+
     #main-title {
-        font-size: 26px;
+        font-size: 30px;
+        margin: 16px 0 4px 0;
     }
 
     #sub-title {
-        font-size: 22px;
+        font-size: 20px;
+        height: auto;
+        margin-top: 7px;
+    }
+
+    #hfp-calendar-dropdown {
+        right: 14px;
+        top: 54px;
+    }
+
+    #chartContainer, .hfp-table-btn {
+        display: none;
+    }
+
+    #table {
+        display: block;
+        position: initial;
+        width: 100%;
+        margin-left: 0;
+        height: 100%;
+        left: 0;
+        top: 0;
+        margin-top: 12px;
+    }
+
+    .container {
+        padding: 0;
+        height: calc(100% - 122px);
     }
 }
 
@@ -1151,21 +1239,9 @@ ul, li {
     }
 }
 
-@media(max-width:1089px) {
-    .hfp-header {
-        height: 122px;
-    }
-
-    .hfp-chart {
-        height: calc(100% - 122px);
-    }
-
-    .hfp-curr-amount {
-        top: 80px;
-    }
-
-    #hfp-calendar-dropdown {
-        top: 195px;
+@media(max-width:378px) {
+    .col1 {
+        display: none;
     }
 }
 
@@ -1203,4 +1279,9 @@ ul, li {
     z-index: 2999;
 }
 
-
+@media (min-width: 0px) {
+    .nav-tabs.nav-justified > li {
+        display: table-cell;
+        width: 1%;
+    }
+}

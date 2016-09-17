@@ -127,17 +127,29 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
 
     $scope.toggleInfo = function() {
         $scope.infoShow = !$scope.infoShow;
-    }
+    };
 
     $scope.toggleDrawer = function() {
         $("#sidebar-wrapper").toggleClass("toggle-sidebar");
-        $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
+        $(".menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
         $scope.drawerToggled = !$scope.drawerToggled;
     };
 
     $scope.toggleCalendar = function() {
         $("#hfp-calendar-dropdown").toggleClass("hfp-hidden");
-        $("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-time");
+        $(".calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-time");
+    };
+
+    /*
+    *       When a list item is clicked inside the table view, drill down just as if a slice was clicked.
+    * */
+    $scope.listItemClicked = function(listItem) {
+        // If the listItem has a string representive of the key, replace the int version with the string.
+        if (listItem.data.keyString) {
+            listItem.data.key = listItem.data.keyString;
+            delete listItem.data['keyString'];
+        }
+        hfpResource.sliceClicked(listItem);
     };
 
     $rootScope.toggleInstructions = function () {
@@ -163,14 +175,18 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.netto = 0;
     $scope.nettoPerc = 0;
     $scope.type = '';
-    $rootScope.pieView = true;
+
+    $rootScope.isMobile = function() {
+        return ($(window).width() < 500);
+    };
+    $rootScope.pieView = !$rootScope.isMobile();
 
     /*
     *   Changes the view from pie to table or table to pie.
     */
     $rootScope.changeView = function () {
         $rootScope.pieView = !$rootScope.pieView;
-        $("#mypie").toggleClass("hfp-hidden");
+        $("#chartContainer").toggleClass("hfp-hidden");
         $("#miniChartContainer").toggleClass("hfp-hidden");
         $("#table").toggleClass("hfp-hidden");
     };
@@ -203,6 +219,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             slice.percentage = (slice.value / hfpResource.toNr($scope.divider) * 100).toFixed(1);
             slice.value = hfpResource.toNrWithDots(slice.value);
             if (hfpResource.getLevel() !== 3 && hfpResource.getLevel() !== 7) {
+                // Preserve the key as a string as well.
+                slice.keyString = slice.key;
                 slice.key = parseInt(slice.key);
             }
         });

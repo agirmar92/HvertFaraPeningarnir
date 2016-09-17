@@ -210,6 +210,64 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Public methods
     * */
 
+    $rootScope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+        if (phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
+
+    /*
+    *       Method for when a slice is clicked, prepares the app for a drilldown.
+    * */
+    factory.sliceClicked = function(a) {
+        factory.setClickedSlice(a.data.key);
+        factory.setClickedSliceLabel(a.data.label);
+        var id = a.data.key;
+        var pathIndex;
+        var lvl = factory.getLevel();
+        // Finding position to cut off label
+        if (lvl >= 0 && lvl <= 3) {
+            pathIndex = lvl;
+        } else if (lvl > 3 && lvl < 7) {
+            pathIndex = 4;
+        } else if (lvl === 7) {
+            pathIndex = 5;
+        }
+
+        if (lvl < 8) {
+            // Create a new path with a incremented level
+            var newPathPrefix = $location.path().split('/');
+            var typ = factory.getType();
+            if (typ === 'joint-revenue') {
+                pathIndex -= 3;
+            }
+
+            // fetch the equivalent choice in the sidebar and select it
+            var currLevel = factory.getLevel();
+            var eqChoice = factory.searchChoice(id, $rootScope.options[currLevel].choices);
+
+            var nextLevel = (currLevel === 7) ? currLevel : currLevel + 1;
+            // Find the highest level (smallest number) that has no locked in choice.
+            while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
+                nextLevel++;
+            }
+
+            newPathPrefix[3] = nextLevel;
+            newPathPrefix[4 + pathIndex] = id;
+
+            newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
+            // Change the path
+            $rootScope.safeApply(function(){
+                $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
+            });
+        }
+    };
+
     /*
     *       Method that takes the current state of the app (filters and variables), fetches the appropriate data
     *       and recreates that charts to show the newly fetched data.
@@ -237,7 +295,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
             }
             var pieContainsNegativeSlice = false;
-
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
@@ -301,7 +358,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             // Change view if required (too many slices)
             if (($rootScope.pieView && factory.getSlices().length >= 30) ||
-               (!$rootScope.pieView && factory.getSlices().length < 30)) {
+               (!$rootScope.pieView && factory.getSlices().length < 30) && !$rootScope.isMobile()) {
                 if ($rootScope.pieView) {
                     // Notify user that there are too many slices in the cake to show. Switching to table
                     $rootScope.alerts.push({
@@ -315,7 +372,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
 
             // Show notification if negative slices exist in pie
-            if (pieContainsNegativeSlice) {
+            if (pieContainsNegativeSlice && !$rootScope.isMobile()) {
                 $rootScope.alerts.push({
                     type: 'info',
                     msg: 'ATH! Þessi kaka inniheldur sneiðar með mínusgildi sem eru ekki sýndar í kökunni. Skiptu yfir í töflusýn til að sjá öll gögnin.'
@@ -429,7 +486,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 if ($rootScope.expandedOption !== value) {
                     tabResource.toggleOption(value);
                 }
-            }//console.log(param, value);
+            }
             factory['set' + param](value);
         }
     };
@@ -478,7 +535,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.options[i].currChoice = -1;
         }
         if ($rootScope.type === 'expenses') {
-            console.log(factory.getPeriod());
             $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
             $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n/n', false);
@@ -630,48 +686,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             },
             callbacks: {
                 onClickSegment: function(a) {
-                    factory.setClickedSlice(a.data.key);
-                    factory.setClickedSliceLabel(a.data.label);
-                    var id = a.data.key;
-                    var pathIndex;
-                    var lvl = factory.getLevel();
-                    // Finding position to cut off label
-                    if (lvl >= 0 && lvl <= 3) {
-                        pathIndex = lvl;
-                    } else if (lvl > 3 && lvl < 7) {
-                        pathIndex = 4;
-                    } else if (lvl === 7) {
-                        pathIndex = 5;
-                    }
-
-                    if (lvl < 8) {
-                        // Create a new path with a incremented level
-                        var newPathPrefix = $location.path().split('/');
-                        var typ = factory.getType();
-                        if (typ === 'joint-revenue') {
-                            pathIndex -= 3;
-                        }
-
-                        // fetch the equivalent choice in the sidebar and select it
-                        var currLevel = factory.getLevel();
-                        var eqChoice = factory.searchChoice(id, $rootScope.options[currLevel].choices);
-
-                        var nextLevel = (currLevel === 7) ? currLevel : currLevel + 1;
-                        // Find the highest level (smallest number) that has no locked in choice.
-                        while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
-                            nextLevel++;
-                        }
-
-                        newPathPrefix[3] = nextLevel;
-                        newPathPrefix[4 + pathIndex] = id;
-
-                        newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
-
-                        // Change the path
-                        $rootScope.$apply(function(){
-                            $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
-                        });
-                    }
+                    factory.sliceClicked(a);
                 }
             },
             tooltips: {
