@@ -175,7 +175,11 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.netto = 0;
     $scope.nettoPerc = 0;
     $scope.type = '';
-    $rootScope.pieView = true;
+
+    $rootScope.isMobile = function() {
+        return ($(window).width() < 500);
+    };
+    $rootScope.pieView = !$rootScope.isMobile();
 
     /*
     *   Changes the view from pie to table or table to pie.

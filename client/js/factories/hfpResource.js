@@ -210,6 +210,17 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Public methods
     * */
 
+    $rootScope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+        if (phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
+
     /*
     *       Method for when a slice is clicked, prepares the app for a drilldown.
     * */
@@ -250,9 +261,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             newPathPrefix[4 + pathIndex] = id;
 
             newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
-
             // Change the path
-            $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
+            $rootScope.safeApply(function(){
+                $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
+            });
         }
     };
 
@@ -283,7 +295,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
             }
             var pieContainsNegativeSlice = false;
-
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
@@ -347,7 +358,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             // Change view if required (too many slices)
             if (($rootScope.pieView && factory.getSlices().length >= 30) ||
-               (!$rootScope.pieView && factory.getSlices().length < 30)) {
+               (!$rootScope.pieView && factory.getSlices().length < 30) && !$rootScope.isMobile()) {
                 if ($rootScope.pieView) {
                     // Notify user that there are too many slices in the cake to show. Switching to table
                     $rootScope.alerts.push({
@@ -361,7 +372,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             }
 
             // Show notification if negative slices exist in pie
-            if (pieContainsNegativeSlice) {
+            if (pieContainsNegativeSlice && !$rootScope.isMobile()) {
                 $rootScope.alerts.push({
                     type: 'info',
                     msg: 'ATH! Þessi kaka inniheldur sneiðar með mínusgildi sem eru ekki sýndar í kökunni. Skiptu yfir í töflusýn til að sjá öll gögnin.'
@@ -475,7 +486,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 if ($rootScope.expandedOption !== value) {
                     tabResource.toggleOption(value);
                 }
-            }//console.log(param, value);
+            }
             factory['set' + param](value);
         }
     };
@@ -524,7 +535,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             $rootScope.options[i].currChoice = -1;
         }
         if ($rootScope.type === 'expenses') {
-            console.log(factory.getPeriod());
             $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
             $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n/n', false);
