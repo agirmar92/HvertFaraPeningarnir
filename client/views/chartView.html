@@ -149,68 +149,13 @@
             </span>
             <span class="p10">
                 <h1 id="sub-title">Kópavogsbær</h1>
-                <button data-toggle="tooltip" title="Hliðarstika" class="btn btn-default hfp-btn glyphicon glyphicon-menu-hamburger hfp-primary-btn" ng-click="toggleDrawer()" id="menu-toggle"></button>
-                <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn" ng-click="toggleCalendar()" id="calendar-toggle"></button>
+                <button data-toggle="tooltip" title="Hliðarstika" class="btn btn-default hfp-btn glyphicon glyphicon-menu-hamburger hfp-primary-btn menu-toggle" ng-click="toggleDrawer()"></button>
+                <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn calendar-toggle" ng-click="toggleCalendar()"></button>
                 <button data-toggle="tooltip" title="Töfluform" class="change-view-toggle btn btn-default hfp-btn glyphicon glyphicon-list-alt hfp-table-btn" ng-if="pieView" ng-click="changeView()"></button>
                 <button data-toggle="tooltip" title="Kökuform" class="change-view-toggle btn btn-default hfp-btn glyphicon fa fa-pie-chart hfp-table-btn" ng-if="!pieView" ng-click="changeView()"></button>
                 <button data-toggle="tooltip" title="Leiðbeiningar" class="btn btn-default hfp-btn glyphicon glyphicon-question-sign hfp-secondary-btn" ng-click="toggleHelp()" id="instructions-toggle" data-toggle="modal" data-target="#myModal"></button>
                 <button data-toggle="tooltip" title="Loka leiðbeiningum" class="btn btn-default hfp-btn glyphicon glyphicon-remove hfp-secondary-btn hfp-hidden" ng-click="toggleInstructions()" id="instructions-close"></button>
             </span>
-
-
-            <!-- calendar-dropdown -->
-            <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
-
-                <div class="calendar-row row">
-                    <div class="col-xs-12">
-                        <span>Ár: </span>
-                        <div class="btn-group" uib-dropdown>
-                            <button id="year-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                                {{selectedYear}} <span class="caret"></span>
-                            </button>
-                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li role="menuitem" ng-repeat="year in years">
-                                    <a href="javascript:void(0)" ng-click="setYear(year)">{{year}} <span ng-if="year === '2016'">(jan - jún)</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calendar-row row">
-                    <div class="col-xs-12">
-                        <span>Ársfjórðungur: </span>
-                        <div class="btn-group" uib-dropdown>
-                            <button id="quarter-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
-                                {{selectedQuarter}} <span class="caret"></span>
-                            </button>
-                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
-                                <li role="menuitem" ng-repeat="quarter in quarters">
-                                    <a href="javascript:void(0)" ng-click="setQuarter(quarter)">{{quarter}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calendar-row row">
-                    <div class="col-xs-12">
-                        <span>Mánuður: </span>
-                        <div class="btn-group" uib-dropdown>
-                            <button id="month-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                                {{selectedMonth}} <span class="caret"></span>
-                            </button>
-                            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li role="menuitem" ng-repeat="month in months">
-                                    <a href="javascript:void(0)" ng-click="setMonth($index)">{{month}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- /#calendar-dropdown -->
         </div>
         <!-- /#header-buttons -->
 
@@ -236,6 +181,82 @@
 
     </div>
     <!-- /#header -->
+
+    <!-- xs-header -->
+    <div class="row xs-hfp-header">
+
+        <!-- header-buttons -->
+        <span class="xs-hfp-header-buttons">
+            <span class="stacked-buttons">
+                <button data-toggle="tooltip" title="Hliðarstika" class="btn btn-default hfp-btn glyphicon glyphicon-menu-hamburger hfp-primary-btn menu-toggle" ng-click="toggleDrawer()"></button>
+                <button data-toggle="tooltip" title="Tímabil" class="btn btn-default hfp-btn glyphicon glyphicon-time hfp-primary-btn calendar-toggle" ng-click="toggleCalendar()"></button>
+            </span>
+        </span>
+        <!-- /#header-buttons -->
+
+        <!-- title -->
+        <div class="xs-hfp-title" ng-click="resetApp()">
+            <h1 id="sub-title"><img src="koplogo.gif" alt="" class="xs-kop-logo"> Kópavogsbær</h1>
+            <h2 id="main-title">Hvert fara peningarnir?</h2>
+        </div>
+        <!-- /#title -->
+
+    </div>
+    <!-- /#xs-header -->
+
+    <!-- calendar-dropdown -->
+    <div id="hfp-calendar-dropdown" class="hfp-hidden container" ng-controller="calendarController">
+
+        <div class="calendar-row row">
+            <div class="col-xs-12">
+                <span>Ár: </span>
+                <div class="btn-group" uib-dropdown>
+                    <button id="year-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                        {{selectedYear}} <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem" ng-repeat="year in years">
+                            <a href="javascript:void(0)" ng-click="setYear(year)">{{year}} <span ng-if="year === '2016'">(jan - jún)</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-row row">
+            <div class="col-xs-12">
+                <span>Ársfjórðungur: </span>
+                <div class="btn-group" uib-dropdown>
+                    <button id="quarter-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
+                        {{selectedQuarter}} <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button 	">
+                        <li role="menuitem" ng-repeat="quarter in quarters">
+                            <a href="javascript:void(0)" ng-click="setQuarter(quarter)">{{quarter}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-row row">
+            <div class="col-xs-12">
+                <span>Mánuður: </span>
+                <div class="btn-group" uib-dropdown>
+                    <button id="month-dropdown" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                        {{selectedMonth}} <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem" ng-repeat="month in months">
+                            <a href="javascript:void(0)" ng-click="setMonth($index)">{{month}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /#calendar-dropdown -->
 
     <!-- chart-area -->
     <div id="chartContainer" class="row hfp-chart">

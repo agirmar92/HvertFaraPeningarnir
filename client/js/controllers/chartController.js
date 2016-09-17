@@ -131,13 +131,13 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
 
     $scope.toggleDrawer = function() {
         $("#sidebar-wrapper").toggleClass("toggle-sidebar");
-        $("#menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
+        $(".menu-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-menu-hamburger");
         $scope.drawerToggled = !$scope.drawerToggled;
     };
 
     $scope.toggleCalendar = function() {
         $("#hfp-calendar-dropdown").toggleClass("hfp-hidden");
-        $("#calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-time");
+        $(".calendar-toggle").toggleClass("glyphicon-remove").toggleClass("glyphicon-time");
     };
 
     /*
@@ -186,7 +186,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     */
     $rootScope.changeView = function () {
         $rootScope.pieView = !$rootScope.pieView;
-        $("#mypie").toggleClass("hfp-hidden");
+        $("#chartContainer").toggleClass("hfp-hidden");
         $("#miniChartContainer").toggleClass("hfp-hidden");
         $("#table").toggleClass("hfp-hidden");
     };
