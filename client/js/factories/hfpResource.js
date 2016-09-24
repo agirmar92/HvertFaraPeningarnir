@@ -650,7 +650,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 mainLabel: {
                     color: CHART_TEXT_COLOR,
                     font: "font4",
-                    fontSize: Math.max(12, factory.getPieRadius() * 0.125)
+                    fontSize: Math.min(20, Math.max(10, factory.getPieRadius() * 0.1))
                 },
                 value: {
                     color: CHART_TEXT_COLOR,
