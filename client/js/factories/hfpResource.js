@@ -294,6 +294,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 factory.setPieWidth($('#hfpPie').width());
                 factory.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
             }
+            $rootScope.alerts = [];
             var pieContainsNegativeSlice = false;
             // Change the slices
             var sliceNumber = 0;
@@ -364,7 +365,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 // Change view if required (too many slices in pie view or not too many slices in table view)
                 if ($rootScope.pieView) {
                     // Notify user that there are too many slices in the pie to show. Switching to table.
-                    $rootScope.alerts = [];
                     $rootScope.alerts.push({
                         type: 'info',
                         msg: 'ATH! Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
@@ -373,7 +373,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 $rootScope.changeView();
             } else if (pieContainsNegativeSlice && $rootScope.pieView && !$rootScope.isMobile()) {
                 // Show notification if negative slices exist in pie
-                $rootScope.alerts = [];
                 $rootScope.alerts.push({
                     type: 'info',
                     msg: 'ATH! Þessi kaka inniheldur sneiðar með mínusgildi sem eru ekki sýndar í kökunni. Skiptu yfir í töflusýn til að sjá öll gögnin.'
