@@ -158,7 +158,7 @@ table {
 }
 
 .hfp-hidden {
-    display: none;
+    display: none !important;
 }
 
 #kop-logo {
@@ -1117,14 +1117,20 @@ ul, li {
     Styles making HFP responsive
 */
 
+@media(max-width:1200px) {
+    #miniChartContainer {
+        display: none;
+    }
+}
+
 @media(max-width:864px) {
-    .hfp-secondary-btn {
+    #miniChartContainer, .hfp-secondary-btn {
         display: none;
     }
 }
 
 @media(max-width:725px) {
-    #hfp-progress {
+    #hfp-progress, .hfp-table-btn {
         display: none;
     }
 

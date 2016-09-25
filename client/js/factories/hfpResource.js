@@ -356,23 +356,24 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             factory.setSlices(newSlices);
             factory.setChoices(newChoices);
 
-            // Change view if required (too many slices)
-            if (($rootScope.pieView && factory.getSlices().length >= 30) ||
+            if ($rootScope.isMobile() && $rootScope.pieView) {
+                // Never display pie in mobile
+                $rootScope.changeView();
+            } else if (($rootScope.pieView && factory.getSlices().length >= 30) ||
                (!$rootScope.pieView && factory.getSlices().length < 30) && !$rootScope.isMobile()) {
+                // Change view if required (too many slices in pie view or not too many slices in table view)
                 if ($rootScope.pieView) {
-                    // Notify user that there are too many slices in the cake to show. Switching to table
+                    // Notify user that there are too many slices in the pie to show. Switching to table.
+                    $rootScope.alerts = [];
                     $rootScope.alerts.push({
                         type: 'info',
                         msg: 'ATH! Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
                     });
                 }
                 $rootScope.changeView();
-                // No need to show the "negative slices" alert because user will already be looking at tableview
-                pieContainsNegativeSlice = false;
-            }
-
-            // Show notification if negative slices exist in pie
-            if (pieContainsNegativeSlice && !$rootScope.isMobile()) {
+            } else if (pieContainsNegativeSlice && $rootScope.pieView && !$rootScope.isMobile()) {
+                // Show notification if negative slices exist in pie
+                $rootScope.alerts = [];
                 $rootScope.alerts.push({
                     type: 'info',
                     msg: 'ATH! Þessi kaka inniheldur sneiðar með mínusgildi sem eru ekki sýndar í kökunni. Skiptu yfir í töflusýn til að sjá öll gögnin.'
@@ -650,7 +651,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                 mainLabel: {
                     color: CHART_TEXT_COLOR,
                     font: "font4",
-                    fontSize: Math.max(12, factory.getPieRadius() * 0.125)
+                    fontSize: Math.min(20, Math.max(10, factory.getPieRadius() * 0.1))
                 },
                 value: {
                     color: CHART_TEXT_COLOR,

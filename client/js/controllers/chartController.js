@@ -177,9 +177,9 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.type = '';
 
     $rootScope.isMobile = function() {
-        return ($(window).width() < 500);
+        return ($(window).width() < 725);
     };
-    $rootScope.pieView = !$rootScope.isMobile();
+    $rootScope.pieView = true;
 
     /*
     *   Changes the view from pie to table or table to pie.
@@ -189,6 +189,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $("#chartContainer").toggleClass("hfp-hidden");
         $("#miniChartContainer").toggleClass("hfp-hidden");
         $("#table").toggleClass("hfp-hidden");
+        $("#tableContainer").toggleClass("hfp-hidden");
     };
 
     /*
