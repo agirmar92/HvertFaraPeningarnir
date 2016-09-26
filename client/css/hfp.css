@@ -16,7 +16,7 @@ body {
 
 @font-face {
     font-family: font2;
-    src: url(../fonts/ufonts.com_gill-sans-mt-bold-italic.ttf);
+    src: url(../fonts/ufonts.com_gill-sans-mt-bold-italic.woff);
 }
 
 @font-face {
@@ -42,6 +42,7 @@ html, body {
 .hfp-content, .hfp-wrapper {
     min-height: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .hfp-header {
@@ -990,11 +991,16 @@ header {
 }
 
 #table {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow: scroll;
     display: block;
     width: 100%;
     height: 100%;
     margin-top: 12px;
+}
+
+#tableContainer {
+    overflow: hidden;
 }
 
 .container {
@@ -1290,4 +1296,8 @@ ul, li {
         display: table-cell;
         width: 1%;
     }
+}
+
+* {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
 }
