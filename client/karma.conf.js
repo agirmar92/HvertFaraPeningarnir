@@ -32,6 +32,7 @@ module.exports = function(config) {
     exclude: [
         'js/canvasjs.min.js',
         'js/d3pie.min.js',
+        'js/d3pie.js',
         'js/controllers/chartController.js'
     ],
 

@@ -1135,7 +1135,7 @@ ul, li {
     }
 }
 
-@media(max-width:725px) {
+@media(max-width:765px) {
     #hfp-progress, .hfp-table-btn {
         display: none;
     }

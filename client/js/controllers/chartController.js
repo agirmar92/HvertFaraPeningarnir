@@ -177,7 +177,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.type = '';
 
     $rootScope.isMobile = function() {
-        return ($(window).width() < 725);
+        return ($(window).width() < 765);
     };
     $rootScope.pieView = true;
 
@@ -186,11 +186,27 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     */
     $rootScope.changeView = function () {
         $rootScope.pieView = !$rootScope.pieView;
-        $("#chartContainer").toggleClass("hfp-hidden");
-        $("#miniChartContainer").toggleClass("hfp-hidden");
-        $("#table").toggleClass("hfp-hidden");
-        $("#tableContainer").toggleClass("hfp-hidden");
+        hfpResource.showMeTheMoney(false, false).then(function() {
+            $("#chartContainer").toggleClass("hfp-hidden");
+            $("#miniChartContainer").toggleClass("hfp-hidden");
+            $("#table").toggleClass("hfp-hidden");
+            $("#tableContainer").toggleClass("hfp-hidden");
+        });
+        redrawPie();
     };
+
+    /*
+    *   Updates the bar chart
+    */
+    $rootScope.updateBarChart = function() {
+        // Recreate the bar chart with a nice animation to hide the ugly transition
+        $("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+            $("#miniChartContainer").removeClass("zoomOut").addClass("zoomIn");
+        });
+        setTimeout(function() {
+            $rootScope.chart.render();
+        }, 500);
+    }
 
     /*
     *   Updates the table view.
@@ -229,27 +245,151 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     };
 
     /*
+    *   Updates the pie view
+    */
+    $rootScope.updatePie = function() {
+        $rootScope.pie.destroy();
+        $rootScope.pie = new d3pie("mypie", {
+            "header": {
+                "title": {
+                    "text": hfpResource.translate() + ", " + hfpResource.tDate(),
+                    "fontSize": 26,
+                    "font": "font4",
+                    "color": "#444e52"
+                },
+                "subtitle": {
+                    "text": hfpResource.getPathLabels(),
+                    "color": "#999999",
+                    "fontSize": 14,
+                    "font": "font4"
+                },
+                "titleSubtitlePadding": 10
+            },
+            size: {
+                canvasWidth: hfpResource.getPieWidth(),       //900,
+                canvasHeight: hfpResource.getPieHeight(),     //500
+                pieOuterRadius: hfpResource.getPieRadius()
+            },
+            data: {
+                content: hfpResource.getSlices()
+            },
+            labels: {
+                outer: {
+                    format: "label",
+                    pieDistance: Math.min((hfpResource.getPieWidth() / 350) * 10, 50)
+                },
+                inner: {
+                    hideWhenLessThanPercentage: 100
+                },
+                mainLabel: {
+                    color: CHART_TEXT_COLOR,
+                    font: "font4",
+                    fontSize: Math.min(20, Math.max(10, hfpResource.getPieRadius() * 0.1))
+                },
+                value: {
+                    color: CHART_TEXT_COLOR,
+                    font: "font4",
+                    fontSize: "12"
+                },
+                lines: {
+                    style: "straight"
+                }
+            },
+            misc: {
+                colors: {
+                    segmentStroke: "null"
+                },
+                gradient: {
+                    percentage: 99,
+                    color: "#1b1b1b"
+                },
+                "canvasPadding": {
+                    "top": 20
+                },
+                "pieCenterOffset": {
+                    "y": -20
+                }
+            },
+            effects: {
+                load: {
+                    speed: 800
+                },
+                pullOutSegmentOnClick: {
+                    effect: "none"
+                }
+            },
+            callbacks: {
+                onClickSegment: function(a) {
+                    hfpResource.sliceClicked(a);
+                },
+                onMouseoverSegment: function(a) {
+                    // JQuery's 'attribute ends with' selector (for IE tooltip bug). Don't try this at home kids.
+                    $("g[id$='_tooltip" + a.index + "']").show();
+                },
+                onMouseoutSegment: function(a) {
+                    $("g[id$='_tooltip" + a.index + "']").hide();
+                }
+            },
+            tooltips: {
+                enabled: true,
+                type: "placeholder",
+                string: "kr. {value} ({percentage}%) ~",
+                styles: {
+                    color: CHART_TEXT_COLOR,
+                    font: "font4",
+                    fontSize: 14,
+                    opacity: 1,
+                    backgroundColor: '#e8e8e8',
+                    backgroundOpacity: '0.9',
+                    padding: 8
+                },
+                placeholderParser: function(index, data) {
+                    var valueStr = data.value.toString();
+                    data.value = "";
+                    var i = valueStr.length;
+                    var j = 1;
+                    while (i > 0) {
+                        if (j % 4 === 0) {
+                            data.value = '.' + data.value;
+                        } else {
+                            data.value = valueStr[i-1] + data.value;
+                            i--;
+                        }
+                        j++;
+                    }
+                }
+            }
+        });
+    }
+
+    /*
      *       Callback function overwrite for when screen size is modified.
      *       Calculates the new size of the chart and bar chart and redraws them.
      * */
     $(window).resize(function() {
-        // Set height and width variables appropriately to the changes
-        hfpResource.setPieHeight($('#hfpPie').height());
-        hfpResource.setPieWidth($('#hfpPie').width());
-        hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
-
-        // Modify the chart's settings and redraw
-        $rootScope.pie.options.size.canvasWidth = hfpResource.getPieWidth();
-        $rootScope.pie.options.size.canvasHeight = hfpResource.getPieHeight();
-        $rootScope.pie.options.size.pieOuterRadius = hfpResource.getPieRadius();
-        $rootScope.pie.options.labels.mainLabel.fontSize = Math.max(12, hfpResource.getPieRadius() * 0.125);
-        $rootScope.pie.options.labels.outer.pieDistance = Math.min((hfpResource.getPieWidth() / 350) * 10, 50);
-        $rootScope.pie.redraw();
-
-        // Modify the bar chart's settings and redraw
-        var miniChartWidth = $('#miniChartContainer').width();
-        $('#miniChartContainer').css({'height': miniChartWidth + 'px'});
+        redrawPie();
     });
+
+    var redrawPie = function() {
+        setTimeout(function() {
+            // Set height and width variables appropriately to the changes
+            hfpResource.setPieHeight($('#hfpPie').height());
+            hfpResource.setPieWidth($('#hfpPie').width());
+            hfpResource.setPieRadius(Math.min($('#hfpPie').width() * 0.2, $('#hfpPie').height() * 0.25));
+
+            // Modify the chart's settings and redraw
+            $rootScope.pie.options.size.canvasWidth = hfpResource.getPieWidth();
+            $rootScope.pie.options.size.canvasHeight = hfpResource.getPieHeight();
+            $rootScope.pie.options.size.pieOuterRadius = hfpResource.getPieRadius();
+            $rootScope.pie.options.labels.mainLabel.fontSize = Math.max(12, hfpResource.getPieRadius() * 0.125);
+            $rootScope.pie.options.labels.outer.pieDistance = Math.min((hfpResource.getPieWidth() / 350) * 10, 50);
+            $rootScope.pie.redraw();
+
+            // Modify the bar chart's settings and redraw
+            var miniChartWidth = $('#miniChartContainer').width();
+            $('#miniChartContainer').css({'height': miniChartWidth + 'px'});
+        }, 250);
+    }
 });
 
 

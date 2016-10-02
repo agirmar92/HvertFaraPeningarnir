@@ -360,17 +360,14 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             if ($rootScope.isMobile() && $rootScope.pieView) {
                 // Never display pie in mobile
                 $rootScope.changeView();
-            } else if (($rootScope.pieView && factory.getSlices().length >= 30) ||
-               (!$rootScope.pieView && factory.getSlices().length < 30) && !$rootScope.isMobile()) {
-                // Change view if required (too many slices in pie view or not too many slices in table view)
-                if ($rootScope.pieView) {
-                    // Notify user that there are too many slices in the pie to show. Switching to table.
-                    $rootScope.alerts.push({
-                        type: 'info',
-                        msg: 'ATH! Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
-                    });
-                }
+            } else if ($rootScope.pieView && factory.getSlices().length >= 30) {
+                // Change to table view if there are too many slices in pie.
                 $rootScope.changeView();
+                // Notify user that there are too many slices in the pie to show. Switching to table.
+                $rootScope.alerts.push({
+                    type: 'info',
+                    msg: 'ATH! Of margar sneiðar í kökunni, gögnin sýnd í töflu í staðinn.'
+                });
             } else if (pieContainsNegativeSlice && $rootScope.pieView && !$rootScope.isMobile()) {
                 // Show notification if negative slices exist in pie
                 $rootScope.alerts.push({
@@ -605,120 +602,9 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
 
-        // Recreate the bar chart with a nice animation to hide the ugly transition
-        $("#miniChartContainer").addClass("zoomOut").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-            $("#miniChartContainer").removeClass("zoomOut").addClass("zoomIn");
-        });
-        setTimeout(function() {
-            $rootScope.chart.render();
-        }, 500);
-
-        // Recreate the pie chart
-        $rootScope.pie.destroy();
-        $rootScope.pie = new d3pie("mypie", {
-            "header": {
-                "title": {
-                    "text": factory.translate() + ", " + factory.tDate(),
-                    "fontSize": 26,
-                    "font": "font4",
-                    "color": "#444e52"
-                },
-                "subtitle": {
-                    "text": factory.getPathLabels(),
-                    "color": "#999999",
-                    "fontSize": 14,
-                    "font": "font4"
-                },
-                "titleSubtitlePadding": 10
-            },
-            size: {
-                canvasWidth: factory.getPieWidth(),       //900,
-                canvasHeight: factory.getPieHeight(),     //500
-                pieOuterRadius: factory.getPieRadius()
-            },
-            data: {
-                content: factory.getSlices()
-            },
-            labels: {
-                outer: {
-                    format: "label",
-                    pieDistance: Math.min((factory.getPieWidth() / 350) * 10, 50)
-                },
-                inner: {
-                    hideWhenLessThanPercentage: 100
-                },
-                mainLabel: {
-                    color: CHART_TEXT_COLOR,
-                    font: "font4",
-                    fontSize: Math.min(20, Math.max(10, factory.getPieRadius() * 0.1))
-                },
-                value: {
-                    color: CHART_TEXT_COLOR,
-                    font: "font4",
-                    fontSize: "12"
-                },
-                lines: {
-                    style: "straight"
-                }
-            },
-            misc: {
-                colors: {
-                    segmentStroke: "null"
-                },
-                gradient: {
-                    percentage: 99,
-                    color: "#1b1b1b"
-                },
-                "canvasPadding": {
-                    "top": 20
-                },
-                "pieCenterOffset": {
-                    "y": -20
-                }
-            },
-            effects: {
-                load: {
-                    speed: 800
-                },
-                pullOutSegmentOnClick: {
-                    effect: "none"
-                }
-            },
-            callbacks: {
-                onClickSegment: function(a) {
-                    factory.sliceClicked(a);
-                }
-            },
-            tooltips: {
-                enabled: true,
-                type: "placeholder",
-                string: "kr. {value} ({percentage}%) ~",
-                styles: {
-                    color: CHART_TEXT_COLOR,
-                    font: "font4",
-                    fontSize: 14,
-                    opacity: 1,
-                    backgroundColor: '#e8e8e8',
-                    backgroundOpacity: '0.9',
-                    padding: 8
-                },
-                placeholderParser: function(index, data) {
-                    var valueStr = data.value.toString();
-                    data.value = "";
-                    var i = valueStr.length;
-                    var j = 1;
-                    while (i > 0) {
-                        if (j % 4 === 0) {
-                            data.value = '.' + data.value;
-                        } else {
-                            data.value = valueStr[i-1] + data.value;
-                            i--;
-                        }
-                        j++;
-                    }
-                }
-            }
-        });
+        // Update views
+        $rootScope.updateBarChart();
+        $rootScope.updatePie();
         $rootScope.updateTable();
     };
 
