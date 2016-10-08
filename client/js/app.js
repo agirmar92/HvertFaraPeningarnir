@@ -1,5 +1,5 @@
 var hfpApp = angular.module('hvertfarapeningarnir',
-	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'firebase', 'angulartics', 'angulartics.google.analytics']);
+	['ngRoute', 'angular-loading-bar', 'ui.bootstrap', 'firebase', 'angulartics', 'angulartics.google.analytics', 'ngMaterial']);
 
 
 /*

@@ -601,6 +601,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
         // Choices in sidebar
         $rootScope.options[factory.getLevel()].choices = factory.getChoices();
+        $rootScope.creditorSearchActive = (factory.getLevel() !== 7) ? false : $rootScope.creditorSearchActive;
 
         // Update views
         $rootScope.updateBarChart();

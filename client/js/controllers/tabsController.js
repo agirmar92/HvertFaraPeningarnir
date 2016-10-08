@@ -74,11 +74,44 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         }
     };
 
+    /* Helper for autocomplete search box */
+    function createFilterFor(searchText) {
+        var lowercase = angular.lowercase(searchText);
+        return function filterFn(slice) {
+            return (angular.lowercase(slice.label).indexOf(lowercase) === 0);
+        };
+    }
+
+    /* Flag for show/hide autocomplete search box */
+    $rootScope.creditorSearchActive = true;
+
+    /* Select a creditor in autocomplete search box */
+    $scope.selectedItemChange = function(slice) {
+        if (slice) {
+            $scope.choiceClicked(7, slice.choice);
+        } else {
+            $scope.choiceClicked(7, 0);
+        }
+    };
+
+    /* Autocomplete search box for creditors */
+    $scope.getMatches = function(searchText) {
+        var slices = hfpResource.getSlices();
+        for (var i = 0; i < slices.length; i++) {
+            slices[i].choice = i;
+        }
+        var results = searchText ? slices.filter(createFilterFor(searchText)) : slices;
+        return results;
+    };
+
     /*
     *       Option with the id [id] has been clicked.
     *       Expand the option's choices if not already expanded.
     * */
     $scope.optionClicked = function(optionId) {
+        if (optionId === 7) {
+            $rootScope.creditorSearchActive = true;
+        }
         // Find the correct index of route parameter
         var paramPosition = (optionId === 7) ? 5 : Math.min(4, optionId);
         if ($rootScope.type === 'joint-revenue') {
@@ -107,6 +140,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
     $scope.choiceClicked = function(option, choice) {
         // If user is at the deepest level
         if (option === 8) {
+            // TODO: Display message informing user that he has reached the bottom.
             return;
         }
 

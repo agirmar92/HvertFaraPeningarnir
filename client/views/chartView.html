@@ -79,17 +79,32 @@
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
                     <i class="fa fa-eye option-eye{{option.optionId}}" aria-hidden="true" ng-if="option.optionId === currentLevel"></i>
                     <span id="option-text3">{{option.label}}</span>
-                    <span class="glyphicon glyphicon-menu-right option-arrow" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
+                    <span class="fa fa-search" ng-class="{'arrow-down': option.open}" aria-hidden="true"></span>
                 </div>
 
-                <div class="option-choices clickable choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
+                <md-content ng-if="creditorSearchActive" class="md-padding" scroll-glue>
+                    <md-autocomplete
+                        md-selected-item="selectedItem"
+                        md-search-text="searchText"
+                        md-selected-item-change="selectedItemChange(item)"
+                        md-items="item in getMatches(searchText)"
+                        md-item-text="item.label"
+                        md-min-length="1">
+                        <md-item-template>
+                            <span md-highlight-text="searchText">{{item.label}}</span>    
+                        </md-item-template>
+                    </md-autocomplete>
+
+                </md-content>
+
+                <!--div ng-if="!creditorSearchActive" class="option-choices clickable choices{{option.optionId}}" ng-click="choiceClicked(option.optionId, choice.choiceId)" ng-repeat="choice in option.choices" ng-class="{'option-hidden': !option.open, 'locked-choice': choice.chosen}">
                     <span ng-class="{'option-selected': choice.chosen}">{{choice.content}}</span>
                         <!-- PLUS SIGN -->
-                    <div class="plus-icon">
+                    <!--div class="plus-icon">
                         <div class="one" ng-class="{'minus-sign': choice.chosen}"></div>
                         <div class="two" ng-class="{'minus-sign': choice.chosen}"></div>
                     </div>
-                </div>
+                </div-->
             </div>
 
         </uib-tab>

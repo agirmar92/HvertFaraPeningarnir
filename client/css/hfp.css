@@ -1301,3 +1301,11 @@ ul, li {
 * {
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
+.option-header.header7 .fa.fa-search {
+    left: 90%;
+}
+
+md-virtual-repeat-container {
+    z-index: 4000 !important;
+}
