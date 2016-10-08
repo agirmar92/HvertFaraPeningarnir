@@ -5,6 +5,7 @@ echo "Installing dependencies for client"
 
 cd client
 npm install
+npm install -g live-server
 
 cd ..
 
