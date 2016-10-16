@@ -41,6 +41,8 @@ hfpApp.run(function ($route, $rootScope, $location, $analytics, hfpResource, $wi
 	var original = $location.path;
 	$location.path = function (path, reload, callback, option, choice, nextLevel, isUnchoosingCreditor) {
 		if (reload === false) {
+			// Flag to make sure we don't call this function twice.
+			$rootScope.beenCalled = true;
 			var lastRoute = $route.current;
 			var un = $rootScope.$on('$locationChangeSuccess', function () {
 				// Send Google analytics info

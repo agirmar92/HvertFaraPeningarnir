@@ -86,6 +86,17 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         }
     });
 
+    /*
+    *   Listen for route changes to make sure we call our custom location.path function.
+    */
+    $rootScope.$on('$routeChangeStart', function(params) {
+        if (!$rootScope.beenCalled) {
+            $location.path($location.path(), false);
+        }
+        // Flag to make sure we don't call our custom location.path function twice. 
+        $rootScope.beenCalled = false;
+    })
+
     $rootScope.totalCredit = '';
     $rootScope.totalDebit = 0;
     $rootScope.dynamic = 100;
