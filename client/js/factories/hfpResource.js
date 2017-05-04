@@ -563,11 +563,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         var year = perio.substring(0,4);
         if (perio.length === 6) {
             if (perio.charAt(5) === '0' || perio.charAt(5) === '5') {
-                // TODO: Remove when all 2016 data has arrived.
-                if (year === "2016") {
-                    year += " (jan - jún)";
-                }
-
                 return year;
             } else {
                 var quarter = parseInt(perio.charAt(5));
