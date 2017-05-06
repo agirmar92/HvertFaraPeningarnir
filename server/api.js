@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const elasticsearch = require('elasticsearch');
 
 const Firebase = require("firebase");
-const hfpFirebaseRef = new Firebase("https://hfp.firebaseio.com/");
+const hfpFirebaseRef = new Firebase("https://hfpnew.firebaseio.com/");
 const jenkinsUpdateJob = "http://hfp.northeurope.cloudapp.azure.com:8080/job/NotifyAdmin/buildWithParameters?";
 
 // Globals

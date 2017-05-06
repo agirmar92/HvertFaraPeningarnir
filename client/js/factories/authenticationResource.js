@@ -9,13 +9,12 @@ hfpApp.factory('authenticationResource', function($rootScope, $firebaseAuth, $fi
         token: ''
     };
 
-    var ref = new Firebase(FIREBASE_URL);
-    var auth = $firebaseAuth(ref);
+    var auth = $firebaseAuth();
 
-    auth.$onAuth(function(authUser) {
+    auth.$onAuthStateChanged(function(authUser) {
         if (authUser) {
-            factory.setToken(authUser.token);
-            factory.setEmail(authUser.password.email);
+            factory.setToken(authUser.Yd);
+            factory.setEmail(authUser.email);
             $location.path('admin');
         } else {
             factory.setToken('');
@@ -41,9 +40,8 @@ hfpApp.factory('authenticationResource', function($rootScope, $firebaseAuth, $fi
     };
 
     factory.login = function(user) {
-        auth.$authWithPassword({
-            email: user.email,
-            password: user.password
+        auth.$signInWithEmailAndPassword(user.email, user.password).then(function(authData) {
+            console.log("Logged in");
         }).catch(function(error) {
             console.log(error);
             var errorMsg = 'Villa kom upp';
@@ -61,11 +59,11 @@ hfpApp.factory('authenticationResource', function($rootScope, $firebaseAuth, $fi
     };
     
     factory.logout = function() {
-        return auth.$unauth();
+        return auth.$signOut();
     };
 
     factory.requireAuth = function() {
-        return auth.$requireAuth();
+        return auth.$requireSignIn();
     };
 
     return factory;

@@ -91,4 +91,4 @@ hfpApp.constant('URL_PARAMS', {
         'Creditor'
     ]
 });
-hfpApp.constant('FIREBASE_URL', 'https://hfp.firebaseIO.com/');
+hfpApp.constant('FIREBASE_URL', 'https://hfpnew.firebaseIO.com/');

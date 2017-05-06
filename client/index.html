@@ -126,8 +126,20 @@
     <script src="node_modules/angulartics-google-analytics/dist/angulartics-ga.min.js"></script>
 
     <!--Firebase -->
-    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyB7OzivQHKCGMKyBJX5_rT8Fi05ktvOi3o",
+            authDomain: "hfpnew.firebaseapp.com",
+            databaseURL: "https://hfpnew.firebaseio.com",
+            projectId: "hfpnew",
+            storageBucket: "hfpnew.appspot.com",
+            messagingSenderId: "349021925214"
+        };
+        firebase.initializeApp(config);
+    </script>
 
 	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/constants/hfpConstants.js" type="text/javascript" charset="utf-8"></script>
