@@ -67,10 +67,30 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
         }
     ];
 
-    $scope.changeView = function(toType) {
+    $rootScope.changeDataType = function(toType, skipAppReset) {
         if (toType !== $rootScope.type) {
             $rootScope.type = toType;
-            hfpResource.resetApp();
+
+            // If changing to expenses, we make the special-revenue bar look clickable.
+            // If changing to something else, we make the cursor look default (not clickable).
+            $rootScope.chart.options.data["0"].dataPoints[1].cursor = toType === "expenses" ? "pointer" : "default";
+
+            // If user is changing to special revenue via bar chart click.
+            if (skipAppReset) {
+                var newPathPrefix = $location.path().split('/');
+                // As is we only allow changing directly from expenses to special.
+                if (newPathPrefix[1] === 'expenses' && toType === 'special-revenue') {
+                    newPathPrefix[1] = 'special-revenue';
+
+                    // Change the path
+                    newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPathPrefix.toString());
+                    $location.path(newPathPrefix, false);
+                }
+            } 
+            // Else if we are changing data type via the sidebar dropdown.
+            else {
+                hfpResource.resetApp();
+            }
         }
     };
 

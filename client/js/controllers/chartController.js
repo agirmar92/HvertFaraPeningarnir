@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource, tabResource, $uibModal) {
+hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, INITIAL_VALUES, hfpResource, tabResource, $uibModal) {
 
     /*
     *       rootScope variables
@@ -10,6 +10,11 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             digitGroupSeparator: "."
 
     });
+
+    // If there are any route params we should parse them
+    hfpResource.parseRouteParams($location.path().split('/'));
+
+    // Initialize the bar chart
     $rootScope.chart = new CanvasJS.Chart("miniChartContainer", {
             data: [
                 {
@@ -17,7 +22,19 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     axisYType: "primary",
                     dataPoints: [
                         {  y: 0, label: "Út" },
-                        {  y: 0, label: "Inn" },
+                        {  
+                            // When the user is viewing expenses, the "inn" column can be clicked to view currently filtered data as special revenues.
+                            y: 0,
+                            label: "Inn",
+                            cursor: hfpResource.getType() === "expenses" ? "pointer" : "default",
+                            click: function(e) {
+                                if (hfpResource.getType() === "expenses") {
+                                    $rootScope.safeApply(function(){
+                                        $rootScope.changeDataType('special-revenue', true);
+                                    });
+                                }
+                            }
+                        },
                         {  y: 0, label: "Nettó" }
                     ]
                 }
@@ -78,6 +95,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             animationEnabled: true
         });
 
+    // Initialize the pie chart
     $rootScope.pie = new d3pie("mypie", {
         data: {
             content: [
@@ -112,9 +130,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.drawerToggled = false;
     $scope.infoShow = false;
 
-
-    // If there are any route params we should parse them
-    hfpResource.parseRouteParams($location.path().split('/'));
+    // Fetch the inital data
     hfpResource.showMeTheMoney(true).then(function() {
         $scope.dataReady = true;
     });

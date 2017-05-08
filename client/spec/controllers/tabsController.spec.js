@@ -56,15 +56,15 @@ describe("TabsController > ", function() {
     }));
 
     /*
-     *       Test suite for function changeView(toExpenses)
+     *       Test suite for function changeDataType(toExpenses)
      * */
-    describe("changeView > ", function() {
+    describe("changeDataType > ", function() {
         // Predicate: (toExpenses !== $rootScope.type) to true
         it("should change view from expenses to joint-revenue", function() {
             // Assert before the change
             expect(rootScope.type).toEqual('expenses');
 
-            scope.changeView('joint-revenue');
+            rootScope.changeDataType('joint-revenue');
             // Assert after the change
             expect(rootScope.type).toEqual('joint-revenue');
             expect(location.path()).toEqual("/joint-revenue/2014-0/3/n/n/");
@@ -74,7 +74,7 @@ describe("TabsController > ", function() {
             // Assert before the change
             expect(rootScope.type).toEqual('expenses');
 
-            scope.changeView('expenses');
+            rootScope.changeDataType('expenses');
             // Assert after the change
             expect(rootScope.type).toEqual('expenses');
             expect(location.path()).toEqual("/expenses/2014-0/0/n/n/n/n/n");
@@ -106,7 +106,7 @@ describe("TabsController > ", function() {
             var optionId = 3;
 
             // Assert before the change
-            scope.changeView('joint-revenue');
+            rootScope.changeDataType('joint-revenue');
             expect(rootScope.options[optionId].currChoice).toEqual(-1);
             expect(rootScope.type).toEqual('joint-revenue');
 
@@ -208,7 +208,7 @@ describe("TabsController > ", function() {
             var choiceId = 0;
 
             // Assert before the change
-            scope.changeView('joint-revenue');
+            rootScope.changeDataType('joint-revenue');
             populateOptions(rootScope.options);
             expect(rootScope.options[optionId].currChoice).toEqual(-1);
             expect(rootScope.type).toEqual('joint-revenue');
