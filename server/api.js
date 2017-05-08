@@ -199,7 +199,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) =>
         }
         for (let i = 4; i <= it; i++) {
             labels.push({
-                key: (financeKeyID.length === 4) ? 'atli' : 'darri', // pun intended, doesn't matter the value, only the length ;)
+                key: financeKeyID,
                 level: i,
                 label: aggs[i]
             });
@@ -308,6 +308,7 @@ api.get('/expenses/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, res) =>
             if (labels[i].label === 'Creditor') {
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label];
             } else {
+                labels[i].key = doc.hits.hits[0]._source[labels[i].label].substring(0, labels[i].key.length);
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
             }
         }
@@ -489,7 +490,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin/:cre', (req, res) => {
         }
         for (let i = 4; i <= it; i++) {
             labels.push({
-                key: (financeKeyID.length === 4) ? 'atli' : 'darri', // pun intended, doesn't matter the value, only the length ;)
+                key: financeKeyID,
                 level: i,
                 label: aggs[i]
             });
@@ -595,6 +596,7 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin/:cre', (req, res) => {
             if (labels[i].label === 'Creditor') {
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label];
             } else {
+                labels[i].key = doc.hits.hits[0]._source[labels[i].label].substring(0, labels[i].key.length);
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
             }
         }
@@ -781,7 +783,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, 
         }
         for (let i = 4; i <= it; i++) {
             labels.push({
-                key: (financeKeyID.length === 4) ? 'atli' : 'darri', // pun intended, doesn't matter the value, only the length ;)
+                key: financeKeyID,
                 level: i,
                 label: aggs[i]
             });
@@ -900,6 +902,7 @@ api.get('/special-revenue/:per/:lvl/:agroup/:aff/:dgroup/:dep/:fin/:cre', (req, 
             if (labels[i].label === 'Creditor') {
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label];
             } else {
+                labels[i].key = doc.hits.hits[0]._source[labels[i].label].substring(0, labels[i].key.length);
                 labels[i].label = doc.hits.hits[0]._source[labels[i].label].substring(labels[i].key.length + 1);
             }
         }

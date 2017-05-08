@@ -273,6 +273,20 @@
     </div>
     <!-- /#calendar-dropdown -->
 
+    <!-- type-and-period -->
+    <div class="type-and-period">
+        <span>{{getHeader()}}</span>
+    </div>
+    <!-- /#type-and-period -->
+
+    <!-- breadcrumbs -->
+    <div class="path-labels">
+        <span class="path-label-item" ng-repeat="item in pathLabels" ng-click="jumpToBreadcrumb(item)">
+            {{item.label}}<span ng-if="!$last"> > </span>
+        </span>
+    </div>
+    <!-- /#breadcrumbs -->
+
     <!-- chart-area -->
     <div id="chartContainer" class="row hfp-chart">
         <div id="hfpPie" class="col-xs-12 hfp-div">

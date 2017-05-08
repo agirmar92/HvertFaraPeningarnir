@@ -113,17 +113,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         return pieRadius;
     };
     factory.getPathLabels = function() {
-        if (pathLabels.length === 0) {
-            return "Allar deildir";
-        }
-
-        // Add the first label to the string
-        var pathString = pathLabels[0].label;
-        for (var i = 1; i < pathLabels.length; i++) {
-            // And every other label in the array with a preceding '>'
-            pathString += " > " + pathLabels[i].label;
-        }
-        return pathString;
+        return pathLabels;
     };
 
     /*
@@ -534,7 +524,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         if ($rootScope.type === 'expenses') {
             $location.path('/' + INITIAL_VALUES.TYPE + '/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         } else if ($rootScope.type === 'joint-revenue') {
-            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n/n', false);
+            $location.path('/joint-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_IN + '/n/n/n', false);
         } else {
             $location.path('/special-revenue/' + factory.getPeriod() + '/' + INITIAL_VALUES.LEVEL_EX + '/n/n/n/n/n/n', false);
         }
@@ -602,6 +592,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $rootScope.updateBarChart();
         $rootScope.updatePie();
         $rootScope.updateTable();
+        $rootScope.updateBreadcrumbs();
     };
 
     /*

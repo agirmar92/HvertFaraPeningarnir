@@ -22,7 +22,7 @@ hfpApp.config(['$routeProvider',
 					}
 				}
 			})
-			.when('/:Type/:Period/:Level/:Department/:FinanceKey/:Creditor/:Creditor', {
+			.when('/:Type/:Period/:Level/:Department/:FinanceKey/:Creditor', {
 				templateUrl: 'views/chartView.html'
 			})
 			.when('/:Type/:Period/:Level/:AffairGroup/:Affair/:DepartmentGroup/:Department/:FinanceKey/:Creditor', {

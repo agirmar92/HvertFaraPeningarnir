@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource, $uibModal) {
+hfpApp.controller('chartController', function ($scope, $http, $rootScope, $routeParams, $route, $location, API_URL, COLORS, CHART_TEXT_COLOR, hfpResource, tabResource, $uibModal) {
 
     /*
     *       rootScope variables
@@ -182,6 +182,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     };
 
     $scope.slices = [];
+    $scope.pathLabels = [];
     $scope.divider = 0;
     $scope.netto = 0;
     $scope.nettoPerc = 0;
@@ -202,8 +203,8 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             $("#miniChartContainer").toggleClass("hfp-hidden");
             $("#table").toggleClass("hfp-hidden");
             $("#tableContainer").toggleClass("hfp-hidden");
+            redrawPie();
         });
-        redrawPie();
     };
 
     /*
@@ -255,27 +256,16 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $scope.level = hfpResource.getLevel();
     };
 
+    $scope.getHeader = function() {
+        return hfpResource.translate() + ", " + hfpResource.tDate();
+    }
+
     /*
     *   Updates the pie view
     */
     $rootScope.updatePie = function() {
         $rootScope.pie.destroy();
         $rootScope.pie = new d3pie("mypie", {
-            "header": {
-                "title": {
-                    "text": hfpResource.translate() + ", " + hfpResource.tDate(),
-                    "fontSize": 26,
-                    "font": "font4",
-                    "color": "#444e52"
-                },
-                "subtitle": {
-                    "text": hfpResource.getPathLabels(),
-                    "color": "#999999",
-                    "fontSize": 14,
-                    "font": "font4"
-                },
-                "titleSubtitlePadding": 10
-            },
             size: {
                 canvasWidth: hfpResource.getPieWidth(),       //900,
                 canvasHeight: hfpResource.getPieHeight(),     //500
@@ -315,7 +305,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     color: "#1b1b1b"
                 },
                 "canvasPadding": {
-                    "top": 20
+                    "top": 70
                 },
                 "pieCenterOffset": {
                     "y": -20
@@ -373,6 +363,45 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         });
     }
 
+    $rootScope.updateBreadcrumbs = function() {
+        $scope.pathLabels = hfpResource.getPathLabels();
+    }
+
+    $scope.jumpToBreadcrumb = function(item) {
+        var currLevel = hfpResource.getLevel();
+        if (currLevel === item.level + 1 && currLevel !== 7) {
+            return;
+        }
+
+
+        var oldPath = $location.path().split('/');
+        var newPath = [];
+        var itemRouteIndex = item.level <= 4 || item.level === 7 ? item.level : 4;
+        var typ = hfpResource.getType();
+        if (typ === 'joint-revenue') {
+            itemRouteIndex -= 3;
+        }
+        for (var i = 0; i < oldPath.length; i++) {
+            if (i < itemRouteIndex + 4) {
+                newPath.push(oldPath[i]);
+            } else if (i === itemRouteIndex + 4) {
+                newPath.push(item.key);
+            } else {
+                newPath.push('n');
+            }
+        }
+        for (var i = item.level + 1; i < 8; i++) {
+            $rootScope.options[i].choices = undefined;
+            $rootScope.options[i].currChoice = -1;
+        }
+        newPath[3] = item.level === 7 ? item.level : item.level + 1;
+        newPathPrefix = hfpResource.replaceAllCommasWithSlashes(newPath.toString());
+        // Change the path
+        $rootScope.safeApply(function(){
+            $location.path(newPathPrefix, false, null, currLevel, null, item.level, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
+        });
+    }
+
     /*
      *       Callback function overwrite for when screen size is modified.
      *       Calculates the new size of the chart and bar chart and redraws them.
@@ -392,7 +421,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
             $rootScope.pie.options.size.canvasWidth = hfpResource.getPieWidth();
             $rootScope.pie.options.size.canvasHeight = hfpResource.getPieHeight();
             $rootScope.pie.options.size.pieOuterRadius = hfpResource.getPieRadius();
-            $rootScope.pie.options.labels.mainLabel.fontSize = Math.max(12, hfpResource.getPieRadius() * 0.125);
+            $rootScope.pie.options.labels.mainLabel.fontSize = Math.min(20, Math.max(10, hfpResource.getPieRadius() * 0.1))
             $rootScope.pie.options.labels.outer.pieDistance = Math.min((hfpResource.getPieWidth() / 350) * 10, 50);
             $rootScope.pie.redraw();
 
