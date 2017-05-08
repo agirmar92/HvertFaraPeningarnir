@@ -73,11 +73,7 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
 
             // If changing to expenses, we make the special-revenue bar look clickable.
             // If changing to something else, we make the cursor look default (not clickable).
-            if (toType === "expenses") {
-                $rootScope.chart.options.data["0"].dataPoints[1].cursor = "pointer";
-            } else {
-                $rootScope.chart.options.data["0"].dataPoints[1].cursor = "default";
-            }
+            $rootScope.chart.options.data["0"].dataPoints[1].cursor = toType === "expenses" ? "pointer" : "default";
 
             // If user is changing to special revenue via bar chart click.
             if (skipAppReset) {
