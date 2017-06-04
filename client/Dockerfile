@@ -4,7 +4,7 @@ FROM httpd:2.4
 COPY ./client/hfp-httpd.conf /usr/local/apache2/conf/httpd.conf
 
 ###
-COPY ./server.ctr /usr/local/apache2/conf/server.ctr
+COPY ./server.crt /usr/local/apache2/conf/server.crt
 COPY ./server.key /usr/local/apache2/conf/server.key
 COPY ./server.ca-bundle /usr/local/apache2/conf/server.ca-bundle
 
