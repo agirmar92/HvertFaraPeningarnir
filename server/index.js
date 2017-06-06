@@ -2,9 +2,16 @@
 
 // Modules:
 const express = require('express');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const os = require('os');
 const api = require('./api');
 
 // Globals:
+const key  = fs.readFileSync(os.homedir() + '/.ssh/server.key');
+const cert = fs.readFileSync(os.homedir() + '/.ssh/server.crt');
+const credentials = { key: key, cert: cert }
 const app = express();
 const port = 4000;
 
@@ -25,7 +32,7 @@ app.use((req, res, next) => {
 
 app.use('/', api.api);
 
-app.listen(port, () => {
-	console.log('Server is on port', port);
-});
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(port, () => { console.log('HTTPS Server is on port', port) });
 
