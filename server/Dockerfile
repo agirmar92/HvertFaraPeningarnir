@@ -1,5 +1,7 @@
 FROM ubuntu:14.04
 
+RUN mkdir ~/.ssh/
+
 ###
 COPY ./server.crt ~/.ssh/server.crt
 COPY ./server.key ~/.ssh/server.key
