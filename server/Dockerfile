@@ -1,11 +1,5 @@
 FROM ubuntu:14.04
 
-RUN mkdir /api/ssl
-
-###
-COPY ./server.crt /api/ssl/server.crt
-COPY ./server.key /api/ssl/server.key
-COPY ./server.ca-bundle /api/ssl/server.ca-bundle
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -16,6 +10,11 @@ RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 RUN apt-get install -y nodejs && apt-get clean
 
 WORKDIR /api
+
+###
+ADD ./server.crt /api/ssl/server.crt
+ADD ./server.key /api/ssl/server.key
+ADD ./server.ca-bundle /api/ssl/server.ca-bundle
 
 ADD server/package.json /api/package.json
 ADD server/index.js /api/src/index.js
