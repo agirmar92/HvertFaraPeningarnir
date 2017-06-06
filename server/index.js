@@ -3,9 +3,9 @@
 // Modules:
 const express = require('express');
 const fs = require('fs');
+const os = require('os');
 const http = require('http');
 const https = require('https');
-const os = require('os');
 const api = require('./api');
 
 // Globals:
