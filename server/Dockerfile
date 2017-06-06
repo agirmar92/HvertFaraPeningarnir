@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-RUN mkdir ~/.ssh/
+RUN mkdir /root/.ssh/
 
 ###
 COPY ./server.crt ~/.ssh/server.crt
