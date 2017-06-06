@@ -1,11 +1,11 @@
 FROM ubuntu:14.04
 
-RUN mkdir /root/.ssh/
+RUN mkdir /api/ssl
 
 ###
-COPY ./server.crt ~/.ssh/server.crt
-COPY ./server.key ~/.ssh/server.key
-COPY ./server.ca-bundle ~/.ssh/server.ca-bundle
+COPY ./server.crt /api/ssl/server.crt
+COPY ./server.key /api/ssl/server.key
+COPY ./server.ca-bundle /api/ssl/server.ca-bundle
 
 RUN apt-get update && apt-get upgrade -y
 
