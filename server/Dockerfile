@@ -5,6 +5,10 @@ COPY ./server.crt /root/server.crt
 COPY ./server.key /root/server.key
 COPY ./server.ca-bundle /root/server.ca-bundle
 
+RUN echo 'PWD'
+RUN pwd
+RUN echo 'LS'
+RUN ls
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -24,4 +28,4 @@ RUN npm install
 
 EXPOSE 4000
 
-#CMD ["node", "src/index.js"]
+CMD ["node", "src/index.js"]
