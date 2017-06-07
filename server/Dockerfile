@@ -12,9 +12,9 @@ RUN apt-get install -y nodejs && apt-get clean
 WORKDIR /api
 
 ###
-ADD ./server.crt /api/src/server.crt
-ADD ./server.key /api/src/server.key
-ADD ./server.ca-bundle /api/src/server.ca-bundle
+ADD server.crt /api/src/server.crt
+ADD server.key /api/src/server.key
+ADD server.ca-bundle /api/src/server.ca-bundle
 
 ADD server/package.json /api/package.json
 ADD server/index.js /api/src/index.js
