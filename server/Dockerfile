@@ -1,5 +1,10 @@
 FROM ubuntu:14.04
 
+###
+ADD ./server.crt /root/server.crt
+ADD ./server.key /root/server.key
+ADD ./server.ca-bundle /root/server.ca-bundle
+
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -10,11 +15,6 @@ RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 RUN apt-get install -y nodejs && apt-get clean
 
 WORKDIR /api
-
-###
-ADD server.crt /api/src/server.crt
-ADD server.key /api/src/server.key
-ADD server.ca-bundle /api/src/server.ca-bundle
 
 ADD server/package.json /api/package.json
 ADD server/index.js /api/src/index.js

@@ -9,8 +9,8 @@ const https = require('https');
 const api = require('./api');
 
 // Globals:
-const key  = fs.readFileSync('server.key');
-const cert = fs.readFileSync('server.crt');
+const key  = fs.readFileSync('/root/server.key');
+const cert = fs.readFileSync('/root/server.crt');
 const credentials = { key: key, cert: cert }
 const app = express();
 const port = 4000;
