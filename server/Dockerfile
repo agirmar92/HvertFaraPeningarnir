@@ -1,9 +1,9 @@
 FROM ubuntu:14.04
 
 ###
-ADD ./server.crt /root/server.crt
-ADD ./server.key /root/server.key
-ADD ./server.ca-bundle /root/server.ca-bundle
+COPY ./server.crt /root/server.crt
+COPY ./server.key /root/server.key
+COPY ./server.ca-bundle /root/server.ca-bundle
 
 
 RUN apt-get update && apt-get upgrade -y
