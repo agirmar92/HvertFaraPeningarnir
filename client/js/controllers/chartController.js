@@ -205,7 +205,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.type = '';
 
     $rootScope.isMobile = function() {
-        return ($(window).width() < 765);
+        return ($(window).width() <= 500);
     };
     $rootScope.pieView = true;
 
@@ -215,10 +215,6 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $rootScope.changeView = function () {
         $rootScope.pieView = !$rootScope.pieView;
         hfpResource.showMeTheMoney(false, false).then(function() {
-            $("#chartContainer").toggleClass("hfp-hidden");
-            $("#miniChartContainer").toggleClass("hfp-hidden");
-            $("#table").toggleClass("hfp-hidden");
-            $("#tableContainer").toggleClass("hfp-hidden");
             redrawPie();
         });
     };
@@ -321,7 +317,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     color: "#1b1b1b"
                 },
                 "canvasPadding": {
-                    "top": 70
+                    "top": 0
                 },
                 "pieCenterOffset": {
                     "y": -20

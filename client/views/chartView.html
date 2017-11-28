@@ -288,7 +288,7 @@
     <!-- /#breadcrumbs -->
 
     <!-- chart-area -->
-    <div id="chartContainer" class="row hfp-chart">
+    <div id="chartContainer" class="row hfp-chart" ng-show="pieView">
         <div id="hfpPie" class="col-xs-12 hfp-div">
             <div id="mypie" ng-show="dataReady"></div>
         </div>
@@ -296,12 +296,12 @@
     <!-- /#chart-area -->
 
     <!-- mini-chart-area -->
-    <div id="miniChartContainer" class="row hfp-minichart"></div>
+    <div id="miniChartContainer" class="row hfp-minichart" ng-show="pieView"></div>
     <!-- /#mini-chart-area -->
 
     <!-- table-area -->
-    <div id="tableContainer" class="container hfp-hidden">
-        <div id="table" class="table-editable hfp-hidden">
+    <div id="tableContainer" class="container" ng-show="!pieView">
+        <div id="table" class="table-editable">
             <table class="table">
                 <!-- Header -->
                 <tr class="head">

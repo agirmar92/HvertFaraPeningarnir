@@ -82,13 +82,8 @@ html, body {
 #hfp-breadcrumb {
     position: relative;
     bottom: 45px;
-    /*left: 50%;
-    height: 40px;
-    width: 1200px;
-    margin-left: -600px;*/
     font-family: font4;
     font-size: 26px;
-    /* border: 1px solid red; */
 }
 
 #hfp-label {
@@ -1228,8 +1223,12 @@ ul, li {
         display: none;
     }
 
+    #tableContainer {
+        display: block !important;
+    }
+
     #table {
-        display: block;
+        display: block !important;
         position: initial;
         width: 100%;
         margin-left: 0;
@@ -1242,6 +1241,12 @@ ul, li {
     .container {
         padding: 0;
         height: calc(100% - 122px);
+    }
+
+    .type-and-period span,
+    .path-labels {
+        position: relative !important;
+        top: 0 !important;
     }
 }
 
@@ -1298,6 +1303,17 @@ ul, li {
     }
 }
 
+@media (max-height: 430px) {
+    .type-and-period,
+    .path-labels {
+        display: none;
+    }
+
+    #table {
+        margin-top: 20px;
+    }
+}
+
 * {
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
@@ -1327,8 +1343,8 @@ md-virtual-repeat-container {
     color: #008c44;
 }
 .type-and-period span {
-    position: fixed;
-    top: 125px;
+    position: relative;
+    top: 28px;
     margin: 0 auto;
     left: 0;
     right: 0;
