@@ -210,6 +210,12 @@ h1, h2 {
     overflow: visible;
 }
 
+#hfp-progress-bar.active {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+
+}
+
 .table-list-item:hover {
     background-color: rgb(103, 230, 141);
     cursor: pointer;
@@ -617,7 +623,7 @@ i.fa.fa-eye {
     width: 100%;
 }
 
-span#hfp-percentage {
+p#hfp-percentage {
     position: relative;
     top: -19px;
     color: #444e52;
