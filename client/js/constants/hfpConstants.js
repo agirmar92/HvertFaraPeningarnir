@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 20.3.2016.
  */
-hfpApp.constant('API_URL', 'https://hfp.kopavogur.is:4000/');
+hfpApp.constant('API_URL', 'https://kop-hfp.kopavogur.is:4000/');
 //hfpApp.constant('API_URL', 'http://localhost:4000/');
 hfpApp.constant('COLORS', [
     "#0dad5c",
@@ -33,7 +33,9 @@ hfpApp.constant('MONTHS', [
 hfpApp.constant('YEARS', [
     "2014",
     "2015",
-    "2016"
+    "2016",
+    "2017",
+    "2018"
 ]);
 hfpApp.constant('QUARTERS', [
     "veldu",
@@ -45,7 +47,7 @@ hfpApp.constant('QUARTERS', [
 ]);
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'expenses',
-    'PERIOD': '2016-0',
+    'PERIOD': '2017-0',
     'LEVEL_EX': 0,
     'LEVEL_IN': 3
 });

@@ -13,7 +13,8 @@ const jenkinsUpdateJob = "http://hfp.northeurope.cloudapp.azure.com:8080/job/Not
 // Globals
 const api = express();
 const elasticClient = new elasticsearch.Client({
-    host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
+    host: 'http://kop-hfp.kopavogur.is:9200'
+    // host: 'http://hfp.northeurope.cloudapp.azure.com:9200'
 });
 const aggs = [ "AffairGroup", "Affair", "DepartmentGroup", "Department", "PrimaryFinanceKey", "SecondaryFinanceKey", "FinanceKey", "CreditorID" ];
 api.use(bodyParser.json());

@@ -1,7 +1,7 @@
 /**
  * Created by agirmar on 24.3.2016.
  */
-hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $location, tabResource, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, URL_PARAMS, MONTHS, QUARTERS, $rootScope) {
+hfpApp.factory('hfpResource', function ($http, $q, $routeParams, $route, $location, tabResource, INITIAL_VALUES, API_URL, COLORS, CHART_TEXT_COLOR, LEVELS, URL_PARAMS, MONTHS, QUARTERS, $rootScope) {
 
     // Create empty factory
     var factory = {};
@@ -39,160 +39,160 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Getters
     * */
-    factory.getLevel = function() {
+    factory.getLevel = function () {
         if (factory.getType() === 'joint-revenue') {
             return currLevelIn;
         } else {
             return currLevelEx;
         }
     };
-    factory.getType = function() {
+    factory.getType = function () {
         return type;
     };
-    factory.getPeriod = function() {
+    factory.getPeriod = function () {
         return period;
     };
-    factory.getSlices = function() {
+    factory.getSlices = function () {
         return slices;
     };
-    factory.getChoices = function() {
+    factory.getChoices = function () {
         return choices;
     };
-    factory.getTotalCredit = function() {
+    factory.getTotalCredit = function () {
         return totalCredit;
     };
-    factory.getTotalDebit = function() {
+    factory.getTotalDebit = function () {
         return totalDebit;
     };
-    factory.getTotalC = function() {
+    factory.getTotalC = function () {
         return totalC;
     };
-    factory.getTotalD = function() {
+    factory.getTotalD = function () {
         return totalD;
     };
-    factory.getTotalS = function() {
+    factory.getTotalS = function () {
         return totalS;
     };
-    factory.getCurrYear = function() {
+    factory.getCurrYear = function () {
         return currYear;
     };
-    factory.getDynamic = function() {
+    factory.getDynamic = function () {
         return dynamic;
     };
-    factory.getClickedSlice = function() {
+    factory.getClickedSlice = function () {
         return clickedSlice;
     };
-    factory.getClickedSliceLabel = function() {
+    factory.getClickedSliceLabel = function () {
         return clickedSliceLabel;
     };
-    factory.getAffairGroup = function() {
+    factory.getAffairGroup = function () {
         return affairGroup;
     };
-    factory.getAffair = function() {
+    factory.getAffair = function () {
         return affair;
     };
-    factory.getDepartmentGroup = function() {
+    factory.getDepartmentGroup = function () {
         return departmentGroup;
     };
-    factory.getDepartment = function() {
+    factory.getDepartment = function () {
         return department;
     };
-    factory.getFinanceKey = function() {
+    factory.getFinanceKey = function () {
         return financeKey;
     };
-    factory.getCreditor = function() {
+    factory.getCreditor = function () {
         return creditor;
     };
-    factory.getPieHeight = function() {
+    factory.getPieHeight = function () {
         return pieHeight;
     };
-    factory.getPieWidth = function() {
+    factory.getPieWidth = function () {
         return pieWidth;
     };
-    factory.getPieRadius = function() {
+    factory.getPieRadius = function () {
         return pieRadius;
     };
-    factory.getPathLabels = function() {
+    factory.getPathLabels = function () {
         return pathLabels;
     };
 
     /*
     *       Setters
     * */
-    factory.setLevel = function(newLevel) {
+    factory.setLevel = function (newLevel) {
         if (factory.getType() === 'joint-revenue') {
             currLevelIn = newLevel;
         } else {
             currLevelEx = newLevel;
         }
     };
-    factory.setType = function(newType) {
+    factory.setType = function (newType) {
         type = newType;
     };
-    factory.setPeriod = function(newPeriod) {
+    factory.setPeriod = function (newPeriod) {
         period = newPeriod;
     };
-    factory.setSlices = function(newSlices) {
+    factory.setSlices = function (newSlices) {
         slices = newSlices;
     };
-    factory.setChoices= function(newChoices) {
+    factory.setChoices = function (newChoices) {
         choices = newChoices;
     };
-    factory.setTotalCredit = function(newTotalCredit) {
+    factory.setTotalCredit = function (newTotalCredit) {
         totalCredit = newTotalCredit;
     };
-    factory.setTotalDebit = function(newTotalDebit) {
+    factory.setTotalDebit = function (newTotalDebit) {
         totalDebit = newTotalDebit;
     };
-    factory.setTotalC = function(newTotalC) {
+    factory.setTotalC = function (newTotalC) {
         totalC = newTotalC;
     };
-    factory.setTotalD = function(newTotalD) {
+    factory.setTotalD = function (newTotalD) {
         totalD = newTotalD;
     };
-    factory.setTotalS = function(newTotalS) {
+    factory.setTotalS = function (newTotalS) {
         totalS = newTotalS;
     };
-    factory.setCurrYear = function(newYear) {
+    factory.setCurrYear = function (newYear) {
         currYear = newYear;
     };
-    factory.setDynamic = function(newDynamic) {
+    factory.setDynamic = function (newDynamic) {
         dynamic = newDynamic;
     };
-    factory.setClickedSlice = function(newclickedSlice) {
+    factory.setClickedSlice = function (newclickedSlice) {
         clickedSlice = newclickedSlice;
     };
-    factory.setClickedSliceLabel = function(newclickedSliceLabel) {
+    factory.setClickedSliceLabel = function (newclickedSliceLabel) {
         clickedSliceLabel = newclickedSliceLabel;
     };
-    factory.setAffairGroup = function(newAffairGroup) {
+    factory.setAffairGroup = function (newAffairGroup) {
         affairGroup = newAffairGroup;
     };
-    factory.setAffair = function(newAffair) {
+    factory.setAffair = function (newAffair) {
         affair = newAffair;
     };
-    factory.setDepartmentGroup = function(newDepartmentGroup) {
+    factory.setDepartmentGroup = function (newDepartmentGroup) {
         departmentGroup = newDepartmentGroup;
     };
-    factory.setDepartment = function(newDepartment) {
+    factory.setDepartment = function (newDepartment) {
         department = newDepartment;
     };
-    factory.setFinanceKey = function(newFinanceKey) {
+    factory.setFinanceKey = function (newFinanceKey) {
         financeKey = newFinanceKey;
     };
-    factory.setCreditor = function(newCreditor) {
+    factory.setCreditor = function (newCreditor) {
         creditor = newCreditor;
     };
-    factory.setPieHeight = function(newPieHeight) {
+    factory.setPieHeight = function (newPieHeight) {
         pieHeight = newPieHeight;
     };
-    factory.setPieWidth = function(newPieWidth) {
+    factory.setPieWidth = function (newPieWidth) {
         pieWidth = newPieWidth;
     };
-    factory.setPieRadius = function(newPieRadius) {
+    factory.setPieRadius = function (newPieRadius) {
         pieRadius = newPieRadius;
     };
-    factory.setPathLabels = function(newPathLabels) {
+    factory.setPathLabels = function (newPathLabels) {
         pathLabels = newPathLabels;
     };
 
@@ -200,10 +200,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Public methods
     * */
 
-    $rootScope.safeApply = function(fn) {
+    $rootScope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
         if (phase == '$apply' || phase == '$digest') {
-            if(fn && (typeof(fn) === 'function')) {
+            if (fn && (typeof (fn) === 'function')) {
                 fn();
             }
         } else {
@@ -214,7 +214,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Method for when a slice is clicked, prepares the app for a drilldown.
     * */
-    factory.sliceClicked = function(a) {
+    factory.sliceClicked = function (a) {
         factory.setClickedSlice(a.data.key);
         factory.setClickedSliceLabel(a.data.label);
         var id = a.data.key;
@@ -252,7 +252,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             newPathPrefix = factory.replaceAllCommasWithSlashes(newPathPrefix.toString());
             // Change the path
-            $rootScope.safeApply(function(){
+            $rootScope.safeApply(function () {
                 $location.path(newPathPrefix, false, tabResource.choiceClicked, currLevel, eqChoice.choiceId, nextLevel, (currLevel === 7 && $rootScope.options[currLevel].currChoice !== -1));
             });
         }
@@ -263,7 +263,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       and recreates that charts to show the newly fetched data.
     *       If parameter 'firstTime' is true, then this is the app initialization.
     * */
-    factory.showMeTheMoney = function(firstTime, to7fromAnyWithSelectedCreditor) {
+    factory.showMeTheMoney = function (firstTime, to7fromAnyWithSelectedCreditor) {
         var deferred = $q.defer();
         var queryURL;
         if (factory.getType() !== 'joint-revenue') {
@@ -289,10 +289,10 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
-            
+
             var newSlices = [];
             var newChoices = [];
-            response.slices.map(function(slice) {
+            response.slices.map(function (slice) {
                 var cut = 0;
                 var newSlice = {};
                 var newChoice = {};
@@ -313,13 +313,13 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
                         label: slice.key.substring(cut + 1),
                         value: slice.sum_amount.value,
                         color: COLORS[sliceNumber % 8],
-                        key: slice.key.substring(0,cut)
+                        key: slice.key.substring(0, cut)
                     };
                     newChoice = {
                         choiceId: sliceNumber,
                         content: slice.key.substring(cut + 1),
                         chosen: false,
-                        key: slice.key.substring(0,cut)
+                        key: slice.key.substring(0, cut)
                     };
                 } else {
                     newSlice = {
@@ -370,7 +370,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             factory.setTotalCredit(response.totalCredit);
             factory.setTotalDebit(response.totalDebit);
 
-            var year = factory.getPeriod().substring(0,4);
+            var year = factory.getPeriod().substring(0, 4);
             if (factory.getCurrYear() !== year) {
                 factory.setCurrYear(year);
             }
@@ -414,7 +414,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
 
             deferred.resolve();
 
-        }).error(function(err) {
+        }).error(function (err) {
             console.log(err);
         });
 
@@ -425,16 +425,16 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
      *       Method that takes a number and returns the same number as a string with a dot inserted every three digits.
      *       Example: toNrWithDots(123456) = 123.456
      * */
-    factory.toNrWithDots = function(num) {
+    factory.toNrWithDots = function (num) {
         var numStr = num.toString();
         var newStr = "";
         var i = numStr.length;
         var j = 1;
         while (i > 0) {
-            if (j % 4 === 0 && numStr[i-1] !== '-') {
+            if (j % 4 === 0 && numStr[i - 1] !== '-') {
                 newStr = '.' + newStr;
             } else {
-                newStr = numStr[i-1] + newStr;
+                newStr = numStr[i - 1] + newStr;
                 i--;
             }
             j++;
@@ -458,7 +458,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Goes through the route parameters and sets the state of the app
     * */
-    factory.parseRouteParams = function(params) {
+    factory.parseRouteParams = function (params) {
         for (var param in params) {
             var typ = factory.getType();
             var value = params[param];
@@ -481,7 +481,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Helper method that replaces all commas in the given string with a slash
     * */
-    factory.replaceAllCommasWithSlashes = function(stringToFix) {
+    factory.replaceAllCommasWithSlashes = function (stringToFix) {
         var changed = true;
 
         do {
@@ -500,7 +500,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Return the choice if found, else null.
     * */
     factory.searchChoice = function (myKey, myArray) {
-        for (var i=0; i < myArray.length; i++) {
+        for (var i = 0; i < myArray.length; i++) {
             if (myArray[i].key === myKey) {
                 return myArray[i];
             }
@@ -511,13 +511,13 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
     *       Method that resets the app to it's initial state with respect to the data type being viewed
     * */
-    factory.resetApp = function() {
+    factory.resetApp = function () {
         // Clear all filter choices, expect for the base level
         var from = 1;
         if ($rootScope.type === 'joint-revenue') {
             from = 4;
         }
-        for (var i = from; i < 8;  i++) {
+        for (var i = from; i < 8; i++) {
             $rootScope.options[i].choices = [];
             $rootScope.options[i].currChoice = -1;
         }
@@ -534,7 +534,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
         Translate english to icelandic
      */
-    factory.translate = function() {
+    factory.translate = function () {
         var typo = factory.getType();
         if (typo === 'expenses') {
             return 'Gjöld';
@@ -550,16 +550,21 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
      */
     factory.tDate = function () {
         var perio = factory.getPeriod();
-        var year = perio.substring(0,4);
+        var year = perio.substring(0, 4);
         if (perio.length === 6) {
             if (perio.charAt(5) === '0' || perio.charAt(5) === '5') {
+                // TODO: Remove when all 2018 data has arrived.
+                if (year === "2018") {
+                    year += " (jan - feb)";
+                }
+
                 return year;
             } else {
                 var quarter = parseInt(perio.charAt(5));
                 return year + ' - ' + QUARTERS[quarter] + ' ársfjórðungur';
             }
         } else {
-            var month = parseInt(perio.substring(5,7), 10);
+            var month = parseInt(perio.substring(5, 7), 10);
             if (MONTHS[month] === 'allt' || MONTHS[month] === 'allir') {
                 return year;
             } else {
@@ -576,7 +581,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     /*
      *       Method called once new data has been fetched. It updates the $rootScope variables
      * */
-    var changeRootVariables = function() {
+    var changeRootVariables = function () {
         // Sums
         $rootScope.totalCredit = factory.getTotalCredit();
         $rootScope.totalDebit = factory.getTotalDebit();
@@ -599,7 +604,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
     *       Method called when initializing the app from and URL with set filters.
     *       Iterates through the given labels array and sets the corresponding filters.
     * */
-    var setFilters = function(labels) {
+    var setFilters = function (labels) {
         var creditorIsSelected = false;
         for (var i = 0; i < labels.length; i++) {
             var filterLevel = labels[i].level;
