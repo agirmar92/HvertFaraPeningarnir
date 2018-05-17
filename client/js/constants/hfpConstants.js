@@ -33,7 +33,8 @@ hfpApp.constant('MONTHS', [
 hfpApp.constant('YEARS', [
     "2014",
     "2015",
-    "2016"
+    "2016",
+    "2017"
 ]);
 hfpApp.constant('QUARTERS', [
     "veldu",
@@ -45,7 +46,7 @@ hfpApp.constant('QUARTERS', [
 ]);
 hfpApp.constant('INITIAL_VALUES', {
     'TYPE': 'expenses',
-    'PERIOD': '2016-0',
+    'PERIOD': '2017-0',
     'LEVEL_EX': 0,
     'LEVEL_IN': 3
 });
