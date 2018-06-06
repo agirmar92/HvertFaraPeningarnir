@@ -4,9 +4,9 @@ FROM httpd:2.4
 COPY ./client/hfp-httpd.conf /usr/local/apache2/conf/httpd.conf
 
 ###
-COPY ./server.crt /usr/local/apache2/conf/server.crt
-COPY ./server.key /usr/local/apache2/conf/server.key
-COPY ./server.ca-bundle /usr/local/apache2/conf/server.ca-bundle
+COPY ./hfp_kopavogur_is.crt /usr/local/apache2/conf/server.crt
+COPY ./hfp_kopavogur_is.key /usr/local/apache2/conf/server.key
+COPY ./hfp_kopavogur_is.ca-bundle /usr/local/apache2/conf/server.ca-bundle
 
 ### Web files
 COPY ./client/ /usr/local/apache2/htdocs/

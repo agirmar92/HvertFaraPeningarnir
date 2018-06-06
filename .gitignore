@@ -16,7 +16,7 @@ npm-debug.log
 createIndex.sh~
 __pycache__/
 nohup.out
-server.ca-bundle
-server.crt
-server.key
-server.p7b
+*.ca-bundle
+*.crt
+*.key
+*.p7b

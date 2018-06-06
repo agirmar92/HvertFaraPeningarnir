@@ -1,9 +1,9 @@
 FROM ubuntu:14.04
 
 ###
-COPY ./server.crt /root/server.crt
-COPY ./server.key /root/server.key
-COPY ./server.ca-bundle /root/server.ca-bundle
+COPY ./hfp_kopavogur_is.crt /root/server.crt
+COPY ./hfp_kopavogur_is.key /root/server.key
+COPY ./hfp_kopavogur_is.ca-bundle /root/server.ca-bundle
 
 RUN apt-get update && apt-get upgrade -y
 
