@@ -20,3 +20,4 @@ nohup.out
 *.crt
 *.key
 *.p7b
+.vscode

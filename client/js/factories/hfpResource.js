@@ -289,7 +289,7 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             // Change the slices
             var sliceNumber = 0;
             var currLvl = factory.getLevel();
-            
+
             var newSlices = [];
             var newChoices = [];
             response.slices.map(function(slice) {
@@ -553,6 +553,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         var year = perio.substring(0,4);
         if (perio.length === 6) {
             if (perio.charAt(5) === '0' || perio.charAt(5) === '5') {
+                // TODO: Remove when all 2018 data has arrived.
+                if (year === "2018") {
+                    year += "  (til og með 30.júní)";
+                }
+
                 return year;
             } else {
                 var quarter = parseInt(perio.charAt(5));
