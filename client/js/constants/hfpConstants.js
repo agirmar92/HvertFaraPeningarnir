@@ -30,18 +30,11 @@ hfpApp.constant('MONTHS', [
   'desember',
   'allt',
 ]);
-hfpApp.constant('YEARS', ['2014', '2015', '2016', '2017', '2018']);
-hfpApp.constant('QUARTERS', [
-  'veldu',
-  'fyrsti',
-  'annar',
-  'þriðji',
-  'fjórði',
-  'allt',
-]);
+hfpApp.constant('YEARS', ['2014', '2015', '2016', '2017', '2018', '2019']);
+hfpApp.constant('QUARTERS', ['veldu', 'fyrsti', 'annar', 'þriðji', 'fjórði', 'allt']);
 hfpApp.constant('INITIAL_VALUES', {
   TYPE: 'expenses',
-  PERIOD: '2018-0',
+  PERIOD: '2019-0',
   LEVEL_EX: 0,
   LEVEL_IN: 3,
 });
@@ -67,14 +60,7 @@ hfpApp.constant('URL_PARAMS', {
     'FinanceKey',
     'Creditor',
   ],
-  'joint-revenue': [
-    'Type',
-    'Period',
-    'Level',
-    'Department',
-    'FinanceKey',
-    'Creditor',
-  ],
+  'joint-revenue': ['Type', 'Period', 'Level', 'Department', 'FinanceKey', 'Creditor'],
   'special-revenue': [
     'Type',
     'Period',

@@ -553,6 +553,11 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         var year = perio.substring(0,4);
         if (perio.length === 6) {
             if (perio.charAt(5) === '0' || perio.charAt(5) === '5') {
+                // TODO: Remove when all 2019 data has arrived.
+                if (year === '2019') {
+                    year += ' (til og með 30. júní)';
+                }
+
                 return year;
             } else {
                 var quarter = parseInt(perio.charAt(5));
