@@ -549,22 +549,17 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         Returns a time period in human form
      */
     factory.tDate = function () {
-        var perio = factory.getPeriod();
-        var year = perio.substring(0,4);
-        if (perio.length === 6) {
-            if (perio.charAt(5) === '0' || perio.charAt(5) === '5') {
-                // TODO: Remove when all 2019 data has arrived.
-                if (year === '2019') {
-                    year += ' (til og með 30. júní)';
-                }
-
+        var period = factory.getPeriod();
+        var year = period.substring(0,4);
+        if (period.length === 6) {
+            if (period.charAt(5) === '0' || period.charAt(5) === '5') {
                 return year;
             } else {
-                var quarter = parseInt(perio.charAt(5));
+                var quarter = parseInt(period.charAt(5));
                 return year + ' - ' + QUARTERS[quarter] + ' ársfjórðungur';
             }
         } else {
-            var month = parseInt(perio.substring(5,7), 10);
+            var month = parseInt(period.substring(5,7), 10);
             if (MONTHS[month] === 'allt' || MONTHS[month] === 'allir') {
                 return year;
             } else {
