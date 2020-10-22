@@ -13,7 +13,7 @@ var hfpApp = angular.module('hvertfarapeningarnir', [
  * */
 hfpApp.config([
   '$routeProvider',
-  function($routeProvider) {
+  function ($routeProvider) {
     $routeProvider
       // Configuring optional routing parameters. Type, period and all of the levels.
       .when('/login', {
@@ -23,7 +23,7 @@ hfpApp.config([
         templateUrl: 'views/adminPanelView.html',
         controller: 'adminPanelController',
         resolve: {
-          currentAuth: function(authenticationResource) {
+          currentAuth: function (authenticationResource) {
             return authenticationResource.requireAuth();
           },
         },
@@ -38,7 +38,7 @@ hfpApp.config([
         }
       )
       .otherwise({
-        redirectTo: '/expenses/2019-0/0/n/n/n/n/n/n/',
+        redirectTo: '/expenses/2020-0/0/n/n/n/n/n/n/',
       });
   },
 ]);
@@ -46,9 +46,9 @@ hfpApp.config([
 /*
  *		Addition to be able to prevent reload of page when URL changes
  * */
-hfpApp.run(function($route, $rootScope, $location, $analytics, hfpResource, $window) {
+hfpApp.run(function ($route, $rootScope, $location, $analytics, hfpResource, $window) {
   var original = $location.path;
-  $location.path = function(
+  $location.path = function (
     path,
     reload,
     callback,
@@ -61,7 +61,7 @@ hfpApp.run(function($route, $rootScope, $location, $analytics, hfpResource, $win
       // Flag to make sure we don't call this function twice.
       $rootScope.beenCalled = true;
       var lastRoute = $route.current;
-      var un = $rootScope.$on('$locationChangeSuccess', function() {
+      var un = $rootScope.$on('$locationChangeSuccess', function () {
         // Send Google analytics info
         $window.ga('send', 'pageview', { page: $location.url() });
         $analytics.pageTrack($location.path());
@@ -73,7 +73,7 @@ hfpApp.run(function($route, $rootScope, $location, $analytics, hfpResource, $win
         var to7fromAnyOtherWithSelectedCreditor =
           nextLevel === 7 && $rootScope.options[7].currChoice !== -1 && option !== 7;
         hfpResource.parseRouteParams($location.path().split('/'));
-        hfpResource.showMeTheMoney(false, to7fromAnyOtherWithSelectedCreditor).then(function() {
+        hfpResource.showMeTheMoney(false, to7fromAnyOtherWithSelectedCreditor).then(function () {
           // If there is a callback, then call it once data has been fetched
           if (callback) {
             callback(option, choice, nextLevel, isUnchoosingCreditor);
