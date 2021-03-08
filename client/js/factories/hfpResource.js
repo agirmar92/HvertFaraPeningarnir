@@ -275,7 +275,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         $http({
             // Fetch the data
             method: 'GET',
-            url: queryURL
+            url: queryURL,
+            timeout: 4000, // I added the timeout for queries that do not work - they hang forever
         }).success(function (response) {
             // If this is the first fetching money, set the filters like they should be and set the initial size of the chart
             if (firstTime) {
@@ -415,7 +416,17 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             deferred.resolve();
 
         }).error(function(err) {
-            console.log(err);
+            // If the API returns no data -> clear the old data
+            factory.setSlices([]);
+            factory.setChoices([]);
+            factory.setTotalCredit(0);
+            factory.setTotalDebit(0);
+            $rootScope.chart.options.data[0].dataPoints[0].y = 0;
+            $rootScope.chart.options.data[0].dataPoints[1].y = 0;
+            $rootScope.chart.options.data[0].dataPoints[2].y = 0;
+
+            // Update the root variables
+            changeRootVariables();
         });
 
         return deferred.promise;

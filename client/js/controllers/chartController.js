@@ -22,7 +22,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
                     axisYType: "primary",
                     dataPoints: [
                         {  y: 0, label: "Út" },
-                        {  
+                        {
                             // When the user is viewing expenses, the "inn" column can be clicked to view currently filtered data as special revenues.
                             y: 0,
                             label: "Inn",
@@ -111,7 +111,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         if (!$rootScope.beenCalled) {
             $location.path($location.path(), false);
         }
-        // Flag to make sure we don't call our custom location.path function twice. 
+        // Flag to make sure we don't call our custom location.path function twice.
         $rootScope.beenCalled = false;
     })
 
@@ -187,7 +187,7 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
         $("#instructions-close").toggleClass("hfp-hidden").toggleClass("bring-to-front");
         $("#instructions-toggle").toggleClass("hfp-hidden");
     };
-    
+
     $scope.toggleHelp = function() {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -271,6 +271,10 @@ hfpApp.controller('chartController', function ($scope, $http, $rootScope, $route
     $scope.getHeader = function() {
         return hfpResource.translate() + ", " + hfpResource.tDate();
     }
+
+    $scope.getErrorMessage = function () {
+      return 'Því miður engin gögn uppfylla valin skilyrði.  Vinsamlegast breyttu skilyrðunum eða veldu „Upphafstilla“ til að halda áfram';
+    };
 
     /*
     *   Updates the pie view

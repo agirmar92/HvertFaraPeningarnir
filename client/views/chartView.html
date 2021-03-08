@@ -91,7 +91,7 @@
                         md-item-text="item.label"
                         md-min-length="1">
                         <md-item-template>
-                            <span md-highlight-text="searchText">{{item.label}}</span>    
+                            <span md-highlight-text="searchText">{{item.label}}</span>
                         </md-item-template>
                     </md-autocomplete>
 
@@ -287,6 +287,15 @@
     </div>
     <!-- /#breadcrumbs -->
 
+    <!-- error-message -->
+    <div class="error-message" ng-show="dataReady && slices.length === 0">
+        <span>{{getErrorMessage()}}</span>
+        <button data-toggle="tooltip" title="Heim" type="button" id="clear-filters-2" class="btn" ng-click="resetApp()" href="javascript: void(0)">
+            Upphafsstilla
+        </button>
+    </div>
+    <!-- /#error-message -->
+
     <!-- chart-area -->
     <div id="chartContainer" class="row hfp-chart" ng-show="pieView">
         <div id="hfpPie" class="col-xs-12 hfp-div">
@@ -300,7 +309,7 @@
     <!-- /#mini-chart-area -->
 
     <!-- table-area -->
-    <div id="tableContainer" class="container" ng-show="!pieView">
+    <div id="tableContainer" class="container" ng-show="!pieView && slices.length > 0">
         <div id="table" class="table-editable">
             <table class="table">
                 <!-- Header -->
