@@ -3,7 +3,6 @@ FROM ubuntu:14.04
 ###
 COPY ./hfp_kopavogur_is.crt /root/server.crt
 COPY ./hfp_kopavogur_is.key /root/server.key
-COPY ./hfp_kopavogur_is.ca-bundle /root/server.ca-bundle
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -11,7 +10,7 @@ RUN apt-get install curl -y
 
 RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 
-RUN apt-get install -y nodejs && apt-get clean
+RUN apt-get install -y --force-yes nodejs && apt-get clean
 
 WORKDIR /api
 
