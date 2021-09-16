@@ -39,16 +39,41 @@ with open('../results.csv', encoding=args.encoding) as infile:
 	for x in readr:
 		rows.append([ y.strip() for y in x ])
 
+# The first row - header columns
+fileCols = rows[0]
+
 # Convert to a list of dictionaries
 docs = []
-cols = [ 'Date', 'AffairID', 'DepartmentID', 'FinanceKeyID', 'Amount', 'FinanceKey', 'PrimaryFinanceKey', 'SecondaryFinanceKey', 'Department', 'Affair', 'Creditor', 'CreditorID', 'DepartmentGroup', 'AffairGroup' ]
-#cols = rows[0]
+cols = {
+	'Date': 'Mánuður',
+	'AffairID': 'Málaflokkur kóti',
+	'DepartmentID': 'Deildarkóti',
+	'FinanceKeyID': 'FjárhagslykillNr',
+	'Amount': 'Upphæð',
+	'FinanceKey': 'Fjárhagslykill',
+	'PrimaryFinanceKey': 'Yfirfjárhagslykill',
+	'SecondaryFinanceKey': 'Millifjárhagslykill',
+	'Department': 'Málaflokkur-Deild',
+	'Affair': 'Málaflokkur',
+	'Creditor': 'Lánardrottinn',
+	'CreditorID': 'Lánardrottnanúmer',
+	'DepartmentGroup': 'Millideild',
+	'AffairGroup': 'Yfirmálaflokkur'
+}
 
-for row in rows[2:-2]:
+for row in rows[1:]:
 	doc = {}
-	for i, column in enumerate(row):
-		doc[cols[i]] = column
+	for col in cols:
+		keyIndex = fileCols.index(cols[col])
+		doc[col] = row[keyIndex]
 	docs.append(doc)
+
+# DEPRECATED!
+# for row in rows[2:-2]:
+# 	doc = {}
+# 	for i, column in enumerate(row):
+# 		doc[cols[i]] = column
+# 	docs.append(doc)
 
 
 # Process dictionaries into ElasticSearch
