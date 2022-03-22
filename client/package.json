@@ -20,7 +20,7 @@
     "angulartics-google-analytics": "~0.2.1",
     "bootstrap": "~3.4.1",
     "canvasjs": "~1.8.1",
-    "jquery": "~2.2.0",
+    "jquery": "~3.5.0",
     "live-server": "~1.1.0"
   },
   "devDependencies": {
