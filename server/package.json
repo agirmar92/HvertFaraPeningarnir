@@ -42,6 +42,6 @@
     "request": "*",
     "rewire": "~2.5.1",
     "sinon": "~1.17.3",
-    "supertest": "~1.2.0"
+    "supertest": "~6.3.3"
   }
 }
