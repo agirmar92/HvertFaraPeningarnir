@@ -30,11 +30,21 @@ hfpApp.constant('MONTHS', [
   'desember',
   'allt',
 ]);
-hfpApp.constant('YEARS', ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']);
+hfpApp.constant('YEARS', [
+  '2015',
+  '2016',
+  '2017',
+  '2018',
+  '2019',
+  '2020',
+  '2021',
+  '2022',
+  '2023',
+]);
 hfpApp.constant('QUARTERS', ['veldu', 'fyrsti', 'annar', 'þriðji', 'fjórði', 'allt']);
 hfpApp.constant('INITIAL_VALUES', {
   TYPE: 'expenses',
-  PERIOD: '2022-0',
+  PERIOD: '2023-0',
   LEVEL_EX: 0,
   LEVEL_IN: 3,
 });
