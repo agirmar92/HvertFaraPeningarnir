@@ -564,10 +564,6 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
         var year = period.substring(0,4);
         if (period.length === 6) {
             if (period.charAt(5) === '0' || period.charAt(5) === '5') {
-                // TODO: Remove when all 2022 data has arrived.
-                if (year === '2023') {
-                    year += ' (til og með 30. júní)';
-                }
                 return year;
             } else {
                 var quarter = parseInt(period.charAt(5));
