@@ -38,7 +38,7 @@ hfpApp.config([
         }
       )
       .otherwise({
-        redirectTo: '/expenses/2023-0/0/n/n/n/n/n/n/',
+        redirectTo: '/expenses/2025-0/0/n/n/n/n/n/n/',
       });
   },
 ]);

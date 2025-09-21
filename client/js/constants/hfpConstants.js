@@ -40,11 +40,13 @@ hfpApp.constant('YEARS', [
   '2021',
   '2022',
   '2023',
+  '2024',
+  '2025',
 ]);
 hfpApp.constant('QUARTERS', ['veldu', 'fyrsti', 'annar', 'þriðji', 'fjórði', 'allt']);
 hfpApp.constant('INITIAL_VALUES', {
   TYPE: 'expenses',
-  PERIOD: '2023-0',
+  PERIOD: '2024-0',
   LEVEL_EX: 0,
   LEVEL_IN: 3,
 });
