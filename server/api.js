@@ -559,11 +559,13 @@ api.get('/joint-revenue/:per/:lvl/:dep/:fin/:cre', (req, res) => {
                                 }
                             }
                         },
-                        {   // only "Tekjur" Affair
-                            "term": {
-                                "Affair": { "value": "00-Tekjur" }
-                            }
-                        },  // Drilldown
+			{
+				"indices": {
+					"indices": ["hfp-2022"],
+					"query": { "prefix": { "Affair": "00-" } }, // use prefix ONLY on hfp-2022
+					"no_match_query": { "term": { "Affair": { "value": "00-Tekjur" } } } // all other indices same as before
+				}
+			}, // Drilldown
                         mustDepartment,
                         mustFinanceKey,
                         mustCreditor

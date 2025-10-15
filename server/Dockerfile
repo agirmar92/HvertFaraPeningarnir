@@ -15,6 +15,7 @@ RUN apt-get install -y --force-yes nodejs && apt-get clean
 WORKDIR /api
 
 ADD server/package.json /api/package.json
+ADD server/npm-shrinkwrap.json /api/npm-shrinkwrap.json
 ADD server/index.js /api/src/index.js
 ADD server/api.js /api/src/api.js
 
