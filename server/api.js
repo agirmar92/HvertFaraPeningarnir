@@ -28,6 +28,16 @@ const aggs = [
 ];
 api.use(bodyParser.json());
 
+const legacyYears = [
+  "hfp-2015",
+  "hfp-2016",
+  "hfp-2017",
+  "hfp-2018",
+  "hfp-2019",
+  "hfp-2020",
+  "hfp-2021",
+];
+
 const timeProcessor = (period) => {
   let year = period.substring(0, 5);
   let from = "";
@@ -626,9 +636,9 @@ api.get("/joint-revenue/:per/:lvl/:dep/:fin/:cre", (req, res) => {
               },
               {
                 indices: {
-                  indices: ["hfp-2022"],
-                  query: { prefix: { Affair: "00-" } }, // use prefix ONLY on hfp-2022
-                  no_match_query: { term: { Affair: { value: "00-Tekjur" } } }, // all other indices same as before
+                  indices: legacyYears,
+                  query: { term: { Affair: { value: "00-Tekjur" } } }, // legacy years query same as before
+                  no_match_query: { prefix: { Affair: "00-" } }, // newer years
                 },
               }, // Drilldown
               mustDepartment,
@@ -713,11 +723,9 @@ api.get("/joint-revenue/:per/:lvl/:dep/:fin/:cre", (req, res) => {
                     },
                     {
                       indices: {
-                        indices: ["hfp-2022"],
-                        query: { prefix: { Affair: "00-" } }, // use prefix ONLY on hfp-2022
-                        no_match_query: {
-                          term: { Affair: { value: "00-Tekjur" } },
-                        }, // all other indices same as before
+                        indices: legacyYears,
+                        query: { term: { Affair: { value: "00-Tekjur" } } }, // legacy years query same as before
+                        no_match_query: { prefix: { Affair: "00-" } }, // newer years
                       },
                     },
                     // Drilldown
@@ -769,11 +777,11 @@ api.get("/joint-revenue/:per/:lvl/:dep/:fin/:cre", (req, res) => {
                           },
                           {
                             indices: {
-                              indices: ["hfp-2022"],
-                              query: { prefix: { Affair: "00-" } }, // use prefix ONLY on hfp-2022
-                              no_match_query: {
+                              indices: legacyYears,
+                              query: {
                                 term: { Affair: { value: "00-Tekjur" } },
-                              }, // all other indices same as before
+                              }, // legacy years query same as before
+                              no_match_query: { prefix: { Affair: "00-" } }, // newer years
                             },
                           },
                         ],
