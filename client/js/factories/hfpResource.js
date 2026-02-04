@@ -241,7 +241,8 @@ hfpApp.factory('hfpResource', function($http, $q, $routeParams, $route, $locatio
             var currLevel = factory.getLevel();
             var eqChoice = factory.searchChoice(id, $rootScope.options[currLevel].choices);
 
-            var nextLevel = (currLevel === 7) ? currLevel : currLevel + 1;
+            // TODO: Revert back to normal when Millideildir data is fixed
+            var nextLevel = (currLevel === 7) ? currLevel : currLevel === 1 ? 3 : currLevel + 1;
             // Find the highest level (smallest number) that has no locked in choice.
             while (nextLevel < 7 && $rootScope.options[nextLevel].currChoice !== -1) {
                 nextLevel++;
