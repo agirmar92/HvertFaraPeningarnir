@@ -35,7 +35,8 @@
             <div class="tree-header first">
                 <span class="tree-header-span">1. Málaflokkar/deildir</span>
             </div>
-            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index < 4">
+            <!-- TODO: Remove the `&& $index !== 2` check when Millideildir data is fixed -->
+            <div class="option" ng-repeat="option in options" id="option{{option.optionId}}" ng-if="($index > 2 || type !== 'joint-revenue') && $index < 4 && $index !== 2">
                 <div class="option-header header{{option.optionId}}" ng-click="optionClicked(option.optionId)">
                     <i class="fa fa-eye option-eye{{option.optionId}}" aria-hidden="true" ng-if="option.optionId === currentLevel"></i>
                     <span id="option-text1">{{option.label}}</span>

@@ -169,7 +169,8 @@ hfpApp.controller('tabsController', function ($scope, $http, $window, $rootScope
             paramPosition -= 3;
         }
 
-        var nextLevel = (option === 7) ? option : option + 1;
+        // TODO: Revert back to normal when Millideildir data is fixed
+        var nextLevel = (option === 7) ? option : option === 1 ? 3 : option + 1;
         var newFieldValue;
         var newPathPrefix = $location.path().split('/');
 
