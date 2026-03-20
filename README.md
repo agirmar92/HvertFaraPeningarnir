@@ -24,3 +24,8 @@ You must have the following installed on your machine:
 
 6. Visit `localhost:8000` in your favorite browser.
 
+### Operations
+
+- HTTPS renewal and production container recreation are documented in [ops/HTTPS_RENEWAL.md](ops/HTTPS_RENEWAL.md).
+- Production server architecture, legacy constraints, and remote-host pitfalls are documented in [ops/PRODUCTION_SERVER.md](ops/PRODUCTION_SERVER.md).
+- The shared runtime config pattern for live container names and image tags is documented in [ops/hfp-runtime.conf.example](ops/hfp-runtime.conf.example).

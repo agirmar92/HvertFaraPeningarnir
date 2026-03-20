@@ -1,9 +1,5 @@
 FROM ubuntu:14.04
 
-###
-COPY ./hfp_kopavogur_is.crt /root/server.crt
-COPY ./hfp_kopavogur_is.key /root/server.key
-
 RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install curl -y
