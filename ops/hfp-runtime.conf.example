@@ -1,0 +1,11 @@
+DOMAIN=hfp.kopavogur.is
+
+CLIENT_CONTAINER_NAME=hfpclient
+API_CONTAINER_NAME=hfpapi
+
+CLIENT_IMAGE=agirmar92/hfpclient:hide-millideildir-level
+API_IMAGE=agirmar92/hfpapi:2025-joint-revenue-new-filter-latest-years
+
+HTTPD_CONF=/opt/hfp/config/client/hfp-httpd.conf
+CHALLENGE_DIR=/srv/hfp-acme
+CERT_DIR=/srv/hfp-certs/live/hfp.kopavogur.is
